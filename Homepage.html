@@ -30,6 +30,10 @@
             <div class="col-sm-10" margin-bottom="2rem">
                Interventional Radiology
             </div>
+            <div class="col-sm-2" margin-bottom="2rem">
+               <br>
+            </div>
+            
           </div>
         </div>
     </h3>
@@ -127,11 +131,12 @@
                 <input type="checkbox" name="liver">Liver (47000) <br>
                 <input type="checkbox" name="lung">Lung (32405) <input type="checkbox" name="rt">Rt <input type="checkbox" name="lt">Lt <br>
                 <input type="checkbox" name="kidney">Kidney (50200)<br>
-                <input type="checkbox" name="lymph">Lymph node (38505)<br><br>
+                <input type="checkbox" name="lymph">Lymph node (38505)<br>
+                <input type="checkbox" name="lymph"><input type="text" name="lines"size=30><br>
                 <h6>Vascular</h6> 
                 <input type="checkbox" name="pic">PIC (36569, 769 <input type="checkbox" name="double">Double <input type="checkbox" name="triple">Triple<br>
                 <input type="checkbox" name="port">Port (36561, 76937, 77001)<br>
-                <input type="checkbox" name="line">--------------------------<br>
+                <input type="checkbox" name="line"><input type="text" name="lines"size=30><br>
             </div>
             
             <div class="col">
@@ -140,7 +145,7 @@
                 <input type="checkbox" name="nephtube">Neph Tube (50394, 74425) <br>
                 <input type="checkbox" name="abscess">Abscess <br>
                 <input type="checkbox" name="nephrostomy">Nephrostomy (50390, 50392, 74475)<br> 
-                <input type="checkbox" name="cttubecheck">CT Tube Check ---------------<br>
+                <input type="checkbox" name="cttubecheck">CT Tube Check  <input type="text" name="lines"size=20><br>
                 <input type="checkbox" name="fluorotubecheck">Fluoro Tube Check (49424, 76080)<br>
                 <input type="checkbox" name="paracentesis">Paracentesis(49083)<br>
                 <input type="checkbox" name="Thoracentesis">Thoracentesis (32555) <input type="checkbox" name="rt">Rt <input type="checkbox" name="lt">Lt <br>
@@ -150,22 +155,63 @@
             </div>
             
             <div class="col">
-            <br>
+                <br>
                 <h6>Ortho</h6>        
                 <input type="checkbox" name="hiping">Hiping (20610)<br>
                 <input type="checkbox" name="shouldering">Shouldering (206?0) <br>
                 <input type="checkbox" name="injection">Injection<input type="checkbox" name="rt">Rt <input type="checkbox" name="lt">Lt <br>
                 <input type="checkbox" name="arthrogram">Arthrogram<input type="checkbox" name="hip">Hip <input type="checkbox" name="Shoulder">Shoulder <br>
                 <input type="checkbox" name="myelogram">Myelogram<input type="checkbox" name="cerv">Cerv. <input type="checkbox" name="lt">Lt <input type="checkbox" name="lumber">Lumber<br>
-                <input type="checkbox" name="thoracic">ESI---------------------<br>
+                <input type="checkbox" name="thoracic">ESI&emsp;<input type="text" name="film"size=25><br>
                 <h6>Specialized</h6>
                 <input type="checkbox" name="vertebroplasty">Vertebroplasty L-22511/T-22510<br>
                 <input type="checkbox" name="ablation">Ablation<br>
                 <input type="checkbox" name="embolization">Embolization<br>
-                <input type="checkbox" name="line">--------------------------<br>
+                <input type="checkbox" name="line"><input type="text" name="lines"size=30><br>
             </div>
         </div>
     </div>
+    
+    <hr size="10" noshade>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h5>Scheduling Details <br></h5>
+                </div>
+            <div class="col">
+            </div>
+            <div class="col">
+            </div>
+            <div class="col"><br>
+                <h6>Same Day <br></h6>
+                <input type="checkbox" name="Consult/Order">Consult/Order<br>
+                <input type="checkbox" name="Anesthesia">Anesthesia <br>
+                <input type="checkbox" name="PreOp">PreOp <br>
+                <input type="checkbox" name="Vent">Vent <br>
+                <input type="checkbox" name="Consent"> Consent <br>
+                <input type="checkbox" name="NPO">NPO <br>
+                <input type="checkbox" name="RN">RN  <br>
+                <input type="checkbox" name="Care Manager">Care Manager <br>
+                <input type="checkbox" name="outPt registration">OutPt Registration <br>
+                <input type="checkbox" name="IR Core">IR Core <br>                                    
+            </div>
+            <div class="col">  <br>
+                <h6>Scheduled <br></h6>
+                <input type="checkbox" name="Consult/Order">Patient<br>
+                <input type="checkbox" name="Anesthesia">Office <br>
+                <input type="checkbox" name="PreOp">OR <br>
+                <input type="checkbox" name="Vent">Access <br>
+                <input type="checkbox" name="Consent">Orders/Labs <br>
+                <input type="checkbox" name="NPO">Schedule <br>
+                <input type="checkbox" name="RN">H&P /Notes  <br>
+                <input type="checkbox" name="Care Manager">Specimen Test <br>
+                <input type="checkbox" name="outPt registration">Pathology x4583 <br>
+                <input type="checkbox" name="IR Core">Histology x4572 <br>                                    
+            </div>
+        </div>
+    </div>
+    
     <p>
      <div class="container">
           <div class="row">
