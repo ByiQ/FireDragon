@@ -1,0 +1,8 @@
+{
+  "name": "fire-dragon",
+  "main": "./html/FirstPage.html",
+  "window": {
+    "width":1000,
+    "height": 800
+  }
+}
