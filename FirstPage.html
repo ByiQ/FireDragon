@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  
+  <title>FirstPage</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <style>
+    .wholepage{
+        padding-top: 5px;
+        padding-bottom: 100px;
+        border: 3px solid black;
+        
+    }
+    .containerheader{
+        text-align: center;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+    
+    .col1{
+        text-align: center;
+        padding-right: 20px;
+    }
+    .col2{
+        text-align: center;
+        padding-right: 250px;
+    }
+    .btn1{
+        width: 20em;
+        padding-right: 20px;
+    }
+    
+  </style>
+  <script>
+    function allowDrop(ev) {
+    ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+  </script>
+  
+</head>
+<body>
+    <div class="wholepage">
+        <div class="containerheader">
+            <h1>OPEN A WORKFLOW</h1><br>
+            <h5>"Workflow Name"</h5><br>
+            <div class="row1" style="display: flex; justify-content: space-around">
+                <div class="col1">
+                </div>
+                <div class="col2">
+                    <button class="change" type="submit" >Change</button>
+                </div>
+            </div>
+            <div class="row2" style="text-align: center">
+                <h3>Choose A Step <br><br></h3>
+            </div>
+            <div class="row3" >
+                
+                <button class="btn btn-primary" type="submit">Step 1</button>
+                <button class="btn btn-primary" type="submit">Step 2</button><br><br>
+            
+                <button class="btn btn-primary" type="submit">Step 3</button>
+                <button class="btn btn-primary" type="submit">Collect</button><br><br>
+            
+                <button class="btn2" type="submit" style="padding: 10px; margin-left: 50px; margin-right: 50px">Next</button> 
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
