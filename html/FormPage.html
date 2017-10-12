@@ -16,33 +16,8 @@
     }
     .col#input_fields {
         width: 60%;
-        margin-right: 40px;
     }
-    #colinput input {
-        margin-right: 200px;
-    }
-    #col2 input {
-        margin-right: 6px;
-    }
-    
   </style>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
-
-  <script>
-    $(window).load(function()
-    {
-       var phones = [{ "mask": "(###) ###-####"}, { "mask": "(###) ###-##############"}];
-        $('#phone').inputmask({ 
-            mask: phones, 
-            greedy: false, 
-            definitions: { '#': { validator: "[0-9]", cardinality: 1}} });
-        $('#cell').inputmask({ 
-            mask: phones, 
-            greedy: false, 
-            definitions: { '#': { validator: "[0-9]", cardinality: 1}} });
-    });
-  </script>
   </head>
   <body>
   
@@ -72,33 +47,18 @@
                 Patient Information <br>
                 </h5>
                 Name: &nbsp;<input type="text" name="name" size="57"><br>
-                DOB: &emsp;<input type="date" name="dob" id="dob"> &nbsp;&nbsp; MRN: <input type ="text" name="mbn" size="25"><br>
-                Address/Nurs: <input type="text" name="address" size=50><br>                
-                Phone: &nbsp;<input type="text" id="phone"> &nbsp; Cell: <input type="text" id="cell" size="25"><br>               
-                
+                DOB: &emsp;<input type="text" name="dob"> MBN: <input type ="text" name="mbn" size="25"><br>
+                Address/Nurs: <input type="text" name="address" size=50><br>
+                Phone: &nbsp;<input type="text" name="phone"> Cell: <input type="text" name="cell" size="26"><br>
             </div>
-            <div id="colinput">
+            <div class="col">
                 <h5>
                 Date <br>
                 </h5>
-                <table>
-                    <tr>
-                        <td>Referring Physician:</td>
-                        <td><input type="text" name="ref.Physician"></td>
-                    </tr>
-                    <tr>
-                        <td>Contact:</td>
-                        <td><input type="text" name="contact"></td>
-                    </tr>
-                    <tr>
-                        <td>Insurance Primary:</td>
-                        <td><input type="text" name="insur.Primary"></td>
-                    </tr>
-                    <tr>
-                        <td>Insurance Secondary:</td>
-                        <td><input type="text" name="insur.Second"></td>
-                    </tr>
-                </table>
+                Referring Physician: &nbsp;&nbsp;<input type="text" name="referPhysician"><br>
+                Contact: &nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="text" name="contact"><br>
+                Insurance Primary: &nbsp;&emsp;<input type="text" name="insurPrim"><br>
+                Insurance Secondary: <input type="text" name="insurSecond"><br>
             </div>
         </div>
     </div>
@@ -141,33 +101,18 @@
                             INR &nbsp;&nbsp;&emsp;<input type="text" name="inr" size=15><br>
                             Wt(lbs) <input type="text" name="wt" size=15><br>
                         </div>
-                        <div class="col2">
-                            <br><br>
+                        <div class="col">
                             <h6>
+                            <br>
+                            <br>
                             Film Review/report <br>
                             </h6>
-                            <table>
-                                <tr>
-                                    <td>Outside films </td>
-                                    <td><input type="text" name="film"size=10></td>
-                                </tr>
-                                <tr>
-                                    <td>Courier </td>
-                                    <td><input type="text" name="courier"size=10></td>
-                                </tr>
-                                <tr>
-                                    <td>FedEx/Mail </td>
-                                    <td><input type="text" name="fedex"size=10></td>
-                                </tr>
-                                <tr>
-                                    <td>Imaging Info Center </td>
-                                    <td><input type="text" name="iic"size=10></td>
-                                </tr>
-                                <tr>
-                                    <td>VPN </td>
-                                    <td><input type="text" name="vpn"size=10></td>
-                                </tr>
-                            </table>
+                            Outside films <input type="text" name="film"size=10><br>
+                            Courier &nbsp;&nbsp;&emsp;&emsp;<input type="text" name="courier"size=10><br>
+                            FedEx/Mail &emsp;<input type="text" name="fedex"size=10><br>
+                            Imaging Info Center <br>
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="text" name="iic"size=10><br>
+                            VPN &emsp;&emsp;&emsp;&emsp;<input type="text" name="vpn"size=10><br>
                         </div>
                     </div>
                 </div>
@@ -272,9 +217,60 @@
     <p>
      <div class="container">
           <div class="row">
-            <a class="btn btn-primary mr-2" href="http://www.wikihow.com/Run-a-HTML-File" role="button">View Form</a>
 
-            <button class="btn btn-primary" type="submit">Edit Form</button>
+                <div id="myModal" class="modal">
+                        
+                          <!-- Modal content -->
+                          <div class="modal-content">
+                            <style>
+                                .alert {
+                                padding: 20px;
+                                background-color: #f44336;
+                                color: white;
+                                opacity: 1;
+                                transition: opacity 0.6s;
+                                margin-bottom: 15px;
+                                }
+
+                                .alert.success {background-color: #4CAF50;}
+                            </style>
+                            <span class="close">&times;</span>
+                            <div class="alert success">
+                                    <strong>Success!</strong> Page has been submitted.
+                                  </div>
+                            <a id="myReturnButton" class = "btn btn-primary mr-2" href = "FirstPage.html" role = "button">Return To Start</a>
+                          </div>
+                        
+                        </div>
+
+            <a id = "modalButton" class="btn btn-primary mr-2" role="button">Submit</a>
+            <script>
+                    // Get the modal
+                    var modal = document.getElementById('myModal');
+                    
+                    // Get the button that opens the modal
+                    var btn = document.getElementById("modalButton");
+                    
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
+                    
+                    // When the user clicks the button, open the modal 
+                    btn.onclick = function() {
+                        modal.style.display = "block";
+                    }
+                    
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+                    
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+                    </script>
            </div>
      </div>
     </p>
