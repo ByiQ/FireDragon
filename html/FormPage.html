@@ -17,7 +17,30 @@
     .col#input_fields {
         width: 60%;
     }
+    #colinput input {
+        margin-right: 200px;
+    }
+    #col2 input {
+        margin-right: 6px;
+    }
   </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
+
+  <script>
+    $(window).load(function()
+    {
+       var phones = [{ "mask": "(###) ###-####"}, { "mask": "(###) ###-##############"}];
+        $('#phone').inputmask({ 
+            mask: phones, 
+            greedy: false, 
+            definitions: { '#': { validator: "[0-9]", cardinality: 1}} });
+        $('#cell').inputmask({ 
+            mask: phones, 
+            greedy: false, 
+            definitions: { '#': { validator: "[0-9]", cardinality: 1}} });
+    });
+  </script>
   </head>
   <body>
   
@@ -47,19 +70,36 @@
                 Patient Information <br>
                 </h5>
                 Name: &nbsp;<input type="text" name="name" size="57"><br>
-                DOB: &emsp;<input type="text" name="dob"> MBN: <input type ="text" name="mbn" size="25"><br>
-                Address/Nurs: <input type="text" name="address" size=50><br>
-                Phone: &nbsp;<input type="text" name="phone"> Cell: <input type="text" name="cell" size="26"><br>
+                DOB: &emsp;<input type="date" name="dob" id="dob"> &nbsp;&nbsp; MRN: <input type ="text" name="mbn" size="25"><br>
+                Address/Nurs: <input type="text" name="address" size=50><br>                
+                Phone: &nbsp;<input type="text" id="phone"> &nbsp; Cell: <input type="text" id="cell" size="25"><br>
             </div>
             <div class="col">
-                <h5>
-                Date <br>
-                </h5>
-                Referring Physician: &nbsp;&nbsp;<input type="text" name="referPhysician"><br>
-                Contact: &nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="text" name="contact"><br>
-                Insurance Primary: &nbsp;&emsp;<input type="text" name="insurPrim"><br>
-                Insurance Secondary: <input type="text" name="insurSecond"><br>
-            </div>
+            <div id="colinput">
+                  <h5>
+                  Date <br>
+                  </h5>
+               
+                <table>
+                    <tr>
+                        <td>Referring Physician:</td>
+                        <td><input type="text" name="ref.Physician"></td>
+                    </tr>
+                    <tr>
+                        <td>Contact:</td>
+                        <td><input type="text" name="contact"></td>
+                    </tr>
+                    <tr>
+                        <td>Insurance Primary:</td>
+                        <td><input type="text" name="insur.Primary"></td>
+                    </tr>
+                    <tr>
+                        <td>Insurance Secondary:</td>
+                        <td><input type="text" name="insur.Second"></td>
+                    </tr>
+                </table>
+              </div>
+          </div>
         </div>
     </div>
     
@@ -103,16 +143,31 @@
                         </div>
                         <div class="col">
                             <h6>
-                            <br>
-                            <br>
+                            <br><br><br><br>
                             Film Review/report <br>
                             </h6>
-                            Outside films <input type="text" name="film"size=10><br>
-                            Courier &nbsp;&nbsp;&emsp;&emsp;<input type="text" name="courier"size=10><br>
-                            FedEx/Mail &emsp;<input type="text" name="fedex"size=10><br>
-                            Imaging Info Center <br>
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="text" name="iic"size=10><br>
-                            VPN &emsp;&emsp;&emsp;&emsp;<input type="text" name="vpn"size=10><br>
+                            <table>
+                                <tr>
+                                    <td>Outside films </td>
+                                    <td><input type="text" name="film"size=10></td>
+                                </tr>
+                                <tr>
+                                    <td>Courier </td>
+                                    <td><input type="text" name="courier"size=10></td>
+                                </tr>
+                                <tr>
+                                    <td>FedEx/Mail </td>
+                                    <td><input type="text" name="fedex"size=10></td>
+                                </tr>
+                                <tr>
+                                    <td>Imaging Info Center </td>
+                                    <td><input type="text" name="iic"size=10></td>
+                                </tr>
+                                <tr>
+                                    <td>VPN </td>
+                                    <td><input type="text" name="vpn"size=10></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
