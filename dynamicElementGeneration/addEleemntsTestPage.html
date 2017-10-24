@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<script src="addAllInputs.js" language="Javascript" type="text/javascript"></script>
+<script src="jquery-3.2.1.min.js"></script>
+<form name="myForm" method = "POST">
+	<div id = "dynamicInputs">
+		Let's start adding some inputs of different types.
+		</div>
+	<p>
+		<select name = "inputSelect">
+            <option value = "form">form div</option>
+            <option value = "pages">pages div</option>
+            <option value = "page">page div</option>
+            <option value = "row">row div</option>
+            <option value = "column">column div</option>
+            <option value = "header">header</option>
+            <option value = "section">section</option>
+            <option value = "date">date</option>
+            <option value = "datetime">datetime</option>
+			<option value = "text">text field</option>
+			<option value = "radio">radio button</option>
+			<option value = "checkbox">checkbox</option>
+			<option value = "textarea">textarea</option>
+		</select>
+		<select name = "textOption">
+			<option value = "">blank</option>
+			<option value = "Test Text!">Test Text!</option> 
+		</select>
+		<br>
+			<!-- function addAllInputs(divName, elementType, className, textValue, nameOfElement, label, whichRadioSelected, isChecked) -->
+			<input type = "button" value = "Add selected input" onclick = "addAllInputs('dynamicInputs', document.myForm.inputSelect.value, 'form', document.myForm.textOption.value);">
+			<input type = "button" value = "Add selected input" onclick = "addAllInputs('dynamicInputs', document.myForm.inputSelect.value);">
+			<input type = "button" value = "Add selected input" onclick = "addAllInputs('dynamicInputs', document.myForm.inputSelect.value, document.myForm.textOption.value);">
+			<input type = "button" value = "Add selected input" onclick = "addAllInputs('dynamicInputs', document.myForm.inputSelect.value, 'radioButtonTest', '', 'radioTest', 'TestLabel: ', 'yes', 'true');">
+			
+			
+		<br>
+
+	</p>
+
+</form>
