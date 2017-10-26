@@ -1,4 +1,32 @@
-var radioCounter = 0;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: addAllInputs.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: addAllInputs.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var radioCounter = 0;
 
 /** 
  * @function addAllInputs
@@ -29,7 +57,7 @@ function addAllInputs(divName, elementType, className, textValue, nameOfElement,
         label = "undefinedLabel: ";
     }
 
-    var newDiv = $("<div/>", {
+    var newDiv = $("&lt;div/>", {
         "class" : "myDiv",
         "id" : "testDiv",
         appendTo : document.getElementById(divName)
@@ -37,54 +65,54 @@ function addAllInputs(divName, elementType, className, textValue, nameOfElement,
 
      switch(elementType) {
         case 'form':
-            var newFormDiv = $("<div/>", {
+            var newFormDiv = $("&lt;div/>", {
                 "class" : className,
                 "text" : textValue,
                 appendTo : newDiv
             });
             break;
         case 'pages':
-            var newPagesDiv = $("<div/>", {
+            var newPagesDiv = $("&lt;div/>", {
                 "class" : className,
                 "text" : textValue,
                 appendTo : newDiv
             });
             break;
         case 'page':
-            var newPageDiv = $("<div/>", {
+            var newPageDiv = $("&lt;div/>", {
                 "class" : className,
                 "text" : textValue,
                 appendTo : newDiv
             });
             break;
         case 'row':
-            var newRowDiv = $("<div/>", {
+            var newRowDiv = $("&lt;div/>", {
                 "class" : className,
                 "text" : textValue,
                 appendTo : newDiv
             });
             break;
         case 'column':
-            var newColumnDiv = $("<div/>", {
+            var newColumnDiv = $("&lt;div/>", {
                 "class" : className,
                 "text" : textValue,
                 appendTo : newDiv
             });
             break;
         case 'header':
-            var newHeader = $("<h1 />", {
+            var newHeader = $("&lt;h1 />", {
                 html : textValue,
                 appendTo : newDiv
             })
             break;
         case 'section':
-            var newSection = $("<section />", {
+            var newSection = $("&lt;section />", {
                 "text" : textValue,
                 appendTo : newDiv
             })
             break;
         case 'date':
-            var newDateField = $("<input />", {
+            var newDateField = $("&lt;input />", {
                 "type" : elementType,
                 "name" : nameOfElement,
                 "class" : className,
@@ -92,13 +120,13 @@ function addAllInputs(divName, elementType, className, textValue, nameOfElement,
             });
             break;
         case 'datetime':
-            var newDateField = $("<input />", {
+            var newDateField = $("&lt;input />", {
                 "type" : "date",
                 "name" : "nameOfElement",
                 "class" : "className",
                 appendTo : newDiv
             });
-            var newTimeField = $("<input />", {
+            var newTimeField = $("&lt;input />", {
                 "type" : "time",
                 "name" : nameOfElement,
                 "class" : className,
@@ -106,29 +134,29 @@ function addAllInputs(divName, elementType, className, textValue, nameOfElement,
             });
             break;
         case 'text':
-            var newTextbox = $("<input />", {
+            var newTextbox = $("&lt;input />", {
                 "type" : elementType,
                 "name" : nameOfElement,
                 "class" : className,
                 "value" : textValue,
                 appendTo : newDiv
             });
-            $("<span>" + label + "</span>").insertBefore(newTextbox);
+            $("&lt;span>" + label + "&lt;/span>").insertBefore(newTextbox);
             break;
         case 'radio':
-            var newRadioButtonOne = $("<input />", {
+            var newRadioButtonOne = $("&lt;input />", {
                 "type" : elementType,
                 "name" : nameOfElement + radioCounter,
                 appendTo : newDiv
             });
-            var newRadioButtonTwo = $("<input />", {
+            var newRadioButtonTwo = $("&lt;input />", {
                 "type" : elementType,
                 "name" : nameOfElement + radioCounter,
                 appendTo : newDiv
             });
-            $("<span>" + label + "</span>").insertBefore(newRadioButtonOne);
-            $("<span>   Yes : </span>").insertBefore(newRadioButtonOne);
-            $("<span>   No : </span>").insertBefore(newRadioButtonTwo);
+            $("&lt;span>" + label + "&lt;/span>").insertBefore(newRadioButtonOne);
+            $("&lt;span>   Yes : &lt;/span>").insertBefore(newRadioButtonOne);
+            $("&lt;span>   No : &lt;/span>").insertBefore(newRadioButtonTwo);
             
             if (whichRadioSelected === undefined)
             {
@@ -147,12 +175,12 @@ function addAllInputs(divName, elementType, className, textValue, nameOfElement,
             radioCounter++;
             break;
         case 'checkbox':
-            var newCheckbox = $("<input />", {
+            var newCheckbox = $("&lt;input />", {
                 "type" : elementType,
                 "name" : nameOfElement,
                 appendTo : newDiv
             });
-            $("<span>" + label + "</span>").insertBefore(newCheckbox);
+            $("&lt;span>" + label + "&lt;/span>").insertBefore(newCheckbox);
             if (isChecked === undefined)
             {
                 // do nothing
@@ -163,12 +191,34 @@ function addAllInputs(divName, elementType, className, textValue, nameOfElement,
             }
             break;
         case 'textarea':
-            var newTextArea = $("<textarea />", {
+            var newTextArea = $("&lt;textarea />", {
                 "name" : nameOfElement,
                 "placeholder" : textValue,
                 appendTo : newDiv
             });
-            $("<span>" + label + "</span><br>").insertBefore(newTextArea);
+            $("&lt;span>" + label + "&lt;/span>&lt;br>").insertBefore(newTextArea);
             break;
           }
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addAllInputs">addAllInputs</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Oct 26 2017 09:41:17 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
