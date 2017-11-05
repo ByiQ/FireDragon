@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<script src="addAllInputs.js" language="Javascript" type="text/javascript"></script>
+<script src="jquery-3.2.1.min.js"></script>
+<form name="myForm" method = "POST">
+	<div id = "dynamicInputs">
+		Let's start adding some inputs of different types.<br>
+		</div>
+	<p>
+		<select name = "inputSelect">
+            <option value = "date">date</option>
+			<option value = "text">text field</option>
+		</select>
+		<select name = "textOption">
+			<option value = "">blank</option>
+			<option value = "Test Text!">Test Text!</option> 
+			<option value = "01/15/2017">Date</option>
+		</select>
+		<br>
+			<!--function addTextAreaElement(divName, nameOfElement, label, placeHolder) -->
+			<input type = "button" value = "Add selected input" onclick = "addAllInputs('dynamicInputs', document.myForm.inputSelect.value, 'form', document.myForm.textOption.value);">
+			<input type = "button" value = "Add Div Element" onclick = "addDivElement('dynamicInputs', document.myForm.textOption.value);">
+			<input type = "button" value = "Add Header Element" onclick = "addHeaderElement('dynamicInputs', document.myForm.textOption.value);">
+			<input type = "button" value = "Add Section Element" onclick = "addSectionElement('dynamicInputs', document.myForm.textOption.value);">
+			<input type = "button" value = "Add DateTime Element" onclick = "addDateTimeElement('dynamicInputs', document.myForm.textOption.value);">
+			<input type = "button" value = "Add Input Element" onclick = "addInputElement('dynamicInputs', document.myForm.inputSelect.value, 'inputTest', 'Test Input Label: ', 'className', document.myForm.textOption.value);">
+			<input type = "button" value = "Add yesNo" onclick = "addYesNo('dynamicInputs', 'elementName', document.myForm.textOption.value);">
+			<input type = "button" value = "Add radio" onclick = "addRadio('dynamicInputs', 'elementName', document.myForm.textOption.value, true);">
+			<input type = "button" value = "Add checkbox" onclick = "addCheckBoxElement('dynamicInputs', document.myForm.inputSelect.value, 'checkboxTest');">
+			<input type = "button" value = "Add textarea" onclick = "addTextAreaElement('dynamicInputs', 'elementName', 'testTextArea: ', 'This is the placeholder...', 'test');">
+			
+		<br>
+
+	</p>
+
+</form>

@@ -2,6 +2,7 @@
  * @file htmlDoumentation.js
  * @author Lauren Allpress
  * @description This is the launching point for the Methodist Workflow application.
+ * @see <a href = "..\addElementsTestPage.html"> Web Page </a>
  */
 
 /*
