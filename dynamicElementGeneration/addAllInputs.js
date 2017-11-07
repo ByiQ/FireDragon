@@ -6,18 +6,86 @@
 var radioCounter = 0;
 
 /** 
+ * @function createForm
+ * @memberOf addAllInputs
+ * @author Jerrid Kimball, Ben Sprunger
+ * @param fileLocation - The location of the xml file that describes the form.
+ * 
+ * @description The createForm() function builds a form from a xml file description.
+ */
+
+ function createForm(fileLocation)
+ {
+     $.get(fileLocation, function(xml){
+
+         var build = function(parent, node) {
+             var nodeName = node.prop("nodeName");
+
+             switch(nodeName) {
+                 case "form":
+                    addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
+                    node.find("page").each(function(id){build(form, $(this));});
+                 break;
+                 case "page":
+                    addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
+                    node.find("section").each(function(id){build(page, $(this));});
+                 break;
+                 case "section":
+                    addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
+                    node.find("row").each(function(id){build(section, $(this));});
+                 break;
+                 case "row":
+                    addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
+                    node.find("column").each(function(id){build(row, $(this));});
+                 break;
+                 case "column":
+                    addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
+                    node.children().each(function(id){build(column, $(this));});
+                 break;
+                 case "header":
+                    addHeaderElement(parent, node.text(), node.attr("class"), node.attr("id"));
+                 break;
+                 case "textbox":
+                    addInputElement(parent, nodeName, node.attr("name"), node.attr("label"), node.attr("class"), node.attr("value"), node.attr("id"));
+                 break;
+                 case "date":
+                    addInputElement(parent, nodeName, node.attr("name"), node.attr("label"), node.attr("class"), node.attr("value"), node.attr("id"));
+                 break;
+                 case "datetime":
+                    addDateTimeElement(parent, node.attr("name"), node.attr("label"), node.attr("class"), "datetimeId");
+                 break;
+                 case "checkbox":
+                    addCheckBoxElement(parent, node.attr("name"), node.attr("label"), node.attr("checked"));
+                 break;
+                 case "yesno":
+                    addYesNo(parent, node.attr("name"), node.attr("label"))
+                 break;
+                 default:
+                 break;
+             }
+         }
+
+         var xmlDoc = $.parseXML(xml);
+         var $xml = $(xmlDoc);
+         var form = $xml.find("form");
+
+         build($("body"), form);
+     }, "text");
+ }
+
+/** 
  * @function addDivElement
  * @memberOf addAllInputs
  * @author Ben Sprunger
  * @param divName - The name of the div the new div element will appendTo().
- * @param {optional} textValue - The default text value of the new div element.
+ * @param idOfElement - The id attribute the new div element will be given.
  * @param {optional} className - The name of the class attribute the new div element will be given.
- * @param {optional} idOfElement - The id attribute the new div element will be given.
+ * @param {optional} textValue - The default text value of the new div element.
  * 
  * @description The addDivElement function will dynamically generate a div element from the given parameters.
  */
 
- function addDivElement(divName, textValue, className, idOfElement)
+ function addDivElement(divName, idOfElement, className, textValue)
  {
      if (textValue === undefined)
      {
@@ -29,13 +97,8 @@ var radioCounter = 0;
          className = "classNameNotGiven";
      }
 
-     if (idOfElement === undefined)
-     {
-         idOfElement = "idNotGiven";
-     }
-
      var newFormDiv = $("<div/>", {
-        "text" : textValue, 
+        html : textValue, 
         "class" : className,
         "id" : idOfElement,
          appendTo : document.getElementById(divName)
@@ -117,6 +180,8 @@ var radioCounter = 0;
  * @memberOf addAllInputs
  * @author Ben Sprunger
  * @param divName - The name of the div the new dateTime element will appendTo().
+ * @param nameOfElement - The name of the new datetime element.
+ * @param label - The label of the new datetime element.
  * @param {optional} textValue - The text value of the dateTime element.
  * @param {optional} className - The name of the class attribute the new dateTime element will be given.
  * @param {optional} idOfElement - The id attribute the new dateTime element will be given.
@@ -125,7 +190,7 @@ var radioCounter = 0;
  */
 
  /* Default values for both fields need to be added. */
- function addDateTimeElement(divName, nameOfElement, className, idOfElement)
+ function addDateTimeElement(divName, nameOfElement, label, className, idOfElement)
  {
      if (className === undefined)
      {
@@ -152,6 +217,7 @@ var radioCounter = 0;
         "id" : idOfElement,
         insertAfter : newDateField
     })
+    $("<span>" + label + "</span>").insertBefore(newDateField);
  }
 
   /** 
@@ -199,7 +265,7 @@ var radioCounter = 0;
 
  }
 
-   /** 
+ /** 
  * @function addYesNo
  * @memberOf addAllInputs
  * @author Ben Sprunger
