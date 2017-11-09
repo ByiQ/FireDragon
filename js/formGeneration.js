@@ -24,23 +24,23 @@ var radioCounter = 0;
              switch(nodeName) {
                  case "form":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("page").each(function(id){build(form, $(this));});
+                    node.find("page").each(function(id){build(nodeName, $(this));});
                  break;
                  case "page":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("section").each(function(id){build(page, $(this));});
+                    node.find("section").each(function(id){build(nodeName, $(this));});
                  break;
                  case "section":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("row").each(function(id){build(section, $(this));});
+                    node.find("row").each(function(id){build(nodeName, $(this));});
                  break;
                  case "row":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("column").each(function(id){build(row, $(this));});
+                    node.find("column").each(function(id){build(nodeName, $(this));});
                  break;
                  case "column":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.children().each(function(id){build(column, $(this));});
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "header":
                     addHeaderElement(parent, node.text(), node.attr("class"), node.attr("id"));
@@ -63,7 +63,7 @@ var radioCounter = 0;
                  default:
                  break;
              }
-         }
+         };
 
          var xmlDoc = $.parseXML(xml);
          var $xml = $(xmlDoc);

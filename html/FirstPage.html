@@ -1,70 +1,59 @@
 <!doctype html>
 <html lang="en">
 <head>
-
-  <title>FirstPage</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Health Systems Form Builder | Home</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+  <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"-->
   <style>
     body{
             background-color: #bdd3e0;
-            height: 880px;
-            width: 1050px;
+            text-align: center;
+            font-family: 'Noto Sans', sans-serif;
         }
-    .wholepage{
-        padding-top: 5px;
-        padding-bottom: 100px;
-        border: 3px solid black;
-        margin-left: 200px;
-    }
     .containerheader{
         text-align: center;
         padding-top: 30px;
         padding-bottom: 30px;
     }
-
-    .col1{
-        text-align: center;
-        padding-right: 20px;
+    .column{
+        float: left;
+        width: 33%
     }
-    .col2{
-        text-align: center;
-        padding-right: 250px;
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
     }
-    .btn1{
-        width: 20em;
-        padding-right: 20px;
-    }
-
   </style>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/formGeneration.js"></script>
 </head>
 <body>
-    <div class="wholepage">
-        <div class="containerheader">
-            <h1>OPEN A WORKFLOW</h1><br>
-            <h5>"Workflow Name"</h5><br>
-            <div class="row1" style="display: flex; justify-content: space-around">
-                <div class="col1">
-                </div>
-                <div class="col2">
-                    <input type="file" id="fileInput">
-                </div>
-            </div>
-            <script src="/js/app.js"></script>
-            <div class="row2" style="text-align: center">
-                <h3>Choose A Step <br><br></h3>
-            </div>
-            <div class="row3" >
-                <select name="steps">
-                    <option value="step_1" selected>Step 1</option>
-                    <option value="step_2">Step 2</option>
-                    <option value="step_3">Step 3</option>
-                    <option value="Collect">Collect Data</option>
-                </select>
-
-                <input type="button" value="Load new document" onclick="newDoc()">
-                <script src="/js/app.js"></script>
-            </div>
-            </div>
+    <div class="containerheader">
+        <h1>Health Systems Form Builder</h1>
+        <h2>Prototype v 1.0</h2>
+    </div>
+    <div class="row">
+        <div class="column">
+            <h2>Choose a workflow</h2>
+            <input type="file" id="fileInput">
+            <input type="button" value="Open" onclick="createForm(document.getElementById('fileInput').value)">
         </div>
-</body>
+        <div class="column">
+            <h2>Choose a step</h2>
+            <select name="steps">
+                <option value="step_1" selected>Step 1</option>
+                <option value="step_2">Step 2</option>
+                <option value="step_3">Step 3</option>
+                <option value="Collect">Collect Data</option>
+            </select>
+            <input type="button" value="Load step" onclick="newDoc()">
+        </div>
+        <div class="column">
+            <h2>Load new document</h2>
+            <input type="button" value="New" onclick="newDoc()">
+        </div>
+    </div>
+   </body>
 </html>
