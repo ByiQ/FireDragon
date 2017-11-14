@@ -18,7 +18,7 @@ $(document).ready(function() {
 			.append(
 			    $(document.createElement("div"))
 				.addClass("col")
-				.append(header)))
+				.append(header)));
 
 		parent.append(form);
 		
@@ -141,7 +141,7 @@ $(document).ready(function() {
 	    default:
 		break;
 	    }
-	}
+	};
 
 	var xmlDoc = $.parseXML(xml);
 
