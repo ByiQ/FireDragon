@@ -1,0 +1,303 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hospital Forms</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="../styles/app.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
+
+    <script>
+        $(window).load(function () {
+            var phones = [{"mask": "(###) ###-####"}, {"mask": "(###) ###-##############"}];
+            $('#phone').inputmask({
+                mask: phones,
+                greedy: false,
+                definitions: {'#': {validator: "[0-9]", cardinality: 1}}
+            });
+            $('#cell').inputmask({
+                mask: phones,
+                greedy: false,
+                definitions: {'#': {validator: "[0-9]", cardinality: 1}}
+            });
+        });
+    </script>
+</head>
+<body>
+<h3>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2" margin-bottom="2rem">Hospital Logo</div>
+            <div class="col-sm-10" margin-bottom="2rem">Interventional Radiology</div>
+            <div class="col-sm-2" margin-bottom="2rem"><br/></div>
+        </div>
+    </div>
+</h3>
+<hr size="20" noshade>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h5>Patient Information <br></h5>
+            Name: &nbsp;<input type="text" name="name" size="57"><br>
+            DOB: &emsp;<input type="date" name="dob" id="dob"> &nbsp;&nbsp; MRN: <input type="text" name="mbn"
+                                                                                        size="25"><br>
+            Address/Nurs: <input type="text" name="address" size=50><br>
+            Phone: &nbsp;<input type="text" id="phone"> &nbsp; Cell: <input type="text" id="cell" size="25"><br>
+        </div>
+        <div class="col">
+            <div id="colinput">
+                <h5>Date <br></h5>
+                <table>
+                    <tr>
+                        <td>Referring Physician:</td>
+                        <td><input type="text" name="ref.Physician"></td>
+                    </tr>
+                    <tr>
+                        <td>Contact:</td>
+                        <td><input type="text" name="contact"></td>
+                    </tr>
+                    <tr>
+                        <td>Insurance Primary:</td>
+                        <td><input type="text" name="insur.Primary"></td>
+                    </tr>
+                    <tr>
+                        <td>Insurance Secondary:</td>
+                        <td><input type="text" name="insur.Second"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr size="10" noshade>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h5>
+                Clinical Information <br>
+            </h5>
+            Note: &emsp;&emsp;<textarea rows=2 cols=57> </textarea><br>
+            Diagnosis: <input type="text" name="dob"> ICD10: <input type="text" name="mbn"><br>
+            Diagnosis: <input type="text" name="dob"> ICD10: <input type="text" name="mbn"><br>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        Diabetes &emsp;&emsp;&emsp;&emsp;<input type="checkbox" name="yes">Yes <input type="checkbox"
+                                                                                                      name="no">No<br>
+                        Allergies &emsp;&emsp;&emsp;&emsp;<input type="checkbox" name="yes">Yes <input type="checkbox"
+                                                                                                       name="no">No<br>
+                        Allergies Contrast <input type="checkbox" name="yes">Yes <input type="checkbox" name="no">No<br>
+                        Blood Thinners &nbsp;&emsp;<input type="checkbox" name="yes">Yes <input type="checkbox"
+                                                                                                name="no">No<br>
+                        Avastin/Zaltrap &nbsp;&emsp;<input type="checkbox" name="yes">Yes <input type="checkbox"
+                                                                                                 name="no">No<br>
+                    </div>
+                    <div class="col">
+                        Note: <textarea rows=4 cols=28> </textarea><br>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h5>Labs <br></h5>
+                        WBC &emsp;<input type="text" name="wbc" size=15><br>
+                        Hgb &nbsp;&emsp;<input type="text" name="hgb" size=15><br>
+                        Plt &emsp;&emsp;<input type="text" name="plt" size=15><br>
+                        INR &nbsp;&nbsp;&emsp;<input type="text" name="inr" size=15><br>
+                        Wt(lbs) <input type="text" name="wt" size=15><br>
+                    </div>
+                    <div class="col">
+                        <h6>
+                            <br><br><br><br>
+                            Film Review/report <br>
+                        </h6>
+                        <table>
+                            <tr>
+                                <td>Outside films</td>
+                                <td><input type="text" name="film" size=10></td>
+                            </tr>
+                            <tr>
+                                <td>Courier</td>
+                                <td><input type="text" name="courier" size=10></td>
+                            </tr>
+                            <tr>
+                                <td>FedEx/Mail</td>
+                                <td><input type="text" name="fedex" size=10></td>
+                            </tr>
+                            <tr>
+                                <td>Imaging Info Center</td>
+                                <td><input type="text" name="iic" size=10></td>
+                            </tr>
+                            <tr>
+                                <td>VPN</td>
+                                <td><input type="text" name="vpn" size=10></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr size="10" noshade>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h5>Procedure/CPT <br></h5>
+            <h6>Biopsies</h6>
+            <input type="checkbox" name="bone">Bone Marrow (38221, 77002) Sedation <br>
+            <input type="checkbox" name="liver">Liver (47000) <br>
+            <input type="checkbox" name="lung">Lung (32405) <input type="checkbox" name="rt">Rt <input type="checkbox"
+                                                                                                       name="lt">Lt <br>
+            <input type="checkbox" name="kidney">Kidney (50200)<br>
+            <input type="checkbox" name="lymph">Lymph node (38505)<br>
+            <input type="checkbox" name="lymph"><input type="text" name="lines" size=30><br>
+            <h6>Vascular</h6>
+            <input type="checkbox" name="pic">PIC (36569, 769 <input type="checkbox" name="double">Double <input
+                type="checkbox" name="triple">Triple<br>
+            <input type="checkbox" name="port">Port (36561, 76937, 77001)<br>
+            <input type="checkbox" name="line"><input type="text" name="lines" size=30><br>
+        </div>
+
+        <div class="col">
+            <br>
+            <h6>Drainage </h6>
+            <input type="checkbox" name="nephtube">Neph Tube (50394, 74425) <br>
+            <input type="checkbox" name="abscess">Abscess <br>
+            <input type="checkbox" name="nephrostomy">Nephrostomy (50390, 50392, 74475)<br>
+            <input type="checkbox" name="cttubecheck">CT Tube Check <input type="text" name="lines" size=20><br>
+            <input type="checkbox" name="fluorotubecheck">Fluoro Tube Check (49424, 76080)<br>
+            <input type="checkbox" name="paracentesis">Paracentesis(49083)<br>
+            <input type="checkbox" name="Thoracentesis">Thoracentesis (32555) <input type="checkbox" name="rt">Rt <input
+                type="checkbox" name="lt">Lt <br>
+            <input type="checkbox" name="abdpleurx">Abd Pleurx(49418) <br>
+            <input type="checkbox" name="chestpleurx">Chest Pleurx (32550, 75...) <input type="checkbox" name="rt">Rt
+            <input type="checkbox" name="lt">Lt <br>
+            <input type="checkbox" name="lp">LP (62270, 77003)<br> <br>
+        </div>
+
+        <div class="col">
+            <br>
+            <h6>Ortho</h6>
+            <input type="checkbox" name="hiping">Hiping (20610)<br>
+            <input type="checkbox" name="shouldering">Shouldering (206?0) <br>
+            <input type="checkbox" name="injection">Injection<input type="checkbox" name="rt">Rt <input type="checkbox"
+                                                                                                        name="lt">Lt
+            <br>
+            <input type="checkbox" name="arthrogram">Arthrogram<input type="checkbox" name="hip">Hip <input
+                type="checkbox" name="Shoulder">Shoulder <br>
+            <input type="checkbox" name="myelogram">Myelogram<input type="checkbox" name="cerv">Cerv. <input
+                type="checkbox" name="lt">Lt <input type="checkbox" name="lumber">Lumber<br>
+            <input type="checkbox" name="thoracic">ESI&emsp;<input type="text" name="film" size=25><br>
+            <h6>Specialized</h6>
+            <input type="checkbox" name="vertebroplasty">Vertebroplasty L-22511/T-22510<br>
+            <input type="checkbox" name="ablation">Ablation<br>
+            <input type="checkbox" name="embolization">Embolization<br>
+            <input type="checkbox" name="line"><input type="text" name="lines" size=30><br>
+        </div>
+    </div>
+</div>
+
+<hr size="10" noshade>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h5>Scheduling Details <br></h5>
+        </div>
+        <div class="col">
+        </div>
+        <div class="col">
+        </div>
+        <div class="col">
+        </div>
+        <div class="col"><br>
+            <h6>Same Day <br></h6>
+            <input type="checkbox" name="Consult/Order">Consult/Order<br>
+            <input type="checkbox" name="Anesthesia">Anesthesia <br>
+            <input type="checkbox" name="PreOp">PreOp <br>
+            <input type="checkbox" name="Vent">Vent <br>
+            <input type="checkbox" name="Consent"> Consent <br>
+            <input type="checkbox" name="NPO">NPO <br>
+            <input type="checkbox" name="RN">RN <br>
+            <input type="checkbox" name="Care Manager">Care Manager <br>
+            <input type="checkbox" name="outPt registration">OutPt Registration <br>
+            <input type="checkbox" name="IR Core">IR Core <br>
+        </div>
+        <div class="col"><br>
+            <h6>Scheduled <br></h6>
+            <input type="checkbox" name="Consult/Order">Patient<br>
+            <input type="checkbox" name="Anesthesia">Office <br>
+            <input type="checkbox" name="PreOp">OR <br>
+            <input type="checkbox" name="Vent">Access <br>
+            <input type="checkbox" name="Consent">Orders/Labs <br>
+            <input type="checkbox" name="NPO">Schedule <br>
+            <input type="checkbox" name="RN">H&P /Notes <br>
+            <input type="checkbox" name="Care Manager">Specimen Test <br>
+            <input type="checkbox" name="outPt registration">Pathology x4583 <br>
+            <input type="checkbox" name="IR Core">Histology x4572 <br>
+        </div>
+    </div>
+</div>
+
+<p>
+<div class="container">
+    <div class="row">
+
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="alert success">
+                    <strong>Success!</strong> Page has been submitted.
+                </div>
+                <a id="myReturnButton" class="btn btn-primary mr-2" href="FirstPage.html" role="button">Return To
+                    Start</a>
+            </div>
+
+        </div>
+
+        <a id="modalButton" class="btn btn-primary mr-2" role="button">Submit</a>
+        <a id="cancelButton" class="btn btn-primary mr-2" href="FirstPage.html">Cancel</a>
+        <script>
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("modalButton");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+            btn.onclick = function () {
+                modal.style.display = "block";
+            };
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            };
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+    </div>
+</div>
+</p>
+</body>
+</html>

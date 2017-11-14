@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: addAllInputs.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: addAllInputs.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module addAllInputs.js
+ */
+
+var radioCounter = 0;
+
+/** 
+ * @function addDivElement()
+ * @memberOf addAllInputs.js
+ * @author Ben Sprunger
+ * @param divName - The name of the div the new div element will appendTo().
+ * @param {optional} textValue - The default text value of the new div element.
+ * @param {optional} className - The name of the class attribute the new div element will be given.
+ * @param {optional} idOfElement - The id attribute the new div element will be given.
+ * 
+ * @description The addDivElement function will dynamically generate a div element from the given parameters.
+ */
+
+ function addDivElement(divName, textValue, className, idOfElement)
+ {
+     if (textValue === undefined)
+     {
+         textValue === "";
+     }
+
+     if (className === undefined)
+     {
+         className = "classNameNotGiven";
+     }
+
+     if (idOfElement === undefined)
+     {
+         idOfElement = "idNotGiven";
+     }
+
+     var newFormDiv = $("&lt;div/>", {
+        "text" : textValue, 
+        "class" : className,
+        "id" : idOfElement,
+         appendTo : document.getElementById(divName)
+     })
+ }
+
+ /** 
+ * @function addHeaderElement()
+ * @author Ben Sprunger
+ * @param divName - The name of the div the new header element will appendTo().
+ * @param textValue - The text value of the header element.
+ * @param {optional} className - The name of the class attribute the new header element will be given.
+ * @param {optional} idOfElement - The id attribute the new header element will be given.
+ * 
+ * @description The addHeaderElement function will dynamically generate a header element from the given parameters.
+ */
+
+ function addHeaderElement(divName, textValue, className, idOfElement)
+ {
+    if (className === undefined)
+    {
+        className = "classNameNotGiven";
+    }
+
+    if (idOfElement === undefined)
+    {
+        idOfElement = "idNotGiven";
+    }
+
+    var newHeader = $("&lt;h1 />", {
+        html : textValue,
+        "class" : className,
+        "id" : idOfElement,
+        appendTo : document.getElementById(divName)
+     })
+ }
+ 
+ /** 
+ * @function addSectionElement()
+ * @author Ben Sprunger
+ * @param divName - The name of the div the new section element will appendTo().
+ * @param {optional} textValue - The text value of the section element.
+ * @param {optional} className - The name of the class attribute the new section element will be given.
+ * @param {optional} idOfElement - The id attribute the new section element will be given.
+ * 
+ * @description The addSectionElement function will dynamically generate a section element from the given parameters.
+ */
+
+ function addSectionElement(divName, textValue, className, idOfElement)
+ {
+    if (textValue === undefined)
+    {
+        textValue = "";
+    }
+
+    if (className === undefined)
+    {
+        className = "classNameNotGiven";
+    }
+
+    if (idOfElement === undefined)
+    {
+        idOfElement = "idNotGiven";
+    }
+
+    var newSection = $("&lt;section />", {
+        "text" : textValue,
+        "class" : className,
+        "idOfElement" : idOfElement,
+        appendTo: document.getElementById(divName)
+    })
+
+ }
+
+ /** 
+ * @function addDateTimeElement()
+ * @author Ben Sprunger
+ * @param divName - The name of the div the new dateTime element will appendTo().
+ * @param {optional} textValue - The text value of the dateTime element.
+ * @param {optional} className - The name of the class attribute the new dateTime element will be given.
+ * @param {optional} idOfElement - The id attribute the new dateTime element will be given.
+ * 
+ * @description The addDateTimeElement function will dynamically generate a dateTime element from the given parameters.
+ */
+
+ /* Default values for both fields need to be added. */
+ function addDateTimeElement(divName, nameOfElement, className, idOfElement)
+ {
+     if (className === undefined)
+     {
+         className = "classNameNotGiven"
+     }
+
+     if (idOfElement === undefined)
+     {
+         idOfElement = "idNotGiven"
+     }
+
+    var newDateField = $("&lt;input />", {
+        "type" : "date",
+        "name" : nameOfElement.concat("test"),
+        "class" : className.concat("test"),
+        "id" : idOfElement,
+        appendTo : document.getElementById(divName)
+    })
+
+    var newTimeField = $("&lt;input />", {
+        "type" : "time",
+        "name" : nameOfElement,
+        "class" : className,
+        "id" : idOfElement,
+        insertAfter : newDateField
+    })
+ }
+
+ /* To be modified */
+ function addAllInputs(divName, elementType, className, textValue, nameOfElement, label, whichRadioSelected, isChecked){
+
+
+    if (textValue === undefined){
+        textValue = "Text Not Given";
+    }
+
+    if (name === undefined){
+        name = "undefinedName";
+    }
+
+    if (label === undefined){
+        label = "undefinedLabel: ";
+    }
+
+    var newDiv = $("&lt;div/>", {
+        "class" : "myDiv",
+        "id" : "testDiv",
+        appendTo : document.getElementById(divName)
+    });
+
+     switch(elementType) {
+        case 'date':
+            var newDateField = $("&lt;input />", {
+                "type" : elementType,
+                "name" : nameOfElement,
+                "class" : className,
+                appendTo : newDiv
+            });
+            break;
+        case 'text':
+            var newTextbox = $("&lt;input />", {
+                "type" : elementType,
+                "name" : nameOfElement,
+                "class" : className,
+                "value" : textValue,
+                appendTo : newDiv
+            });
+            $("&lt;span>" + label + "&lt;/span>").insertBefore(newTextbox);
+            break;
+        case 'radio':
+            var newRadioButtonOne = $("&lt;input />", {
+                "type" : elementType,
+                "name" : nameOfElement + radioCounter,
+                appendTo : newDiv
+            });
+            var newRadioButtonTwo = $("&lt;input />", {
+                "type" : elementType,
+                "name" : nameOfElement + radioCounter,
+                appendTo : newDiv
+            });
+            $("&lt;span>" + label + "&lt;/span>").insertBefore(newRadioButtonOne);
+            $("&lt;span>   Yes : &lt;/span>").insertBefore(newRadioButtonOne);
+            $("&lt;span>   No : &lt;/span>").insertBefore(newRadioButtonTwo);
+            
+            if (whichRadioSelected === undefined)
+            {
+                $(newRadioButtonOne).attr("checked", false);
+                $(newRadioButtonTwo).attr("checked", false);
+            }
+            else if (whichRadioSelected === "yes")
+            {
+                $(newRadioButtonOne).attr("checked", true);
+            }
+            else if (whichRadioSelected === "no")
+            {
+                $(newRadioButtonTwo).attr("checked", true);
+            }
+
+            radioCounter++;
+            break;
+        case 'checkbox':
+            var newCheckbox = $("&lt;input />", {
+                "type" : elementType,
+                "name" : nameOfElement,
+                appendTo : newDiv
+            });
+            $("&lt;span>" + label + "&lt;/span>").insertBefore(newCheckbox);
+            if (isChecked === undefined)
+            {
+                // do nothing
+            }
+            else if (isChecked === "true")
+            {
+                $(newCheckbox).attr("checked", true);
+            }
+            break;
+        case 'textarea':
+            var newTextArea = $("&lt;textarea />", {
+                "name" : nameOfElement,
+                "placeholder" : textValue,
+                appendTo : newDiv
+            });
+            $("&lt;span>" + label + "&lt;/span>&lt;br>").insertBefore(newTextArea);
+            break;
+          }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="addAllInputs.module_js.html">js</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 31 2017 15:05:09 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
