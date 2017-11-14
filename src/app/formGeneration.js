@@ -58,7 +58,7 @@ var radioCounter = 0;
                     addCheckBoxElement(parent, node.attr("name"), node.attr("label"), node.attr("checked"));
                  break;
                  case "yesno":
-                    addYesNo(parent, node.attr("name"), node.attr("label"))
+                    addYesNo(parent, node.attr("name"), node.attr("label"));
                  break;
                  default:
                  break;
@@ -208,7 +208,7 @@ var radioCounter = 0;
         "class" : className.concat("test"),
         "id" : idOfElement,
         appendTo : document.getElementById(divName)
-    })
+    });
 
     var newTimeField = $("<input />", {
         "type" : "time",
@@ -216,7 +216,7 @@ var radioCounter = 0;
         "class" : className,
         "id" : idOfElement,
         insertAfter : newDateField
-    })
+    });
     $("<span>" + label + "</span>").insertBefore(newDateField);
  }
 
@@ -260,7 +260,7 @@ var radioCounter = 0;
          "value" : textValue,
          "id" : idOfElement,
          appendTo : document.getElementById(divName)
-     })
+     });
      $("<span>" + label + "</span>").insertBefore(newInputElement);
 
  }
@@ -332,7 +332,7 @@ var radioCounter = 0;
          "type" : "radio",
          "name" : nameOfElement,
          appendTo : document.getElementById(divName)
-     })
+     });
 
      $("<span>" + label + "</span>").insertBefore(newRadioButton);
 
@@ -365,7 +365,7 @@ var radioCounter = 0;
          "type" : "checkbox",
          "name" : nameOfElement,
          appendTo : document.getElementById(divName)
-     })
+     });
      $("<span>" + label + "</span>").insertBefore(newCheckbox);
 
      if (isChecked === undefined || false)
@@ -402,6 +402,6 @@ var radioCounter = 0;
          "placeholder" : placeHolder,
          html : textValue,
          appendTo : document.getElementById(divName)
-     })
+     });
      $("<span>" + label + "</span><br>").insertBefore(newTextArea);
  }

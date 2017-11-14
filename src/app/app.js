@@ -11,7 +11,7 @@ window.onload = function () {
 
             reader.onload = function (e) {
                 fileDisplayArea.innerText = reader.result;
-            }
+            };
             reader.readAsText(file);
         } else {
             fileDisplayArea.innerText = "File not supported";
