@@ -14,7 +14,7 @@ var radioCounter = 0;
  * @description The createForm() function builds a form from a xml file description.
  */
 
- function createForm(fileLocation)
+ function createForm(fileLocation, attatch)
  {
      $.get(fileLocation, function(xml){
 
@@ -69,7 +69,7 @@ var radioCounter = 0;
          var $xml = $(xmlDoc);
          var form = $xml.find("form");
 
-         build($("body"), form);
+         build(attatch, form);
      }, "text");
  }
 
