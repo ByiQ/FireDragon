@@ -16,7 +16,8 @@ var radioCounter = 0;
 
  function createForm(fileLocation, attatch)
  {
-     $.get(fileLocation, function(xml){
+        $(document).ready(function() {
+        $.get(fileLocation, function(xml){
 
          var build = function(parent, node) {
              var nodeName = node.prop("nodeName");
@@ -69,9 +70,11 @@ var radioCounter = 0;
          var $xml = $(xmlDoc);
          var form = $xml.find("form");
 
-         build(attatch, form);
-     }, "text");
+         build($("body"), form);
+        }, "text");
+    });
  }
+
 
 /** 
  * @function addDivElement
