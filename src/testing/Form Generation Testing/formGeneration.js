@@ -16,8 +16,7 @@ var radioCounter = 0;
 
  function createForm(fileLocation)
  {
-        $(document).ready(function() {
-        $.get(fileLocation, function(xml){
+     $.get(fileLocation, function(xml){
 
          var build = function(parent, node) {
              var nodeName = node.prop("nodeName");
@@ -25,23 +24,23 @@ var radioCounter = 0;
              switch(nodeName) {
                  case "form":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("page").each(function(id){build(nodeName, $(this));});
+                    node.find("page").each(function(id){build(form, $(this));});
                  break;
                  case "page":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("section").each(function(id){build(nodeName, $(this));});
+                    node.find("section").each(function(id){build(page, $(this));});
                  break;
                  case "section":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("row").each(function(id){build(nodeName, $(this));});
+                    node.find("row").each(function(id){build(section, $(this));});
                  break;
                  case "row":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("column").each(function(id){build(nodeName, $(this));});
+                    node.find("column").each(function(id){build(row, $(this));});
                  break;
                  case "column":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.children().each(function(id){build(nodeName, $(this));});
+                    node.children().each(function(id){build(column, $(this));});
                  break;
                  case "header":
                     addHeaderElement(parent, node.text(), node.attr("class"), node.attr("id"));
@@ -71,10 +70,8 @@ var radioCounter = 0;
          var form = $xml.find("form");
 
          build($("body"), form);
-        }, "text");
-    });
+     }, "text");
  }
-
 
 /** 
  * @function addDivElement
@@ -107,7 +104,7 @@ var radioCounter = 0;
          appendTo : document.getElementById(divName)
      })
      
-     return newFormDiv;
+     return true;
  }
 
  /** 
@@ -140,6 +137,8 @@ var radioCounter = 0;
         "id" : idOfElement,
         appendTo : document.getElementById(divName)
      })
+     
+     return true;
  }
  
  /** 
@@ -177,7 +176,8 @@ var radioCounter = 0;
         "idOfElement" : idOfElement,
         appendTo: document.getElementById(divName)
     })
-
+    
+    return true;
  }
 
  /** 
@@ -223,6 +223,8 @@ var radioCounter = 0;
         insertAfter : newDateField
     });
     $("<span>" + label + "</span>").insertBefore(newDateField);
+    
+    return true;
  }
 
   /** 
@@ -267,7 +269,8 @@ var radioCounter = 0;
          appendTo : document.getElementById(divName)
      });
      $("<span>" + label + "</span>").insertBefore(newInputElement);
-
+     
+     return true;
  }
 
  /** 
@@ -315,6 +318,8 @@ var radioCounter = 0;
     }
 
     radioCounter++;
+    
+    return true;
  }
 
  /** 
@@ -349,6 +354,8 @@ var radioCounter = 0;
      {
          $(newRadioButton).attr("checked", true)
      }
+     
+     return true;
  }
 
  /** 
@@ -381,6 +388,8 @@ var radioCounter = 0;
      {
          $(newCheckbox).attr("checked", true);
      }
+     
+     return true;
  }
 
 /** 
@@ -409,4 +418,6 @@ var radioCounter = 0;
          appendTo : document.getElementById(divName)
      });
      $("<span>" + label + "</span><br>").insertBefore(newTextArea);
+     
+     return true;
  }
