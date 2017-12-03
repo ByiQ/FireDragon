@@ -17,7 +17,9 @@
         <div class="column">
             <h2>Choose a workflow</h2>
             <input type="file" id="fileInput">
-            <input type="button" value="Open" onclick="createForm(document.getElementById('fileInput').value)">
+            <div id = "form"><input type="button" value="Open" onclick="createForm(document.getElementById('fileInput').value, 'form')"></div>
+            <button id = "button" onclick = "newWindow(document.getElementById('fileInput').value)"> Click Me </button>
+            
         </div>
         <div class="column">
             <h2>Choose a step</h2>

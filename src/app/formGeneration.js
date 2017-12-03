@@ -5,6 +5,15 @@
 
 var radioCounter = 0;
 
+        function newWindow(fileLocation)
+        {
+            var win = window.open('');
+            win.document.head.innerHTML = '<title>Hi</title></head>';
+            win.document.body.innerHTML = "<body><div id = 'x'></div></body>";
+            //var script = document.createElement('script');
+            //win.document.head.appendChild(script);
+        }
+
 /** 
  * @function createForm
  * @memberOf addAllInputs
@@ -14,11 +23,11 @@ var radioCounter = 0;
  * @description The createForm() function builds a form from a xml file description.
  */
 
- function createForm(fileLocation)
+ function createForm(fileLocation, attach)
  {
-        $(document).ready(function() {
+        
         $.get(fileLocation, function(xml){
-
+            //alert("Hello");
          var build = function(parent, node) {
              var nodeName = node.prop("nodeName");
 
@@ -70,11 +79,24 @@ var radioCounter = 0;
          var $xml = $(xmlDoc);
          var form = $xml.find("form");
 
-         build($("body"), form);
+         build(attach, form);
         }, "text");
-    });
  }
 
+/**
+ * @function addBR
+ * @memberOf addAllINputs
+ * @author Ben Sprunger
+ * 
+ * Adds a break
+ */
+
+function addBR(divName)
+{
+    var newBR = $("<br/>", {
+        appendTo : document.getElementById(divName)
+    });
+}
 
 /** 
  * @function addDivElement
