@@ -83,6 +83,20 @@ var radioCounter = 0;
         }, "text");
  }
 
+/**
+ * @function addBR
+ * @memberOf addAllINputs
+ * @author Ben Sprunger
+ * 
+ * Adds a break
+ */
+
+function addBR(divName)
+{
+    var newBR = $("<br/>", {
+        appendTo : document.getElementById(divName)
+    });
+}
 
 /** 
  * @function addDivElement
