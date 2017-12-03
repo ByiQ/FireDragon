@@ -10,14 +10,14 @@
     <!--<script src="jquery-3.2.1.min.js"></script>-->
     <script>
 		/** 
-		 * @function writeInput from Form.html, then outpot to a .xml file. 
+		 * @function writeInput from Form.html, then outpot to a .xml file. Then allow download .xml file to folder in your computer.
 		 * Next, allow users create more elements on Form.  
 		 * Next, allow users read data from .xml file back to form and allow adding more elements, then again saved to .xml updated file.
 		 * Finally, allow users convert .xml to .txt file and be ready to print out.
-		 * @author Huong Truong, also combined and tested 'addAllInputs' file from Jerrid Kimball, Ben Sprunger
-		 * @param fileLocation - The location of the xml file that describes the form.
+		 *
+		 * @author Huong Truong, 
+		 * also combined and tested 'addAllInputs' file from Jerrid Kimball, Ben Sprunger
 		 * 
-		 * @description The createForm() function builds a form from a xml file description.
 		 */
 
         $(window).load(function () {
@@ -53,6 +53,7 @@
     <script src="Global.js" language="javascript"></script>
     <script src="XMLWriter.js" language="javascript"></script>
     <script language="javascript" type="text/javascript">
+		
 		var filename = "PatientForm.xml";	
 		
 		function WriteXmlFile(e) {
@@ -314,13 +315,13 @@
 				appendTo : document.getElementById(divName)
 			});
 
-			var newTimeField = $("<input />", {
-				"type" : "time",
-				"name" : nameOfElement,
-				"class" : className,
-				"id" : idOfElement,
-				insertAfter : newDateField
-			});
+			<!-- var newTimeField = $("<input />", { -->
+				<!-- "type" : "time", -->
+				<!-- "name" : nameOfElement, -->
+				<!-- "class" : className, -->
+				<!-- "id" : idOfElement, -->
+				<!-- insertAfter : newDateField -->
+			<!-- }); -->
 			$("<span>" + label + "</span>").insertBefore(newDateField);
 		 }
 
@@ -470,7 +471,7 @@
 				 "name" : nameOfElement,
 				 appendTo : document.getElementById(divName)
 			 });
-			 $("<span>" + label + "</span>").insertBefore(newCheckbox);
+			 $("<span>" + label + "</span>").insertAfter(newCheckbox);
 
 			 if (isChecked === undefined || false)
 			 {
