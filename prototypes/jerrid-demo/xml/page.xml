@@ -4,7 +4,7 @@
       <page>
 	<section name="patient-information">
 	  <row>
-	    <column>
+	    <column >
 	      <header>Patient Information</header>
 	      <textbox label="Name" name="patient-name" validation="first-last-name" />
 	      <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" />

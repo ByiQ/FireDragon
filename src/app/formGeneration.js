@@ -5,15 +5,6 @@
 
 var radioCounter = 0;
 
-        function newWindow(fileLocation)
-        {
-            var win = window.open('');
-            win.document.head.innerHTML = '<title>Hi</title></head>';
-            win.document.body.innerHTML = "<body><div id = 'x'></div></body>";
-            //var script = document.createElement('script');
-            //win.document.head.appendChild(script);
-        }
-
 /** 
  * @function createForm
  * @memberOf addAllInputs
@@ -25,51 +16,75 @@ var radioCounter = 0;
 
  function createForm(fileLocation, attach)
  {
-        
         $.get(fileLocation, function(xml){
-            //alert("Hello");
          var build = function(parent, node) {
              var nodeName = node.prop("nodeName");
 
              switch(nodeName) {
                  case "form":
+                    //alert("form");
+                    //alert(node.attr("id"));
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("page").each(function(id){build(nodeName, $(this));});
+                    //node.find("page").each(function(id){build(nodeName, $(this));});
+                    node.find("page").each(function(id){build(parent, $(this));});
                  break;
                  case "page":
+                    //alert("page");
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("section").each(function(id){build(nodeName, $(this));});
+                    //node.find("section").each(function(id){build(nodeName, $(this));});
+                    node.find("section").each(function(id){build(parent, $(this));});
                  break;
                  case "section":
+                    //alert("section");
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("row").each(function(id){build(nodeName, $(this));});
+                    node.find("row").each(function(id){build(parent, $(this));});
+                    //node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "row":
+                    //alert("row");
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("column").each(function(id){build(nodeName, $(this));});
+                    node.find("column").each(function(id){build(parent, $(this));});
+                    //node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "column":
+                    //alert("column");
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.children().each(function(id){build(nodeName, $(this));});
+                    node.children().each(function(id){build(parent, $(this));});
                  break;
                  case "header":
+                    //alert("header");
                     addHeaderElement(parent, node.text(), node.attr("class"), node.attr("id"));
+                    node.children().each(function(id){build(parent, $(this));});
                  break;
                  case "textbox":
+                    //alert("textbox");
                     addInputElement(parent, nodeName, node.attr("name"), node.attr("label"), node.attr("class"), node.attr("value"), node.attr("id"));
+                    node.children().each(function(id){build(parent, $(this));});
                  break;
                  case "date":
+                    //alert("date");
                     addInputElement(parent, nodeName, node.attr("name"), node.attr("label"), node.attr("class"), node.attr("value"), node.attr("id"));
+                    node.children().each(function(id){build(parent, $(this));});
                  break;
                  case "datetime":
+                    //alert("datetime");
                     addDateTimeElement(parent, node.attr("name"), node.attr("label"), node.attr("class"), "datetimeId");
+                    node.children().each(function(id){build(parent, $(this));});
                  break;
                  case "checkbox":
+                    //alert("checkbox");
                     addCheckBoxElement(parent, node.attr("name"), node.attr("label"), node.attr("checked"));
+                    node.children().each(function(id){build(parent, $(this));});
                  break;
                  case "yesno":
+                    //alert("yesno");
                     addYesNo(parent, node.attr("name"), node.attr("label"));
+                    node.children().each(function(id){build(parent, $(this));});
                  break;
+                 case "br":
+                    //alert("br");
+                    addBR(parent);
+                    node.children().each(function(id){build(parent, $(this));});
                  default:
                  break;
              }
@@ -79,14 +94,21 @@ var radioCounter = 0;
          var $xml = $(xmlDoc);
          var form = $xml.find("form");
 
-         build(attach, form);
+        build(attach, form);
         }, "text");
+        createButton("Submit");
  }
+
+ function createButton(buttonText){
+    var $input = $('<input type="button" value='+ buttonText + '></input>');
+    $input.appendTo($("body"));
+}
 
 /**
  * @function addBR
  * @memberOf addAllINputs
  * @author Ben Sprunger
+ * @param divName - The name of the div the new BR element will appendTo().
  * 
  * Adds a break
  */
@@ -94,6 +116,7 @@ var radioCounter = 0;
 function addBR(divName)
 {
     var newBR = $("<br/>", {
+        "id" : "brID",
         appendTo : document.getElementById(divName)
     });
 }
@@ -194,7 +217,7 @@ function addBR(divName)
     var newSection = $("<section />", {
         "text" : textValue,
         "class" : className,
-        "idOfElement" : idOfElement,
+        "id" : idOfElement,
         appendTo: document.getElementById(divName)
     })
 

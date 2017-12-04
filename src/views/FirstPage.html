@@ -7,6 +7,7 @@
     <script language="JavaScript" type="text/javascript" src="/src/app/jquery-3.2.1.min.js"></script>
     <script src="/src/app/app.js"></script>
     <script src="/src/app/formGeneration.js"></script>
+    <script src="/prototypes/jerrid-demo/main.js"></script>
 </head>
 <body>
 <div class="containerheader">
@@ -18,34 +19,21 @@
         <h2>Choose a workflow</h2>
         <input type="file" id="fileInput">
     </div>
-    <div class="row">
-        <div class="column">
-            <h2>Choose a workflow</h2>
-            <input type="file" id="fileInput">
-            <input type="button" value="Open" onclick="createForm(document.getElementById('fileInput').value)">
-        </div>
-        <div class="column">
-            <h2>Choose a step</h2>
-            <select name="steps">
-                <option value="step_1" selected>Interventional Radiology</option>
-                <option value="step_2">Step 2</option>
-                <option value="step_3">Step 3</option>
-                <option value="Collect">Collect Data</option>
-            </select>
-            <input type="button" value="Load step" onclick="newDoc()">
-        </div>
-        <div class="column">
-            <h2>Load new document</h2>
-            <input type="button" value="New" onclick="newDoc()">
-        </div>
-        <div id = "form">
-            <input type = "button" value = "build test" onclick = "createForm(document.getElementById('fileInput').value, 'form')">
-        </div>
+    <div class="column">
+        <h2>Choose a step</h2>
+        <select name="steps">
+            <option value="step_1" selected>Interventional Radiology</option>
+            <option value="step_2">Step 2</option>
+            <option value="step_3">Step 3</option>
+            <option value="Collect">Collect Data</option>
+        </select>
+        <input type="button" value="Load step" onclick="newDoc()">
     </div>
     <div class="column">
         <h2>Load new document</h2>
         <input type="button" value="New" onclick="newDoc()">
     </div>
+    <div id = "test"><input type="button" value="TestButton" onclick="createForm(document.getElementById('fileInput').value, 'test')"></div>
 </div>
 
 </body>
