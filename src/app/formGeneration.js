@@ -5,15 +5,6 @@
 
 var radioCounter = 0;
 
-        function newWindow(fileLocation)
-        {
-            var win = window.open('');
-            win.document.head.innerHTML = '<title>Hi</title></head>';
-            win.document.body.innerHTML = "<body><div id = 'x'></div></body>";
-            //var script = document.createElement('script');
-            //win.document.head.appendChild(script);
-        }
-
 /** 
  * @function createForm
  * @memberOf addAllInputs
@@ -24,8 +15,7 @@ var radioCounter = 0;
  */
 
  function createForm(fileLocation, attach)
- {
-        
+ {            
         $.get(fileLocation, function(xml){
             //alert("Hello");
          var build = function(parent, node) {
@@ -34,19 +24,23 @@ var radioCounter = 0;
              switch(nodeName) {
                  case "form":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("page").each(function(id){build(nodeName, $(this));});
+                    //node.find("page").each(function(id){build(nodeName, $(this));});
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "page":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("section").each(function(id){build(nodeName, $(this));});
+                    //node.find("section").each(function(id){build(nodeName, $(this));});
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "section":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("row").each(function(id){build(nodeName, $(this));});
+                    //node.find("row").each(function(id){build(nodeName, $(this));});
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "row":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    node.find("column").each(function(id){build(nodeName, $(this));});
+                    //node.find("column").each(function(id){build(nodeName, $(this));});
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "column":
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
@@ -54,27 +48,32 @@ var radioCounter = 0;
                  break;
                  case "header":
                     addHeaderElement(parent, node.text(), node.attr("class"), node.attr("id"));
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "textbox":
                     addInputElement(parent, nodeName, node.attr("name"), node.attr("label"), node.attr("class"), node.attr("value"), node.attr("id"));
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "date":
                     addInputElement(parent, nodeName, node.attr("name"), node.attr("label"), node.attr("class"), node.attr("value"), node.attr("id"));
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "datetime":
                     addDateTimeElement(parent, node.attr("name"), node.attr("label"), node.attr("class"), "datetimeId");
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "checkbox":
                     addCheckBoxElement(parent, node.attr("name"), node.attr("label"), node.attr("checked"));
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "yesno":
                     addYesNo(parent, node.attr("name"), node.attr("label"));
+                    node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  default:
                  break;
              }
          };
-
          var xmlDoc = $.parseXML(xml);
          var $xml = $(xmlDoc);
          var form = $xml.find("form");
