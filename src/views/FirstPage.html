@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Health Systems Form Builder | Home</title>
+    <title>Health Systems Form Builder | Home</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
     <link rel="stylesheet" href="../styles/app.css">
     <script language="JavaScript" type="text/javascript" src="/src/app/jquery-3.2.1.min.js"></script>
@@ -9,29 +9,30 @@
     <script src="/src/app/formGeneration.js"></script>
 </head>
 <body>
-    <div class="containerheader">
-        <h1>Health Systems Form Builder</h1>
-        <h2>Prototype v 1.0</h2>
+<div class="containerheader">
+    <h1>Health Systems Form Builder</h1>
+    <h2>Prototype v 1.0</h2>
+</div>
+<div class="row">
+    <div class="column">
+        <h2>Choose a workflow</h2>
+        <input type="file" id="fileInput">
     </div>
-    <div class="row">
-        <div class="column">
-            <h2>Choose a workflow</h2>
-            <input type="file" id="fileInput">       
-        </div>
-        <div class="column">
-            <h2>Choose a step</h2>
-            <select name="steps">
-                <option value="step_1" selected>Interventional Radiology</option>
-                <option value="step_2">Step 2</option>
-                <option value="step_3">Step 3</option>
-                <option value="Collect">Collect Data</option>
-            </select>
-            <input type="button" value="Load step" onclick="newDoc()">
-        </div>
-        <div class="column">
-            <h2>Load new document</h2>
-            <input type="button" value="New" onclick="newDoc()">
-        </div>
+    <div class="column">
+        <h2>Choose a step</h2>
+        <select name="steps">
+            <option value="step_1" selected>Interventional Radiology</option>
+            <option value="step_2">Step 2</option>
+            <option value="step_3">Step 3</option>
+            <option value="Collect">Collect Data</option>
+        </select>
+        <input type="button" value="Load step" onclick="newDoc()">
     </div>
-   </body>
+    <div class="column">
+        <h2>Load new document</h2>
+        <input type="button" value="New" onclick="newDoc()">
+    </div>
+</div>
+
+</body>
 </html>
