@@ -1,15 +1,16 @@
 /**
- * @file addAllInputs : addAllInputs.js is the file that contains the functions that can dynamically add form elements.
- * @namespace addAllInputs
+ * @file formGeneration. : formGeneration..js is the file that contains the functions that can dynamically add form elements.
+ * @namespace formGeneration.
  */
 
 var radioCounter = 0;
 
 /** 
  * @function createForm
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Jerrid Kimball, Ben Sprunger
  * @param fileLocation - The location of the xml file that describes the form.
+ * @param attach - The element that the form will attach its first element to.
  * 
  * @description The createForm() function builds a form from a xml file description.
  */
@@ -25,26 +26,22 @@ var radioCounter = 0;
                     //alert("form");
                     //alert(node.attr("id"));
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    //node.find("page").each(function(id){build(nodeName, $(this));});
                     node.find("page").each(function(id){build(parent, $(this));});
                  break;
                  case "page":
                     //alert("page");
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
-                    //node.find("section").each(function(id){build(nodeName, $(this));});
                     node.find("section").each(function(id){build(parent, $(this));});
                  break;
                  case "section":
                     //alert("section");
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
                     node.find("row").each(function(id){build(parent, $(this));});
-                    //node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "row":
                     //alert("row");
                     addDivElement(parent, node.attr("id"), node.attr("class"), node.attr("label"));
                     node.find("column").each(function(id){build(parent, $(this));});
-                    //node.children().each(function(id){build(nodeName, $(this));});
                  break;
                  case "column":
                     //alert("column");
@@ -99,14 +96,23 @@ var radioCounter = 0;
         createButton("Submit");
  }
 
- function createButton(buttonText){
+ /**
+  * @function createButton
+  @memberOf formGeneration.
+  @author Ben Sprunger
+  * @param buttonText  - The text value of the button.
+
+  createButton will dynamically add a button element.
+  */
+ function createButton(buttonText)
+ {
     var $input = $('<input type="button" value='+ buttonText + '></input>');
     $input.appendTo($("body"));
 }
 
 /**
  * @function addBR
- * @memberOf addAllINputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new BR element will appendTo().
  * 
@@ -123,7 +129,7 @@ function addBR(divName)
 
 /** 
  * @function addDivElement
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new div element will appendTo().
  * @param idOfElement - The id attribute the new div element will be given.
@@ -155,7 +161,7 @@ function addBR(divName)
 
  /** 
  * @function addHeaderElement
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new header element will appendTo().
  * @param textValue - The text value of the header element.
@@ -187,7 +193,7 @@ function addBR(divName)
  
  /** 
  * @function addSectionElement
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new section element will appendTo().
  * @param {optional} textValue - The text value of the section element.
@@ -225,7 +231,7 @@ function addBR(divName)
 
  /** 
  * @function addDateTimeElement
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new dateTime element will appendTo().
  * @param nameOfElement - The name of the new datetime element.
@@ -270,7 +276,7 @@ function addBR(divName)
 
   /** 
  * @function addInputElement
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new dateTime element will appendTo().
  * @param elementType - The type of input element to be generated.
@@ -315,7 +321,7 @@ function addBR(divName)
 
  /** 
  * @function addYesNo
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new yesNo element will appendTo().
  * @param nameOfElement - The name attribute of the yesNo element to be generated.
@@ -362,7 +368,7 @@ function addBR(divName)
 
  /** 
  * @function addRadio
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new radio element will appendTo().
  * @param nameOfElement - The name attribute of the radio element to be generated.
@@ -396,7 +402,7 @@ function addBR(divName)
 
  /** 
  * @function addCheckBoxElement
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new checkbox element will appendTo().
  * @param nameOfElement - The name attribute of the checkbox element to be generated.
@@ -428,7 +434,7 @@ function addBR(divName)
 
 /** 
  * @function addTextAreaElement
- * @memberOf addAllInputs
+ * @memberOf formGeneration.
  * @author Ben Sprunger
  * @param divName - The name of the div the new textarea element will appendTo().
  * @param nameOfElement - The name attribute of the textarea element to be generated.
