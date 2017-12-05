@@ -4,6 +4,7 @@
   "description": "description",
   "main": "./src/views/FirstPage.html",
   "window": {
+    "toolbar" : true,
     "width": 1000,
     "height": 800
   },
