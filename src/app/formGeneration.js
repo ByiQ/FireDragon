@@ -306,6 +306,11 @@ function addBR(divName)
          idOfElement = "idNotGiven"
      }
 
+     if (label === undefined)
+     {
+         label = "";
+     }
+
      var newInputElement = $("<input />", {
          "type" : elementType,
          "name" : nameOfElement,
