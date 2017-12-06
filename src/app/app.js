@@ -23,5 +23,5 @@ function showResults() {
 }
 
 function newDoc() {
-    window.location.assign('./FormPage.html');
+    window.location.assign('./XMLTest1.html');
 }

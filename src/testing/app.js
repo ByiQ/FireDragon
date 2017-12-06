@@ -32,5 +32,5 @@ function drop(ev) {
     ev.target.appendChild(document.getElementById(data));
 }
 function newDoc() {
-    window.location.assign('./FormPage.html');
+    window.location.assign('./XMLTest1.html');
 }
