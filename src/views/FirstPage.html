@@ -36,6 +36,19 @@
     </div>
     <div id = "test"><input type="button" value="TestButton" onclick="createForm(document.getElementById('fileInput').value, 'test')"></div>
 </div>
+<form id="search_records" onsubmit="javascript:showResults()">
+    <h2>Search existing records</h2>
+    <input type="search" id="search_box">
+</form>
+<div id="display_results">
+    <h3>Search Results</h3>
+    <ul id="results_list" type="list-style-type:none"> </ul>
+</div>
+<script>
+    document.querySelector('#search_records').addEventListener("submit", function (e) {
+        e.preventDefault();
+    });
+</script>
 
 </body>
 </html>
