@@ -49,6 +49,7 @@
     <ul id="results_list" type="list-style-type:none"> </ul>
 </div>
 <script>
+    /* Prevent default submit form action from happening on "enter" action" */
     document.querySelector('#search_records').addEventListener("submit", function (e) {
         e.preventDefault();
     });
