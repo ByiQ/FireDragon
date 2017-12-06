@@ -17,8 +17,10 @@
 <div class="row">
     <div class="column">
         <h2>Choose a workflow</h2>
-        <input type="file" id="fileInput">
-        <div id = "form"><input type="button" value="Load step" onclick="createForm(fileInput.value, 'form')"></div>
+        <input type="file" accept=".xml" id="fileInput">
+        <div id = "form">
+            <input type="button" value="Load step"  onclick="createForm(fileInput.value, 'form')">
+        </div>
     </div>
     <div class="column">
         <h2>Choose a step</h2>
@@ -34,7 +36,9 @@
         <h2>Load new document</h2>
         <input type="button" value="New" onclick="newDoc()">
     </div>
-    <div id = "test"><input type="button" value="TestButton" onclick="createForm(document.getElementById('fileInput').value, 'test')"></div>
+    <div id = "test">
+        <input type="button" value="TestButton" onclick="createForm(document.getElementById('fileInput').value, 'test')">
+    </div>
 </div>
 <form id="search_records" onsubmit="javascript:showResults()">
     <h2>Search existing records</h2>
@@ -49,6 +53,5 @@
         e.preventDefault();
     });
 </script>
-
 </body>
 </html>
