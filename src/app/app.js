@@ -22,6 +22,35 @@ function showResults() {
     });
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * @function insert(formID)
+ * @author Lauren Allpress
+ *
+ * @description The insert function serializes form data to a json object and
+ * inserts it into the database.
+ *
+ * Note: This will also have to be modified for more than one database.
+ */
+function insert(formId) {
+    var form = document.getElementById(formId);
+    var jsonData = {};
+    var formData = $(form).serializeArray();
+
+    $(formData).each(function (i, field) {
+        jsonData[field.name] = field.value;
+    });
+    db.insert(jsonData, function (err, doc) { });
+}
+
+/*
+ * @function newDoc
+ *
+ * @description newDoc simply opens a blank default form for testing/ and development
+ * purposes.
+ */
+>>>>>>> 1bac5784862515dfb268596e3906595db948b463
 function newDoc() {
     window.location.assign('./XMLTest1.html');
 }
