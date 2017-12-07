@@ -8,6 +8,101 @@
     <script src="/src/app/app.js"></script>
     <script src="/src/app/formGeneration.js"></script>
     <script src="/prototypes/jerrid-demo/main.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript">
+		
+		var filename = "PatientForm.txt";	
+		function WriteTxtFile(e) {
+            try {
+                //openFile will read XML file and input it into text field
+				var openFile = function(event) {
+					var input = event.target;
+					var text = "";
+					var reader = new FileReader();
+					var onload = function(event) {
+						text = reader.result;
+						parseFile(text);
+
+					};
+
+					reader.onload = onload;
+					reader.readAsText(input.files[0]);
+				};
+				
+				//this will parse XML file and output it to website
+				var parseFile = function(text) {
+				var xmlDoc = $.parseXML(text),
+					$xml = $(xmlDoc),
+					$options = $xml.find("option");
+				
+				/*$.each($options, function() {
+					$("#output").append("<li>" + $(this).text() + "</li >");
+				});*/
+				
+				//console.log($xml.find("*").eq(0)[0].nodeName);
+				//console.log($xml.find(":root")[0]);
+				//console.log($xml.find("*").eq(0));
+				$nodes = $xml.find("*").eq(0)[0].children; //$xml.find(":root")[0].children;
+				$.each($nodes, function() {
+					$("#output").append("<li>" + $(this).prop("tagName") + " - " + $(this).text() + "</li >");
+				});
+			
+
+				
+				//var text = XML.ToString().replace(/</g,"\n<");
+				var pom = document.createElement('a');
+				pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+				pom.setAttribute('download', filename);
+				pom.style.display = 'none';
+				document.body.appendChild(pom);
+
+				pom.click();
+
+				document.body.removeChild(pom);
+				
+            } catch(Err) {
+                alert("Error: " + Err.description);
+            }
+            return false;
+        }
+		
+		<!-- //openFile will read XML file and input it into text field -->
+		<!-- var openFile = function(event) { -->
+			<!-- var input = event.target; -->
+			<!-- var text = ""; -->
+			<!-- var reader = new FileReader(); -->
+			<!-- var onload = function(event) { -->
+				<!-- text = reader.result; -->
+				<!-- parseFile(text); -->
+
+			<!-- }; -->
+
+			<!-- reader.onload = onload; -->
+			<!-- reader.readAsText(input.files[0]); -->
+		<!-- }; -->
+
+		<!-- //this will parse XML file and output it to website -->
+		
+		<!-- var parseFile = function(text) { -->
+			<!-- var xmlDoc = $.parseXML(text), -->
+				<!-- $xml = $(xmlDoc), -->
+				<!-- $options = $xml.find("option"); -->
+			
+			<!-- /*$.each($options, function() { -->
+				<!-- $("#output").append("<li>" + $(this).text() + "</li >"); -->
+			<!-- });*/ -->
+			
+			<!-- //console.log($xml.find("*").eq(0)[0].nodeName); -->
+			<!-- //console.log($xml.find(":root")[0]); -->
+			<!-- //console.log($xml.find("*").eq(0)); -->
+			<!-- $nodes = $xml.find("*").eq(0)[0].children; //$xml.find(":root")[0].children; -->
+			<!-- $.each($nodes, function() { -->
+				<!-- $("#output").append("<li>" + $(this).prop("tagName") + " - " + $(this).text() + "</li >"); -->
+			<!-- }); -->
+		<!-- }; -->
+		
+		//download to .txt file
+	</script>
 </head>
 <body>
 <div class="containerheader">
@@ -40,13 +135,28 @@
         <input type="button" value="TestButton" onclick="createForm(document.getElementById('fileInput').value, 'test')">
     </div>
 </div>
-<form id="search_records" onsubmit="javascript:showResults()">
-    <h2>Search existing records</h2>
-    <input type="search" id="search_box">
-</form>
-<div id="display_results">
-    <h3>Search Results</h3>
-    <ul id="results_list" type="list-style-type:none"> </ul>
+<div class="row">
+	<div class="column">
+		<form id="search_records" onsubmit="javascript:showResults()">
+			<h2>Search existing records</h2>
+			<input type="search" id="search_box">
+		</form>
+	
+		<div id="display_results">
+			<h3>Search Results</h3>
+			<ul id="results_list" type="list-style-type:none"> </ul>
+		</div>
+	</div>
+	<div class="column"> &nbsp;	</div>
+	<div class="column">
+		
+	<form name="patient" onsubmit="return WriteTxtFile(event)">
+		<h3 id="choose file" class="chfile" align-text:right;> Select XML file to upload:</h3>
+			<input type='file' accept='text/xml' onchange='openFile(event)'><br /><br>
+			<input type="submit" value="Convert .txt">
+			<ul id="output"></ul>
+	</form>
+	</div>
 </div>
 <script>
     /* Prevent default submit form action from happening on "enter" action" */
