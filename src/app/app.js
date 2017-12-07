@@ -50,3 +50,7 @@ function insert(formId) {
 function newDoc() {
     window.location.assign('./XMLTest1.html');
 }
+
+function emptyDoc() {
+    window.location.assign('./FormPage.html');
+}
