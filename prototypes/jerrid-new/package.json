@@ -1,0 +1,23 @@
+{
+  "name": "fire-dragon",
+  "version": "0.1.0",
+  "description": "description",
+  "main": "./src/views/FirstPage.html",
+  "window": {
+    "width": 1000,
+    "height": 800
+  },
+  "dependencies": {
+    "nedb": "^1.8.0"
+  },
+  "devDependencies": {
+    "nwjs-builder-phoenix": "^1.14.6"
+  },
+  "build": {
+    "nwVersion": "0.14.6"
+  },
+  "scripts": {
+    "dist": "build --tasks win-x86,win-x64,linux-x86,linux-x64,mac-x64 --mirror https://dl.nwjs.io/ .",
+    "start": "run --x86 --mirror https://dl.nwjs.io/ ."
+  }
+}
