@@ -7,18 +7,29 @@
 	    <column >
 	      <header>Patient Information</header>
 	      <textbox label="Name" name="patient-name" validation="first-last-name" />
+				<br/>
 	      <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" />
+				<br/>
 	      <textbox label="MRN" name="med-rec-num" validation="mrn" />
+				<br/>
 	      <textbox label="Address/Nurs" name="address-nurs" validation="address" />
+				<br/>
 	      <textbox label="Phone" name="patient-phone" validation="phone" />
+				<br/>
 	      <textbox label="Cell" name="patient-cell" validation="phone" />
+				<br/>
 	    </column>
 	    <column>
 	      <datetime label="Date" name="date" validation="date" />
+				<br/>
 	      <textbox label="Referring Physician" name="referring-physician" validation="first-last-name" />
+				<br/>
 	      <textbox label="Contact" name="contact" validation="first-last-name" />
+				<br/>
 	      <textbox label="Insurance Primary" name="insurance-primary" validation="free-required" />
+				<br/>
 	      <textbox label="Insurance Secondary" name="insurance-secondary" validation="free-allow-empty" />
+				<br/>
 	    </column>
 	  </row>
 	</section>
@@ -27,12 +38,19 @@
 	    <column>
 	      <header>Clinical Information</header>
 	      <textbox label="Diagnosis" name="clinical-diagnosis1" validation="free" />
+				<br/>
 	      <textbox label="Diagnosis" name="clinical-diagnosis2" validation="free-allow-empty" />
+				<br/>
 	      <yesno label="Diabetes" name="has-diabetes" validation="required" />
+				<br/>
 	      <yesno label="Allergies" name="has-allergies" validation="required" />
+				<br/>
 	      <yesno label="Allergies Contrast" name="has-allergies-contrast" validation="required" />
+				<br/>
 	      <yesno label="Blood Thinners" name="has-blood-thinners" validation="required" />
+				<br/>
 	      <yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" validation="required" />
+				<br/>
 	    </column>
 	    <column>
 	      <header>Labs</header>
@@ -44,7 +62,7 @@
 	  <row>
 	    <column>
 	      <header>Procedure/CPT</header>
-	      <textbox data-source="ir-common-cpt" />
+	      <textarea data-source="ir-common-cpt" />
 	    </column>
 	  </row>
 	</section>
@@ -52,7 +70,7 @@
 	  <row>
 	    <column>
 	      <header>Scheduling Details</header>
-	      <textbox name="scheduling-details" validation="free-allow-empty" />
+	      <textarea name="scheduling-details" validation="free-allow-empty" />
 	    </column>
 	    <column>
 	      <header>Reason For Delay</header>

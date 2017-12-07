@@ -78,6 +78,9 @@ var radioCounter = 0;
                     addYesNo(parent, node.attr("name"), node.attr("label"));
                     node.children().each(function(id){build(parent, $(this));});
                  break;
+                 case "textarea":
+                    addTextAreaElement(parent, node.attr("name"), node.attr("label"), node.attr("placeholder"), node.attr("value"))
+                    node.children().each(function(id){build(parent, $(this));});
                  case "br":
                     //alert("br");
                     addBR(parent);
