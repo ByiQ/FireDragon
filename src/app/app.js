@@ -47,6 +47,10 @@ function insert(formId) {
  * @description newDoc simply opens a blank default form for testing/ and development
  * purposes.
  */
+// function newDoc() {
+    // window.location.assign('./formPage.html');
+// }
+
 function newDoc() {
     window.location.assign('./XMLTest1.html');
 }

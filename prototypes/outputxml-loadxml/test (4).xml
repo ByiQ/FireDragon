@@ -1,0 +1,17 @@
+
+<patient Description="Patient info.">
+<FirstName>Huong
+</FirstName>
+<MiddleName>Thanh
+</MiddleName>
+<LastName>Truong
+</LastName>
+<BirthDate>1-1-1234
+</BirthDate>
+<radioTest>Option 1
+</radioTest>
+<radioTest>Option 2
+</radioTest>
+<problem>sdf sfs s s sfsdf
+</problem>
+</patient>
