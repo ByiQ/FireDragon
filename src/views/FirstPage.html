@@ -8,7 +8,6 @@
     <script src="/src/app/app.js"></script>
     <script src="/src/app/formGeneration.js"></script>
     <script src="/prototypes/jerrid-demo/main.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script language="javascript" type="text/javascript">
 		
 		var filename = "PatientForm.txt";	
@@ -34,17 +33,12 @@
 				var xmlDoc = $.parseXML(text),
 					$xml = $(xmlDoc),
 					$options = $xml.find("option");
-				
-				/*$.each($options, function() {
-					$("#output").append("<li>" + $(this).text() + "</li >");
-				});*/
-				
-				//console.log($xml.find("*").eq(0)[0].nodeName);
+
 				//console.log($xml.find(":root")[0]);
-				//console.log($xml.find("*").eq(0));
+				console.log($xml.find("*").eq(0));
 				$nodes = $xml.find("*").eq(0)[0].children; //$xml.find(":root")[0].children;
 				$.each($nodes, function() {
-					$("#output").append("<li>" + $(this).prop("tagName") + " - " + $(this).text() + "</li >");
+					//$("#output").append("<li>" + $(this).prop("tagName") + " - " + $(this).text() + "</li >");
 				});
 			
 
@@ -150,10 +144,10 @@
 	<div class="column"> &nbsp;	</div>
 	<div class="column">
 		
-	<form name="patient" onsubmit="return WriteTxtFile(event)">
-		<h3 id="choose file" class="chfile" align-text:right;> Select XML file to upload:</h3>
+	<form>
+		<h3 id="choose file" class="chfile" align-text:right;> Select a file to view the patient info:</h3>
 			<input type='file' accept='text/xml' onchange='openFile(event)'><br /><br>
-			<input type="submit" value="Convert .txt">
+			<input type="submit" value="View Patient Info">
 			<ul id="output"></ul>
 	</form>
 	</div>
