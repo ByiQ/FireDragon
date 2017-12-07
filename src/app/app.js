@@ -48,7 +48,7 @@ function insert(formId) {
  * purposes.
  */
 function newDoc() {
-    window.location.assign('./XMLTest1.html');
+    window.location.assign('../../prototypes/outputxml-loadxml/XMLTest1.html');
 }
 
 function emptyDoc() {
