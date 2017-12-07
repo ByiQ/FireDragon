@@ -12,8 +12,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
     <script language="javascript" type="text/javascript">
-		var filename = "test.xml";	
-		
+		var filename = "test.xml";
+
 		function WriteXmlFile(e) {
             try {
                 var Frm = Settings.SrcElement(e);
@@ -35,7 +35,7 @@
 				}
                 XML.EndNode();
                 XML.Close();
-				
+
 				var text = XML.ToString().replace(/</g,"\n<");
 				var pom = document.createElement('a');
 				pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -46,14 +46,14 @@
 				pom.click();
 
 				document.body.removeChild(pom);
-				
+
             } catch(Err) {
                 alert("Error: " + Err.description);
             }
             return false;
         }
-		
-		
+
+
 		//openFile will read XML file and input it into text field
 		var openFile = function(event) {
 			var input = event.target;
@@ -74,11 +74,11 @@
 			var xmlDoc = $.parseXML(text),
 				$xml = $(xmlDoc),
 				$options = $xml.find("option");
-			
+
 			/*$.each($options, function() {
 				$("#output").append("<li>" + $(this).text() + "</li >");
 			});*/
-			
+
 			//console.log($xml.find("*").eq(0)[0].nodeName);
 			//console.log($xml.find(":root")[0]);
 			//console.log($xml.find("*").eq(0));
@@ -88,7 +88,7 @@
 			});
 		};
 	<!-- ..... -->
-    
+
 	</script>
 </head>
 <body>
@@ -112,7 +112,7 @@
             <option value="step_3">Step 3</option>
             <option value="Collect">Collect Data</option>
         </select>
-        <input type="button" value="Load step" onclick="newDoc()">
+        <input type="button" value="Load step" onclick="emptyDoc()">
     </div>
     <div class="column">
         <h2>Load new document</h2>
@@ -128,7 +128,7 @@
 			<h2>Search existing records</h2>
 			<input type="search" id="search_box">
 		</form>
-	
+
 		<div id="display_results">
 			<h3>Search Results</h3>
 			<ul id="results_list" type="list-style-type:none"> </ul>
@@ -136,7 +136,7 @@
 	</div>
 	<div class="column"> &nbsp;	</div>
 	<div class="column">
-		
+
 	<form>
 		<h3 id="choose file" class="chfile" align-text:right;> Select a xml file to view the patient info on plain text:</h3>
 			<input type='file' accept='text/xml' onchange='openFile(event)'><br /><br>

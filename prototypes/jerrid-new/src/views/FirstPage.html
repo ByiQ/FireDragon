@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Dragon</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <!-- Dragon CSS -->
+    <link rel="stylesheet" href="../styles/app.css">
+
+    <style type="text/css">
+      /* Show it is fixed to the top */
+body {
+  min-height: 75rem;
+  padding-top: 4.5rem;
+      }
+      </style>
+  </head>
+  <body>
+
+   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Dragon</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <!-- <li class="nav-item active"> -->
+          <!--   <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> -->
+          <!-- </li> -->
+          <!-- <li class="nav-item"> -->
+          <!--   <a class="nav-link" href="#">Link</a> -->
+          <!-- </li> -->
+          <!-- <li class="nav-item"> -->
+          <!--   <a class="nav-link disabled" href="#">Disabled</a> -->
+          <!-- </li> -->
+        </ul>
+        <form class="form-inline mt-2 mt-md-0">
+          <!-- <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> -->
+          <button class="btn btn-secondary" type="button" onClick="window.close();">Exit</button>
+        </form>
+      </div>
+    </nav>
+
+    <main role="main" class="container">
+      <div id="view-start-intro">
+        <div class="jumbotron">
+          <div class="container">
+            <h1 class="display-3">Welcome!</h1>
+            <p>Last time you were here you were using the <strong>Interventional Radiology</strong> workflow.</p>
+	    <p>Click <strong>Continue &raquo</strong> to keep using it, or click <strong>Open</strong>
+            <p>
+	      <a class="btn btn-primary btn-lg" id="component-start-workflow-continue" href="#" role="button">Continue &raquo;</a>
+              <button class="btn btn-secondary btn-lg" id="component-start-workflow-open">Open</button>
+	    </p>
+	    
+            <input type="file" id="component-start-workflow-file" accept=".xml" style="display: none;">
+          </div>
+        </div>
+      </div>
+
+      <div id="view-start-selecttask" style="display: none;">
+        <div class="jumbotron">
+          <div class="container">
+            <h2 class="display-3">Interventional Radiology</h2>
+            <p>You previously were doing <strong>Main task</strong>.</p>
+	    <p id="view-start-tasks">
+	      <button class="btn btn-primary btn-lg">Main task</button>
+	      <button class="btn btn-secondary btn-lg" id="view-start-selecttask-secondary-task">Secondary Task</button>
+	      <button class="btn btn-secondary btn-lg">Data Collection</button>
+	    </p>
+          </div>
+        </div>
+      </div>
+
+      <div id="view-task" style="display: none;"></div>
+
+      <div id="view-collect" style="display: none;"></div>
+    </main>
+
+    <nav class="navbar fixed-bottom navbar-expand navbar-dark bg-dark" id="component-bottom" style="display: none;">
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropup">
+            <a class="nav-link dropdown-toggle" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Waiting <span class="badge badge-danger">2</span></a>
+            <div class="dropdown-menu" aria-labelledby="dropdown10">
+              <a class="dropdown-item" href="#">Sandy Beach</a>
+              <a class="dropdown-item" href="#">Dewey Cheatum</a>
+            </div>
+          </li>
+          <li class="nav-item dropup">
+            <a class="nav-link dropdown-toggle" id="dropdown20" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Completed <span class="badge badge-success">3</span></a>
+            <div class="dropdown-menu" aria-labelledby="dropdown10">
+              <a class="dropdown-item" href="#">John Smith</a>
+              <a class="dropdown-item" href="#">Sarah France</a>
+              <a class="dropdown-item" href="#">Kevin Bacon</a>
+            </div>
+          </li>
+	  <li class="nav-item">
+	    <span style="color: #FFF;">Page:</span>
+	    <div class="btn-group" role="group" aria-label="Basic example">
+	      <button type="button" class="btn btn-secondary">Patient Details</button>
+	    </div>
+	  </li>
+        </ul>
+          <form class="form-inline mt-2 mt-md-0">
+            <!-- <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> -->
+            <button class="btn btn-success" type="button" id="component-submit">Submit</button>
+          </form>
+      </div>
+    </nav>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    <!-- Project JavaScript -->
+    <script src="/src/app/app.js"></script>
+  </body>
+</html>
+
+<!--    <script src="/src/app/formGeneration.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>-->
+<!--    <script>
+        $(window).load(function () {
+        var phones = [{"mask": "(###) ###-####"}, {"mask": "(###) ###-##############"}];
+        $('#phone').inputmask({
+        mask: phones,
+        greedy: false,
+        definitions: {'#': {validator: "[0-9]", cardinality: 1}}
+        });
+        $('#cell').inputmask({
+        mask: phones,
+        greedy: false,
+        definitions: {'#': {validator: "[0-9]", cardinality: 1}}
+        });
+        });
+        
+        function changeText(){
+        var userInputname = document.getElementById('name').value;
+        var userInputcolor = Array.prototype.slice.call(document.querySelectorAll(".color:checked")).map(function(el) {
+        return el.value;
+        }).join(', ')
+        
+        document.getElementById('output1').innerHTML = userInputname;
+        document.getElementById('output2').innerHTML = userInputcolor;
+        return false;
+        }
+        </script>-->
+

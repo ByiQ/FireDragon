@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Health Systems Form Builder | Home</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/app.css">
+    <link rel="stylesheet" href="QUnit/qunit-2.4.1.css">
+    <script language="JavaScript" type="text/javascript" src="/src/app/jquery-3.2.1.min.js"></script>
+    <script src="/src/app/app.js"></script>
+    <script src="/src/app/formGeneration.js"></script>
+    <script src="QUnit/qunit-2.4.1.js"></script>
+    <script src="tests.js"></script>
+    
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <div class="containerheader">
+        <h1>Health Systems Form Builder</h1>
+        <h2>Prototype v 1.0</h2>
+    </div>
+    <div class="row">
+        <div class="column">
+            <h2>Choose a workflow</h2>
+            <input type="file" id="fileInput">
+            <input type="button" value="Open" onclick="createForm(document.getElementById('fileInput').value)">
+        </div>
+        <div class="column">
+            <h2>Choose a step</h2>
+            <select name="steps">
+                <option value="step_1" selected>Step 1</option>
+                <option value="step_2">Step 2</option>
+                <option value="step_3">Step 3</option>
+                <option value="Collect">Collect Data</option>
+            </select>
+            <input type="button" value="Load step" onclick="newDoc()">
+        </div>
+        <div class="column">
+            <h2>Load new document</h2>
+            <input type="button" value="New" onclick="newDoc()">
+        </div>
+    </div>
+   </body>
+</html>

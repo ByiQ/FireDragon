@@ -1,0 +1,116 @@
+<workflow>
+  <properties>
+    <property name="storage-dir"><text /></property>
+  </properties>
+  <steps>
+    <step name="Main Task" id="main-task">
+      <forms>
+	<form label="Interventional Radiology">
+	  <pages>
+	    <page name="First page">
+	      <section name="patient-information">
+		<row>
+		  <column>
+		    <header>Patient Information</header>
+		    <textbox label="Name" name="patient-name" validation="first-last-name" task="main-task" />
+		    <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="main-task" />
+		    <textbox label="MRN" name="med-rec-num" validation="mrn" task="main-task" />
+		    <textbox label="Address/Nurs" name="address-nurs" validation="address" task="main-task" />
+		    <textbox label="Phone" name="patient-phone" validation="phone" task="main-task" />
+		    <textbox label="Cell" name="patient-cell" validation="phone" task="main-task" />
+		  </column>
+		  <column>
+		    <datetime label="Date" name="date" validation="date" task="main-task" />
+		    <textbox label="Referring Physician" name="referring-physician" validation="first-last-name" task="main-task" />
+		    <textbox label="Contact" name="contact" validation="first-last-name" task="main-task" />
+		    <textbox label="Insurance Primary" name="insurance-primary" validation="free-required" task="main-task" />
+		    <textbox label="Insurance Secondary" name="insurance-secondary" validation="free-allow-empty" task="main-task" />
+		  </column> 
+		</row>
+	      </section>
+	      <section>
+		<row>
+		  <column>
+		    <header>Clinical Information</header>
+		    <textbox label="Diagnosis" name="clinical-diagnosis1" validation="free" task="secondary-task" />
+		    <textbox label="Diagnosis" name="clinical-diagnosis2" validation="free-allow-empty" task="secondary-task" />
+		    <yesno label="Diabetes" name="has-diabetes" validation="required" task="secondary-task" />
+		    <yesno label="Allergies" name="has-allergies" validation="required" task="secondary-task" />
+		    <yesno label="Allergies Contrast" name="has-allergies-contrast" validation="required" task="secondary-task" />
+		    <yesno label="Blood Thinners" name="has-blood-thinners" validation="required" task="secondary-task" />
+		    <yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" validation="required" task="secondary-task" />
+		  </column>
+		  <column>
+		    <header>Labs</header>
+		    <!--Waiting for clarification.-->
+		  </column>
+		</row>
+	      </section>
+	      <section>
+		<row>
+		  <column>
+		    <header>Procedure/CPT</header>
+		    <textbox data-source="ir-common-cpt" />
+		  </column>
+		</row>
+	      </section>
+	      <section>
+		<row>
+		  <column>
+		    <header>Scheduling Details</header>
+		    <textbox name="scheduling-details" validation="free-allow-empty" />
+		  </column>
+		  <column>
+		    <header>Reason For Delay</header>
+		    <checkbox label="Cancelled" name="rfd-cancelled" />
+		    <checkbox label="1st Available Slot" name="rfd-1st-avail-slot" />
+		    <checkbox label="Medical Clearance" name="rfd-med-clearance" />
+		    <checkbox label="Req Date" name="rfd-req-date" />
+		    <checkbox label="Scheduling " name="rfd-sched" />
+		    <checkbox label="Within 5-7 Days" name="rfd-wi-57-days" />
+		    <checkbox label="Insurance" name="rfd-ins" />
+		    <checkbox label="Outside Films" name="rfd-outside-films" />
+		    <checkbox label="Contacting Patient" name="rfd-contacting-pat" />
+		  </column>
+		  <column>
+		    <header>Same Day</header>
+		    <checkbox label="Consult/Order" name="sameday-cons-order" />
+		    <checkbox label="Anesthesia" name="sameday-anesthesia" />
+		    <checkbox label="PreOp" name="sameday-preop" />
+		    <checkbox label="Vent" name="sameday-vent" />
+		    <checkbox label="Consent" name="sameday-consent" />
+		    <checkbox label="NPO" name="sameday-npo" />
+		    <checkbox label="RN" name="sameday-rn" />
+		    <checkbox label="Care Manager" name="sameday-care-mgr" />
+		    <checkbox label="OutPt Registration" name="sameday-op-reg" />
+		    <checkbox label="IR Core" name="sameday-ir-core" />
+		  </column>
+		  <column>
+		    <header>Scheduled</header>
+		    <checkbox label="Patient" name="scheduled-pat" />
+		    <checkbox label="Office" name="scheduled-office" />
+		    <checkbox label="OR" name="scheduled-or" />
+		    <checkbox label="Access" name="scheduled-access" />
+		    <checkbox label="Orders/Labs" name="scheduled-orders-labs" />
+		    <checkbox label="Schedule" name="scheduled-schedule" />
+		    <checkbox label="H&amp;P/Notes" name="scheduled-hp-notes" />
+		    <checkbox label="Specimen Test" name="scheduled-specimen-test" />
+		    <checkbox label="Pathology x4583" name="scheduled-path" />
+		    <checkbox label="Histology x4572" name="scheduled-hist" />
+		  </column>
+		</row>
+	      </section>
+	    </page>
+	    <page>
+	      <section>
+		<row>
+		  <column></column>
+		</row>
+	      </section>
+	    </page>
+	  </pages>
+	</form>
+      </forms>
+    </step>
+  </steps>
+</workflow>
