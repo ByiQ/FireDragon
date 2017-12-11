@@ -87,6 +87,11 @@ var radioCounter = 0;
 
  function addDivElement(divName, idOfElement, className, textValue)
  {
+     if (divName === undefined || idOfElement === undefined)
+     {
+         return false;
+     }
+     
      if (textValue === undefined)
      {
          textValue === "";
@@ -121,6 +126,11 @@ var radioCounter = 0;
 
  function addHeaderElement(divName, textValue, className, idOfElement)
  {
+    if (divName === undefined || textValue === undefined)
+    {
+        return false;
+    }
+     
     if (className === undefined)
     {
         className = "classNameNotGiven";
@@ -155,6 +165,11 @@ var radioCounter = 0;
 
  function addSectionElement(divName, textValue, className, idOfElement)
  {
+    if (divName === undefined)
+    {
+        return false;
+    }
+    
     if (textValue === undefined)
     {
         textValue = "";
@@ -197,6 +212,11 @@ var radioCounter = 0;
  /* Default values for both fields need to be added. */
  function addDateTimeElement(divName, nameOfElement, label, className, idOfElement)
  {
+     if (divName === undefined || nameOfElement === undefined || label === undefined)
+     {
+         return false;
+     }
+    
      if (className === undefined)
      {
          className = "classNameNotGiven"
@@ -245,6 +265,11 @@ var radioCounter = 0;
  /* Add default for date */
  function addInputElement(divName, elementType, nameOfElement, label, className, textValue, idOfElement)
  {
+    if (divName === undefined || elementType === undefined || nameOfElement === undefined || label === undefined)
+    {
+        return false;
+    }
+    
     if (className === undefined)
     {
         className = "classNameNotGiven"
@@ -289,6 +314,11 @@ var radioCounter = 0;
  */
  function addYesNo(divName, nameOfElement, label, whichRadioSelected)
  {
+    if (divName === undefined || nameOfElement === undefined || label === undefined)
+    {
+        return false;
+    }
+    
     var newRadioButtonOne = $("<input />", {
         "type" : "radio",
         "name" : nameOfElement + radioCounter,
@@ -338,6 +368,11 @@ var radioCounter = 0;
 
  function addRadio(divName, nameOfElement, label, radioSelected)
  {
+     if (divName === undefined || nameOfElement === undefined || label === undefined)
+     {
+         return false;
+     }
+     
      var newRadioButton = $("<input />", {
          "type" : "radio",
          "name" : nameOfElement,
@@ -373,6 +408,11 @@ var radioCounter = 0;
  */
  function addCheckBoxElement(divName, nameOfElement, label, isChecked)
  {
+     if (divName === undefined || nameOfElement === undefined || label === undefined)
+     {
+         return false;
+     }
+    
      var newCheckbox = $("<input />", {
          "type" : "checkbox",
          "name" : nameOfElement,
@@ -406,6 +446,11 @@ var radioCounter = 0;
  */
  function addTextAreaElement(divName, nameOfElement, label, placeHolder, textValue)
  {
+     if (divName === undefined || nameOfElement === undefined || label === undefined || placeHolder === undefined)
+     {
+         return false;
+     }
+    
      if(textValue === undefined)
      {
          textValue = '';

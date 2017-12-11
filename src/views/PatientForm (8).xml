@@ -1,0 +1,195 @@
+
+<[object HTMLInputElement] Description="Patient info.">
+<name>Huong Thanh Truong
+</name>
+<dob/>
+<mbn/>
+<address>8919 Burt Street  304
+</address>
+<phone/>
+<cell/>
+<ref.Physician/>
+<contact/>
+<insur.Primary/>
+<insur.Second/>
+<dob/>
+<mbn/>
+<dob/>
+<mbn/>
+<yes checked="false">on
+</yes>
+<no checked="false">on
+</no>
+<yes checked="false">on
+</yes>
+<no checked="false">on
+</no>
+<yes checked="false">on
+</yes>
+<no checked="false">on
+</no>
+<yes checked="false">on
+</yes>
+<no checked="false">on
+</no>
+<yes checked="false">on
+</yes>
+<no checked="false">on
+</no>
+<wbc/>
+<hgb/>
+<plt/>
+<inr/>
+<wt/>
+<film/>
+<courier/>
+<fedex/>
+<iic/>
+<vpn/>
+<bone checked="false">on
+</bone>
+<liver checked="false">on
+</liver>
+<lung checked="false">on
+</lung>
+<rt checked="false">on
+</rt>
+<lt checked="false">on
+</lt>
+<kidney checked="false">on
+</kidney>
+<lymph checked="false">on
+</lymph>
+<lymph checked="false">on
+</lymph>
+<lines/>
+<pic checked="false">on
+</pic>
+<double checked="false">on
+</double>
+<triple checked="false">on
+</triple>
+<port checked="false">on
+</port>
+<line checked="false">on
+</line>
+<lines/>
+<nephtube checked="false">on
+</nephtube>
+<abscess checked="false">on
+</abscess>
+<nephrostomy checked="false">on
+</nephrostomy>
+<cttubecheck checked="false">on
+</cttubecheck>
+<lines/>
+<fluorotubecheck checked="false">on
+</fluorotubecheck>
+<paracentesis checked="false">on
+</paracentesis>
+<Thoracentesis checked="false">on
+</Thoracentesis>
+<rt checked="false">on
+</rt>
+<lt checked="false">on
+</lt>
+<abdpleurx checked="false">on
+</abdpleurx>
+<chestpleurx checked="false">on
+</chestpleurx>
+<rt checked="false">on
+</rt>
+<lt checked="false">on
+</lt>
+<lp checked="false">on
+</lp>
+<hiping checked="false">on
+</hiping>
+<shouldering checked="false">on
+</shouldering>
+<injection checked="false">on
+</injection>
+<rt checked="false">on
+</rt>
+<lt checked="false">on
+</lt>
+<arthrogram checked="false">on
+</arthrogram>
+<hip checked="false">on
+</hip>
+<Shoulder checked="false">on
+</Shoulder>
+<myelogram checked="false">on
+</myelogram>
+<cerv checked="false">on
+</cerv>
+<lt checked="false">on
+</lt>
+<lumber checked="false">on
+</lumber>
+<thoracic checked="false">on
+</thoracic>
+<film/>
+<vertebroplasty checked="false">on
+</vertebroplasty>
+<ablation checked="false">on
+</ablation>
+<embolization checked="false">on
+</embolization>
+<line checked="false">on
+</line>
+<lines/>
+<Consult/Order checked="false">on
+</Consult/Order>
+<Anesthesia checked="false">on
+</Anesthesia>
+<PreOp checked="false">on
+</PreOp>
+<Vent checked="false">on
+</Vent>
+<Consent checked="false">on
+</Consent>
+<NPO checked="false">on
+</NPO>
+<RN checked="false">on
+</RN>
+<Care Manager checked="false">on
+</Care Manager>
+<outPt registration checked="false">on
+</outPt registration>
+<IR Core checked="false">on
+</IR Core>
+<Consult/Order checked="false">on
+</Consult/Order>
+<Anesthesia checked="false">on
+</Anesthesia>
+<PreOp checked="false">on
+</PreOp>
+<Vent checked="false">on
+</Vent>
+<Consent checked="false">on
+</Consent>
+<NPO checked="false">on
+</NPO>
+<RN checked="false">on
+</RN>
+<Care Manager checked="false">on
+</Care Manager>
+<outPt registration checked="false">on
+</outPt registration>
+<IR Core checked="false">on
+</IR Core>
+<test>2017-12-06
+</test>
+<elementName0 checked="false">on
+</elementName0>
+<elementName0 checked="true">on
+</elementName0>
+<date checked="true">on
+</date>
+<elementName>test
+</elementName>
+<inputSelect>date
+</inputSelect>
+<textOption/>
+</[object HTMLInputElement]>
