@@ -1,4 +1,25 @@
 (function ($) {
+    var views = {
+	startIntro: $("#view-start-intro"),
+	startTasks: $("#view-start-tasks"),
+	task:       $("#view-task"),
+	navTop:     $("#view-top"),
+	navBottom:  $("#view-bottom")
+    };
+    
+    var comps = {
+	startIntroFirsttime: $("#comp-start-intro-firsttime"),
+	startIntroNotFirsttime: $("#comp-start-intro-not-firsttime"),
+	startIntroLastWorkflowName: $("#comp-start-intro-last-workflow-name"),
+	startIntroContinue: $("#comp-start-intro-continue"),
+	startIntroOpen: $("#comp-start-intro-open"),
+	startIntroFile: $("#comp-start-intro-file"),
+	startTasksWorkflowName: $("#comp-start-tasks-workflow-name"),
+	startTasksLastTask: $("#comp-start-tasks-last-task"),
+	startTasksLastTaskName: $("#comp-start-tasks-last-task-name"),
+	startTasksTaskList: $("#comp-start-tasks-task-list")
+    };
+
     var state = {};
 
     var build = function(parent, node) {
@@ -171,87 +192,123 @@
 	}
     }
 
+    /* If a previous workflow is not in localStorage then 
+       it's probably not their first time using the app. */
+    if (localStorage.getItem("file:last-workflow-name")) {
+	comps.startIntroLastWorkflowName.text(localStorage.getItem("file:last-workflow-name"));
+	comps.startIntroLastWorkflowName.css("display", "inline");
+	comps.startIntroFirsttime.css("display", "none");
+	comps.startIntroContinue.css("display", "inline-block");
+    }
+    else {
+	comps.startIntroNotFirsttime.css("display", "none");
+	comps.startIntroFirsttime.css("display", "block");
+	comps.startIntroContinue.css("display", "none");
+    }
+
     var gui = require('nw.gui');
 
-    // nw.Window.get().showDevTools();
-
-    // // Create an empty menubar
-    // var menu = new nw.Menu({type: 'menubar'});
-
-    // // Create a submenu as the 2nd level menu
-    // var submenu = new nw.Menu();
-    // submenu.append(new nw.MenuItem({ label: 'Quit' }));
-
-    // // Create and append the 1st level menu to the menubar
-    // menu.append(new nw.MenuItem({
-    // 	label: 'Dragon',
-    // 	submenu: submenu
-    // }));
-
-    // // Assign it to `window.menu` to get the menu displayed
-    // nw.Window.get().menu = menu;
+    // gui.Window.get().on('close', function() {
+    // 	// operations
+    // 	if(confirm("Are you sure?")) {
+    // 	    this.close(true); // don't forget this line, else you can't close it (I tried)
+    // 	}
+    // });
     
-    gui.Window.get().on('close', function() {
-	// operations
-	if(confirm("Are you sure?")) {
-	    this.close(true); // don't forget this line, else you can't close it (I tried)
-	}
-    });
-    
-    // $("#component-start-step").css("display", "none");
-    $("#component-start-workflow-reload").css("display", "none");
-    
-    $("#component-start-workflow-file").change(function(e){
-	var file = $(this).prop("files")[0];
+    var readWorkflow = function(file) {
+	var fs = nw.require('fs');
 
-	// Save for next program run.
-	
-	// state.xml = $.parseXML(xml);
-	
-	// var steps = state.xml.find("step");
+	fs.readFile(file, 'utf8', function(err, txt) {
+	    if (err) {
+		alert(err);
 
-	// step.each(function(step){
-	// 	alert(step.attr("name"));
-	// });
-
-	var reader = new FileReader();
-
-	reader.onload = function(e) {
-	    // Need to catch errors if XML is invalid.
-	    var xmlDoc = $.parseXML(e.target.result);
+		return;
+	    }
+	    
+	    var xmlDoc = $.parseXML(txt);
 
 	    state.xml = $(xmlDoc);
 
-	    // var steps = state.xml.find("step");
+	    var workflowName = state.xml.find("properties").find("property[name=workflow-name]").text();
 
-	    // steps.each(function(step) {
-	    // 	$("#view-start-tasks").append(
-	    // 	    $(document.createElement("button"))
-	    // 		.addClass("btn btn-primary btn-lg"
-	    // 		.attr("value", step)
-	    // 		.text($(this).attr("name"))
-	    // 	)
-	    // });
+	    state.workflowName = workflowName;
 
-	    $("#view-start-intro").css("display", "none");
-	    $("#view-start-selecttask").css("display", "block");
-	}
+	    var databasePath = state.xml.find("properties").find("property[name=database-path]").text();
 
-	reader.readAsText(file);
+	    state.databasePath = databasePath;
+
+	    var Datastore = require('nedb');
+	    state.db = new Datastore({ filename: state.databasePath, autoload: true });
+	    
+	    if (file != localStorage.getItem("file:last-path", file)){
+		localStorage.setItem("file:last-path", file);
+	    }
+
+	    if (workflowName != localStorage.getItem("file:last-workflow-name", workflowName)) {
+		if (localStorage.getItem("file:last-workflow-name", workflowName) != null) {
+		    alert("Next time you use Dragon, " + localStorage.getItem("file:last-workflow-name", workflowName) + " will be called " + workflowName + ".");
+		}
+		
+		localStorage.setItem("file:last-workflow-name", workflowName);
+	    }
+
+	    comps.startTasksWorkflowName.text(workflowName);
+	    
+	    if (localStorage.getItem("workflow:last-task-name")){
+	    	comps.startTasksLastTaskName.text(localStorage.getItem("workflow:last-task-name"));
+	    	comps.startTasksLastTaskName.show();
+	    }
+	    else {
+	    	comps.startTasksLastTaskName.hide();
+	    }
+
+	    var steps = state.xml.find("step");
+
+	    steps.each(function(step) {
+		var name = $(this).attr("name");
+
+		state.step = name;
+		
+	    	var button =
+		    $(document.createElement("button"))
+	    	        .addClass("btn btn-lg")
+		        .addClass(($(this).attr("name")) == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary")
+	    		.attr("value", step)
+	    		.text($(this).attr("name"))
+	    		.click(function(e) {
+			    localStorage.setItem("workflow:last-task-name", name);
+
+			    var form = state.xml.find("form");
+
+			    build(views.task, form, name);
+			    
+			    views.navBottom.css("display", "block");
+			    views.startTasks.css("display", "none");
+			    views.task.css("display", "block");
+			});
+
+		button.addClass(($(this).attr("name")) == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary");
+
+	    	comps.startTasksTaskList.append(button);
+	    });
+
+	    views.startIntro.css("display", "none");
+	    views.startTasks.css("display", "block");
+	});
+    }
+
+    comps.startIntroFile.change(function(e){
+	var file = $(this).prop("files")[0].path;
+
+	readWorkflow(file);
     });
 
-    $("#view-start-selecttask-secondary-task").click(function(e) {
-	var form = state.xml.find("form");
-
-	build($("#view-task"), form, "secondary-task");
-
-	$("#component-bottom").css("display", "block");
-	$("#view-start-selecttask").css("display", "none");
-	$("#view-task").css("display", "block");
+    comps.startIntroOpen.click(function(e){
+	comps.startIntroFile.trigger("click");
     });
 
-    $("#component-start-workflow-open, #component-start-workflow-continue").click(function(e){
-	$("#component-start-workflow-file").trigger("click");
+    comps.startIntroContinue.click(function(e){
+	readWorkflow(localStorage.getItem("file:last-path"));
     });
 }(jQuery));
 

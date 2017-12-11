@@ -1,8 +1,14 @@
 <workflow>
   <properties>
-    <property name="storage-dir"><text /></property>
+    <property name="storage-dir">Test</property>
+    <property name="workflow-name">IR Workflow</property>
+    <property name="database-path">test.db</property>
   </properties>
   <steps>
+    <step name="Another Task" id="another-task">
+    </step>
+    <step name="MUCH TASK!" id="much-task">
+    </step>
     <step name="Main Task" id="main-task">
       <forms>
 	<form label="Interventional Radiology">
