@@ -9,16 +9,28 @@
         <div id="qunit"></div>
         <div id="qunit-fixture"></div>
         <script>
-            QUnit.test("Test Functions", function(assert) {
+            QUnit.test("Correct Functions", function(assert) {
                 assert.ok(addDivElement('dynamicInputs', 'new'), "Div Element Passed!");
                 assert.ok(addHeaderElement('dynamicInputs', 'new'), "Header Element Passed!");
                 assert.ok(addSectionElement('dynamicInputs'), "Section Element Passed!");
                 assert.ok(addDateTimeElement('dynamicInputs', 'new', 'DateTimeTest'), "DateTime Element Passed!");
-                assert.ok(addInputElement('dynamicInputs', 'new', 'test'), "Input Element Passed!");
+                assert.ok(addInputElement('dynamicInputs', 'new', 'test', 'test'), "Input Element Passed!");
                 assert.ok(addYesNo('dynamicInputs', 'new', 'YesNoTest'), "YesNo Element Passed!");
                 assert.ok(addRadio('dynamicInputs', 'new', 'RadioTest'), "Radio Element Passed!");
                 assert.ok(addCheckBoxElement('dynamicInputs', 'new', 'CheckBoxTest'), "CheckBox Element Passed!");
                 assert.ok(addTextAreaElement('dynamicInputs', 'new', 'TextAreaTest', 'TextAreaTest'), "TextArea Element Passed!");
+            });
+            
+            QUnit.test("Incorrect Functions", function(assert) {
+                assert.notOk(addDivElement(), "Div Element Passed!");
+                assert.notOk(addHeaderElement(), "Header Element Passed!");
+                assert.notOk(addSectionElement(), "Section Element Passed!");
+                assert.notOk(addDateTimeElement(), "DateTime Element Passed!");
+                assert.notOk(addInputElement(), "Input Element Passed!");
+                assert.notOk(addYesNo(), "YesNo Element Passed!");
+                assert.notOk(addRadio(), "Radio Element Passed!");
+                assert.notOk(addCheckBoxElement(), "CheckBox Element Passed!");
+                assert.notOk(addTextAreaElement(), "TextArea Element Passed!");
             });
         </script>
         <form name="myForm" method = "POST">
