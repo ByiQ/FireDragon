@@ -8,6 +8,7 @@
     };
     
     var comps = {
+	topWorkflowName: $("#comp-top-workflow-name"),
 	startIntroFirsttime: $("#comp-start-intro-firsttime"),
 	startIntroNotFirsttime: $("#comp-start-intro-not-firsttime"),
 	startIntroLastWorkflowName: $("#comp-start-intro-last-workflow-name"),
@@ -17,7 +18,8 @@
 	startTasksWorkflowName: $("#comp-start-tasks-workflow-name"),
 	startTasksLastTask: $("#comp-start-tasks-last-task"),
 	startTasksLastTaskName: $("#comp-start-tasks-last-task-name"),
-	startTasksTaskList: $("#comp-start-tasks-task-list")
+	startTasksTaskList: $("#comp-start-tasks-task-list"),
+	bottomPages: $("#comp-bottom-pages")
     };
 
     var state = {};
@@ -28,11 +30,9 @@
 	switch(nodeName) {
 	case "form":
 	    var form = $(document.createElement("div"))
-		.addClass("container"); // Bootstrap
+		.addClass("container");
 
-	    var header = $(document.createElement("span"));
-
-	    header.text(node.attr("label"));
+	    comps.topWorkflowName.text(node.attr("label"));
 
 	    form.append(
 		$(document.createElement("div"))
@@ -51,10 +51,22 @@
 	    break;
 	case "page":
 	    var page = $(document.createElement("div"))
-		.addClass("row"); // Bootstrap
+		.attr("id", node.attr("name"))
+		.addClass("row");
 
 	    parent.append(page);
 	    
+	    comps.bottomPages.append(
+		$(document.createElement("li"))
+		    .addClass("nav-item")
+		    .append(
+			$(document.createElement("a"))
+			    .addClass("nav-link btn btn-lrg")
+			    .attr("href", "#" + node.attr("name"))
+			    .text(node.attr("label"))
+		    )
+	    )
+
 	    node.find("section").each(function(id){
 		build(page, $(this));
 	    });
@@ -109,10 +121,11 @@
 	    var label = $(document.createElement("label")).text(node.attr("label"));
 	    var input = $(document.createElement("input"))
 		.attr("type", "text")
+	        .attr("name", node.attr("name"))
 		.addClass("form-control");
 
-	    if (node.attr("task") == "secondary-task") {
-		input.attr("readonly", "readonly");
+	    if(node.attr("required") == "required") {
+		input.attr("required");
 	    }
 	    
 	    label.append(input);
@@ -123,8 +136,13 @@
 	    var label = $(document.createElement("label")).text(node.attr("label"));
 	    var input = $(document.createElement("input"))
 		.attr("type", "date")
+	        .attr("name", node.attr("name"))
 		.addClass("form-control");
 
+	    if(node.attr("required") == "required") {
+		input.attr("required");
+	    }
+	    
 	    label.append(input);
 	    parent.append(label, $("<br />"));
 	    
@@ -133,8 +151,13 @@
 	    var label = $(document.createElement("label")).text(node.attr("label"));
 	    var input = $(document.createElement("input"))
 		.attr("type", "datetime")
+	        .attr("name", node.attr("name"))
 		.addClass("form-control");
 
+	    if(node.attr("required") == "required") {
+		input.attr("required");
+	    }
+	    
 	    label.append(input);
 	    parent.append(label, $("<br />"));
 	    
@@ -145,12 +168,19 @@
 
 	    var label = $(document.createElement("label"))
 		.addClass("form-check-label")
+	        .attr("for", node.attr("name"))
 		.text(node.attr("label"));
 	    
 	    var input = $(document.createElement("input"))
 		.attr("type", "checkbox")
+	        .attr("name", node.attr("name"))
+		.attr("id", node.attr("name"))
 		.addClass("form-check-input");
 
+	    // if(node.attr("required") == "required") {
+	    // 	input.attr("required");
+	    // }
+	    
 	    label.prepend(input);
 
 	    parent.append(div.append(label), $("<br />"));
@@ -164,25 +194,35 @@
 		.attr("role", "group")
 		.attr("data-toggle", "buttons");
 	    
-	    var yes = $(document.createElement("label"))
+	    var yesLabel = $(document.createElement("label"))
 		.addClass("btn btn-secondary")
-		.text("Yes")
-		.append(
-		    $(document.createElement("input"))
-		      .attr("type", "radio")
-		      .attr("name", node.attr("name") + "-yes")
-		);
-	    
-	    var no = $(document.createElement("label"))
-		.addClass("btn btn-secondary")
-		.text("No")
-		.append(
-		    $(document.createElement("input"))
-		      .attr("type", "radio")
-		      .attr("name", node.attr("name") + "-no")
-		);
+		.text("Yes");
 
-	    group.append(yes).append(no);
+	    var yesInput = $(document.createElement("input"))
+		.attr("type", "radio")
+		.attr("name", node.attr("name"))
+		.attr("id", node.attr("name") + "-yes")
+
+	    var noLabel = $(document.createElement("label"))
+		.addClass("btn btn-secondary")
+		.text("No");
+
+	    var noInput = $(document.createElement("input"))
+		.attr("type", "radio")
+		.attr("name", node.attr("name"))
+		.attr("id", node.attr("name") + "-no");
+
+	    if(node.attr("required") == "required") {
+		yesInput.attr("required");
+		noInput.attr("required");
+	    }
+
+	    yesLabel.append(yesInput);
+	    noLabel.append(noLabel);
+
+	    group
+		.append(yesLabel)
+		.append(noLabel);
 	    
 	    parent.append(label, group, $("<br />"));
 	    
@@ -271,10 +311,10 @@
 		
 	    	var button =
 		    $(document.createElement("button"))
+ 		        .attr("type", "button")
 	    	        .addClass("btn btn-lg")
 		        .addClass(($(this).attr("name")) == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary")
-	    		.attr("value", step)
-	    		.text($(this).attr("name"))
+	    		.text($(this).attr("label"))
 	    		.click(function(e) {
 			    localStorage.setItem("workflow:last-task-name", name);
 
@@ -286,8 +326,6 @@
 			    views.startTasks.css("display", "none");
 			    views.task.css("display", "block");
 			});
-
-		button.addClass(($(this).attr("name")) == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary");
 
 	    	comps.startTasksTaskList.append(button);
 	    });

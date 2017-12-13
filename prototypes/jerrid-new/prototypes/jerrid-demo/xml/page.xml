@@ -5,31 +5,27 @@
     <property name="database-path">test.db</property>
   </properties>
   <steps>
-    <step name="Another Task" id="another-task">
-    </step>
-    <step name="MUCH TASK!" id="much-task">
-    </step>
-    <step name="Main Task" id="main-task">
+    <step label="Reception" name="reception">
       <forms>
 	<form label="Interventional Radiology">
 	  <pages>
-	    <page name="First page">
+	    <page label="First page" name="first-page">
 	      <section name="patient-information">
 		<row>
 		  <column>
 		    <header>Patient Information</header>
-		    <textbox label="Name" name="patient-name" validation="first-last-name" task="main-task" />
-		    <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="main-task" />
-		    <textbox label="MRN" name="med-rec-num" validation="mrn" task="main-task" />
-		    <textbox label="Address/Nurs" name="address-nurs" validation="address" task="main-task" />
-		    <textbox label="Phone" name="patient-phone" validation="phone" task="main-task" />
-		    <textbox label="Cell" name="patient-cell" validation="phone" task="main-task" />
+		    <textbox label="Name" name="patient-name" validation="first-last-name" task="main-task" required="required" />
+		    <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="main-task" required="required" />
+		    <textbox label="MRN" name="med-rec-num" validation="mrn" task="main-task" required="required" />
+		    <textbox label="Address/Nurs" name="address-nurs" validation="address" task="main-task" required="required" />
+		    <textbox label="Phone" name="patient-phone" validation="phone" task="main-task" required="required" />
+		    <textbox label="Cell" name="patient-cell" validation="phone" task="main-task" required="required" />
 		  </column>
 		  <column>
-		    <datetime label="Date" name="date" validation="date" task="main-task" />
-		    <textbox label="Referring Physician" name="referring-physician" validation="first-last-name" task="main-task" />
-		    <textbox label="Contact" name="contact" validation="first-last-name" task="main-task" />
-		    <textbox label="Insurance Primary" name="insurance-primary" validation="free-required" task="main-task" />
+		    <datetime label="Date" name="date" validation="date" task="main-task" required="required" />
+		    <textbox label="Referring Physician" name="referring-physician" validation="first-last-name" task="main-task" required="required" />
+		    <textbox label="Contact" name="contact" validation="first-last-name" task="main-task" required="required" />
+		    <textbox label="Insurance Primary" name="insurance-primary" validation="free-required" task="main-task" required="required" />
 		    <textbox label="Insurance Secondary" name="insurance-secondary" validation="free-allow-empty" task="main-task" />
 		  </column> 
 		</row>
@@ -107,12 +103,8 @@
 		</row>
 	      </section>
 	    </page>
-	    <page>
-	      <section>
-		<row>
-		  <column></column>
-		</row>
-	      </section>
+	    <page label="Page 2" name="page-2">
+
 	    </page>
 	  </pages>
 	</form>
