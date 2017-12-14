@@ -6,7 +6,7 @@
 	navTop:     $("#view-top"),
 	navBottom:  $("#view-bottom")
     };
-    
+
     var comps = {
 	topWorkflowName: $("#comp-top-workflow-name"),
 	startIntroFirsttime: $("#comp-start-intro-firsttime"),
@@ -43,7 +43,7 @@
 			    .append(header)));
 
 	    parent.append($(document.createElement("form")).append(form));
-	    
+
 	    node.find("page").each(function(id){
 		build(form, $(this));
 	    });
@@ -55,7 +55,7 @@
 		.addClass("row");
 
 	    parent.append(page);
-	    
+
 	    comps.bottomPages.append(
 		$(document.createElement("li"))
 		    .addClass("nav-item")
@@ -81,7 +81,7 @@
 		);
 
 	    parent.append(section);
-	    
+
 	    node.find("row").each(function(id){
 		build(section, $(this));
 	    });
@@ -89,10 +89,10 @@
 	    break;
 	case "row":
 	    var row = $(document.createElement("div"))
-		.addClass("row"); // Bootstrap 
+		.addClass("row"); // Bootstrap
 
 	    parent.append(row);
-	    
+
 	    node.find("column").each(function(id){
 		build(row, $(this));
 	    });
@@ -100,10 +100,10 @@
 	    break;
 	case "column":
 	    var column = $(document.createElement("div"))
-		.addClass("col"); // Bootstrap 
+		.addClass("col"); // Bootstrap
 
 	    parent.append(column);
-	    
+
 	    node.children().each(function(id){
 		build(column, $(this));
 	    });
@@ -115,7 +115,7 @@
 	    header.text(node.text());
 
 	    parent.append(header);
-	    
+
 	    break;
 	case "textbox":
 	    var label = $(document.createElement("label")).text(node.attr("label"));
@@ -127,10 +127,10 @@
 	    if(node.attr("required") == "required") {
 		input.attr("required");
 	    }
-	    
+
 	    label.append(input);
 	    parent.append(label, $("<br />"));
-	    
+
 	    break;
 	case "date":
 	    var label = $(document.createElement("label")).text(node.attr("label"));
@@ -142,10 +142,10 @@
 	    if(node.attr("required") == "required") {
 		input.attr("required");
 	    }
-	    
+
 	    label.append(input);
 	    parent.append(label, $("<br />"));
-	    
+
 	    break;
 	case "datetime":
 	    var label = $(document.createElement("label")).text(node.attr("label"));
@@ -157,10 +157,10 @@
 	    if(node.attr("required") == "required") {
 		input.attr("required");
 	    }
-	    
+
 	    label.append(input);
 	    parent.append(label, $("<br />"));
-	    
+
 	    break;
 	case "checkbox":
 	    var div = $(document.createElement("div"))
@@ -170,7 +170,7 @@
 		.addClass("form-check-label")
 	        .attr("for", node.attr("name"))
 		.text(node.attr("label"));
-	    
+
 	    var input = $(document.createElement("input"))
 		.attr("type", "checkbox")
 	        .attr("name", node.attr("name"))
@@ -180,11 +180,11 @@
 	    // if(node.attr("required") == "required") {
 	    // 	input.attr("required");
 	    // }
-	    
+
 	    label.prepend(input);
 
 	    parent.append(div.append(label), $("<br />"));
-	    
+
 	    break;
 	case "yesno":
 	    var label = $(document.createElement("label")).text(node.attr("label"));
@@ -193,7 +193,7 @@
 		.addClass("btn-group")
 		.attr("role", "group")
 		.attr("data-toggle", "buttons");
-	    
+
 	    var yesLabel = $(document.createElement("label"))
 		.addClass("btn btn-secondary")
 		.text("Yes");
@@ -223,16 +223,16 @@
 	    group
 		.append(yesLabel)
 		.append(noLabel);
-	    
+
 	    parent.append(label, group, $("<br />"));
-	    
+
 	    break;
 	default:
 	    break;
 	}
-    }
+    };
 
-    /* If a previous workflow is not in localStorage then 
+    /* If a previous workflow is not in localStorage then
        it's probably not their first time using the app. */
     if (localStorage.getItem("file:last-workflow-name")) {
 	comps.startIntroLastWorkflowName.text(localStorage.getItem("file:last-workflow-name"));
@@ -254,7 +254,7 @@
     // 	    this.close(true); // don't forget this line, else you can't close it (I tried)
     // 	}
     // });
-    
+
     var readWorkflow = function(file) {
 	var fs = nw.require('fs');
 
@@ -264,7 +264,7 @@
 
 		return;
 	    }
-	    
+
 	    var xmlDoc = $.parseXML(txt);
 
 	    state.xml = $(xmlDoc);
@@ -279,7 +279,19 @@
 
 	    var Datastore = require('nedb');
 	    state.db = new Datastore({ filename: state.databasePath, autoload: true });
-	    
+
+	    var button = document.getElementById("component-submit");
+        button.addEventListener("click", function () {
+            var form = document.getElementsByTagName("Form");
+            var jsonData = {};
+            var formData = $(form).serializeArray();
+            $(formData).each(function (i, field) {
+                jsonData[field.name] = field.value;
+            });
+            state.db.insert(jsonData,function (err, doc) { });
+        });
+
+
 	    if (file != localStorage.getItem("file:last-path", file)){
 		localStorage.setItem("file:last-path", file);
 	    }
@@ -288,12 +300,12 @@
 		if (localStorage.getItem("file:last-workflow-name", workflowName) != null) {
 		    alert("Next time you use Dragon, " + localStorage.getItem("file:last-workflow-name", workflowName) + " will be called " + workflowName + ".");
 		}
-		
+
 		localStorage.setItem("file:last-workflow-name", workflowName);
 	    }
 
 	    comps.startTasksWorkflowName.text(workflowName);
-	    
+
 	    if (localStorage.getItem("workflow:last-task-name")){
 	    	comps.startTasksLastTaskName.text(localStorage.getItem("workflow:last-task-name"));
 	    	comps.startTasksLastTaskName.show();
@@ -308,7 +320,7 @@
 		var name = $(this).attr("name");
 
 		state.step = name;
-		
+
 	    	var button =
 		    $(document.createElement("button"))
  		        .attr("type", "button")
@@ -321,7 +333,7 @@
 			    var form = state.xml.find("form");
 
 			    build(views.task, form, name);
-			    
+
 			    views.navBottom.css("display", "block");
 			    views.startTasks.css("display", "none");
 			    views.task.css("display", "block");
@@ -349,6 +361,8 @@
 	readWorkflow(localStorage.getItem("file:last-path"));
     });
 }(jQuery));
+
+
 
 // window.onload = function () {
 //     var fileInput = document.getElementById('fileInput');

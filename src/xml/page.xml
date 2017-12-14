@@ -2,7 +2,7 @@
   <properties>
     <property name="storage-dir">Test</property>
     <property name="workflow-name">IR Workflow</property>
-    <property name="database-path">test.db</property>
+    <property name="database-path">src/data/test.db</property>
   </properties>
   <steps>
     <step label="Reception" name="reception">
@@ -27,7 +27,7 @@
 		    <textbox label="Contact" name="contact" validation="first-last-name" task="main-task" required="required" />
 		    <textbox label="Insurance Primary" name="insurance-primary" validation="free-required" task="main-task" required="required" />
 		    <textbox label="Insurance Secondary" name="insurance-secondary" validation="free-allow-empty" task="main-task" />
-		  </column> 
+		  </column>
 		</row>
 	      </section>
 	      <section>

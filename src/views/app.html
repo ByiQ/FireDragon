@@ -48,7 +48,7 @@
 	     <a class="btn btn-primary btn-lg" id="comp-start-intro-continue" href="#" role="button">Continue &raquo;</a>
              <button class="btn btn-secondary btn-lg" id="comp-start-intro-open">Open</button>
 	   </p>
-	   
+
            <input type="file" id="comp-start-intro-file" accept=".xml" style="display: none;">
          </div>
        </div>
@@ -68,7 +68,7 @@
      <div id="view-task" style="display: none;"></div>
 
      <div id="view-collect" style="display: none;">
-       
+
      </div>
    </main>
 
@@ -93,6 +93,7 @@
        </ul>
        <!-- <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> -->
        <button class="btn btn-success" type="button" id="component-submit">Submit</button>
+
      </div>
    </nav>
 
@@ -123,13 +124,13 @@
         definitions: {'#': {validator: "[0-9]", cardinality: 1}}
         });
         });
-        
+
         function changeText(){
         var userInputname = document.getElementById('name').value;
         var userInputcolor = Array.prototype.slice.call(document.querySelectorAll(".color:checked")).map(function(el) {
         return el.value;
         }).join(', ')
-        
+
         document.getElementById('output1').innerHTML = userInputname;
         document.getElementById('output2').innerHTML = userInputcolor;
         return false;
