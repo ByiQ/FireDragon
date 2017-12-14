@@ -1,1 +1,0 @@
-Get input data and saved, then how to save it to be an Json file, and treat it as an object. Then, When people want to open file, open it from Json file, and automatically open data from JSON file to form input.

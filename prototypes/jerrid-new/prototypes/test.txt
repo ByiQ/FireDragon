@@ -1,7 +1,0 @@
-<patient>
-	<name>First Last</name>
-	<birthday>01/01/2010</birthday>
-	<mrn>n/a</mrn>
-	<address>456 S 234th Street</address>
-	<phone>111-222-3333</phone>	
-</patient>
