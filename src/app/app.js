@@ -3,6 +3,7 @@
         startIntro: $("#view-start-intro"),
         startTasks: $("#view-start-tasks"),
         task:       $("#view-task"),
+	collect:    $("#view-collect"),
         navTop:     $("#view-top"),
         navBottom:  $("#view-bottom")
     };
@@ -19,7 +20,17 @@
         startTasksLastTask: $("#comp-start-tasks-last-task"),
         startTasksLastTaskName: $("#comp-start-tasks-last-task-name"),
         startTasksTaskList: $("#comp-start-tasks-task-list"),
-        bottomPages: $("#comp-bottom-pages")
+	startTasksTaskCollectButton: $("#comp-start-tasks-task-collect-button")
+        bottomPages: $("#comp-bottom-pages"),
+	collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
+	collectIntroNotFirstTime: $("#comp-collect-intro-not-firsttime"),
+	collectIntroLastCollectionDate: $("#comp-collect-intro-last-collection-date"),
+	collectSinceLast: $("#comp-collect-since-last"),
+	collectRangeStartDate: $("#comp-collect-range-start-date"),
+	collectRangeEndDate: $("#comp-collect-range-end-date"),
+	collectRangeButton: $("#comp-collect-range-button"),
+	collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
+	collectAllButton: $("#comp-collect-all-button")
     };
 
     var state = {};
@@ -75,6 +86,7 @@
             state.db = new Datastore({ filename: state.databasePath, autoload: true });
 
             var button = document.getElementById("component-submit");
+
         button.addEventListener("click", function () {
             var form = document.getElementsByTagName("Form");
             var jsonData = {};
@@ -110,11 +122,11 @@
                 comps.startTasksLastTaskName.hide();
             }
 
-            var tasks = state.xml.find("task");
+            var steps = state.xml.find("step");
 
-            tasks.each(function(task) {
-                state.taskLabel = $(this).attr("label");
-                state.taskName = $(this).attr("name");
+            steps.each(function(step) {
+                state.stepLabel = $(this).attr("label");
+                state.stepName = $(this).attr("name");
 
                 var button =
                     $(document.createElement("button"))
@@ -123,8 +135,8 @@
                         .addClass(($(this).attr("name")) == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary")
                         .text($(this).attr("label"))
                         .click(function(e) {
-                            localStorage.setItem("workflow:last-task-label", state.taskLabel);
-                            localStorage.setItem("workflow:last-task-name", state.taskName);
+                            localStorage.setItem("workflow:last-task-label", state.stepLabel);
+                            localStorage.setItem("workflow:last-task-name", state.stepName);
 
                             var form = state.xml.find("form");
 
@@ -154,6 +166,11 @@
             views.startTasks.css("display", "block");
         });
     }
+
+    comps.startTasksTaskCollectButton.click(function(e){
+	views.collect.css("display", "block");
+	views.startTasks.css("display", "none");
+    });
 
     comps.startIntroFile.change(function(e){
         var file = $(this).prop("files")[0].path;

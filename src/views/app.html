@@ -61,6 +61,10 @@
            <p id="comp-start-tasks-last-task">You previously were doing <strong id="comp-start-tasks-last-task-name"></strong>.</p>
 	   <p>Choose a task to start.</p>
 	   <p id="comp-start-tasks-task-list"></p>
+	   <p id="comp-start-tasks-task-collect">
+	     <button type="button" class="btn bnt-lg btn-secondary" id="comp-start-tasks-task-collect-button">Collect</button>
+	     <button type="button" class="btn bnt-lg btn-secondary" id="collect">Collect</button>
+	   </p>
          </div>
        </div>
      </div>
@@ -68,7 +72,26 @@
      <div id="view-task" style="display: none;"></div>
 
      <div id="view-collect" style="display: none;">
+       <div class="jumbotron">
+         <div class="container">
+           <h1 class="display-3">Collect Data</h1>
+           <p id="comp-collect-intro-firsttime">Data has not been collected for this workflow yet.</p>
+           <p id="comp-collect-intro-not-firsttime">Data has been exported through <strong id="comp-collect-intro-last-collection-date"></strong>.</p>
+           <p>
+	     <!-- Export since last collection. -->
+	     <a class="btn btn-primary btn-lg" id="comp-collect-since-last" href="#" role="button">Collect From</a><br />
 
+	     <!-- Export date range. -->
+	     Start date: <input type="datetime" name="comp-collect-range-start-date" id="comp-collect-range-start-date" /><br />
+	     End date: <input type="datetime" name="comp-collect-range-end-date" id="comp-collect-range-start-date" /><br />
+	     <a class="btn btn-primary btn-lg" id="comp-collect-range-button" href="#" role="button">Collect</a><br />
+	     
+	     <!-- Export all data. -->
+	     <a class="btn btn-primary btn-lg" id="comp-collect-all-button" href="#" role="button">Since Beginning Of Time</a>
+	   </p>
+
+           <input type="file" id="comp-start-intro-file" accept=".xml" style="display: none;">
+         </div>
      </div>
    </main>
 
