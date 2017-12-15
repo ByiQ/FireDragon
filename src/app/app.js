@@ -20,7 +20,7 @@
         startTasksLastTask: $("#comp-start-tasks-last-task"),
         startTasksLastTaskName: $("#comp-start-tasks-last-task-name"),
         startTasksTaskList: $("#comp-start-tasks-task-list"),
-	startTasksTaskCollectButton: $("#comp-start-tasks-task-collect-button")
+	startTasksTaskCollectButton: $("#comp-start-tasks-task-collect-button"),
         bottomPages: $("#comp-bottom-pages"),
 	collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
 	collectIntroNotFirstTime: $("#comp-collect-intro-not-firsttime"),
