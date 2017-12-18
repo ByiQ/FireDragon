@@ -1,23 +1,24 @@
 {
-  "name": "fire-dragon",
+  "name": "dragon",
   "version": "0.1.0",
-  "description": "description",
+  "description": "An analog to digital convertor for paper forms.",
   "main": "./src/views/app.html",
   "window": {
     "width": 1000,
     "height": 800
   },
   "dependencies": {
-    "nedb": "^1.8.0"
-  },
-  "devDependencies": {
-    "nwjs-builder-phoenix": "^1.14.6"
+    "bootstrap": "^4.0.0-beta",
+    "nedb": "^1.8.0",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.9"
   },
   "build": {
-    "nwVersion": "0.14.6"
+    "nwVersion": "0.27.2"
   },
   "scripts": {
     "dist": "build --tasks win-x86,win-x64,linux-x86,linux-x64,mac-x64 --mirror https://dl.nwjs.io/ .",
     "start": "run --x86 --mirror https://dl.nwjs.io/ ."
-  }
+  },
+  "chromium-args" : "--disable-gpu"
 }
