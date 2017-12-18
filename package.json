@@ -2,7 +2,6 @@
   "name": "dragon",
   "version": "0.1.0",
   "description": "An analog to digital convertor for paper forms.",
-
   "build": {
     "nwVersion": "0.27.2"
   },

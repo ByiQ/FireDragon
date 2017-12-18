@@ -1,4 +1,39 @@
-(function ($) {
+// Make dispacher action types into constants.
+// Flux diagram.
+// Make sure to register everything before dispatching.
+// Define action type payloads in documentation.
+
+var Datastore = require('nedb');
+var WorkflowDispatcher = new Flux.Dispatcher();
+
+var StateStore = {
+    xml: null,
+    workflow: null,
+    dbPath: null,
+    dbInstance: null
+};
+
+var TaskStore = {
+    tasks: [],
+    label: null,
+    name: null
+};
+
+var FormStore = {
+    // Keeps track of which country is selected
+    waiting: [],
+
+    // Keeps track of which city is selected
+    completed: []
+};
+
+// Variable for database instance.
+var forms;
+
+var App = (function ($) {
+    // After research these performance-oriented shortcuts aren't that useful.
+    // jQuery claims that its select, especially for IDs is very fast
+    // thansk to brower enhancements.
     var views = {
         startIntro: $("#view-start-intro"),
         startTasks: $("#view-start-tasks"),
@@ -30,11 +65,12 @@
 	collectRangeEndDate: $("#comp-collect-range-end-date"),
 	collectRangeButton: $("#comp-collect-range-button"),
 	collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
-	collectAllButton: $("#comp-collect-all-button")
+	collectAllButton: $("#comp-collect-all-button"),
+	bottomSave: $("#comp-bottom-save"),
+	bottomSubmit: $("#comp-bottom-submit")
     };
 
-    var state = {};
-
+    
     /* If a previous workflow is not in localStorage then 
        it's probably not their first time using the app. */
     if (localStorage.getItem("file:last-workflow-name")) {
@@ -63,108 +99,173 @@
 
         fs.readFile(file, 'utf8', function(err, txt) {
             if (err) {
-                if(confirm("There was a problem opening the file:\n\n" + file + "\n\nWould you like to try a different file?")){
+                if(confirm("There was a problem opening the file:\n\n" +
+			   file + "\n\nWould you like to try a different file?"))
+		{
+		    // Sufficient. More abstract event not necessary at this moment.
                     comps.startIntroFile.trigger("click");
                 }
                 
                 return;
             }
 
-            var xmlDoc = $.parseXML(txt);
+	    WorkflowDispatcher.dispatch({
+		actionType: "new-file",
+		file: file,
+		xml: $($.parseXML(txt))
+	    });
+	});
+    }
 
-            state.xml = $(xmlDoc);
+    WorkflowDispatcher.register(function(payload) {
+	if (payload.actionType === 'new-file') {
+	    StateStore.xml = payload.xml;
 
-            var workflowName = state.xml.find("properties").find("property[name=workflow-name]").text();
+	    // If the document is valid, this should not cause errors.
+            StateStore.workflow = StateStore.xml.find("properties").find("property[name=workflow-name]").text();
 
-            state.workflowName = workflowName;
+	    // Same.
+            StateStore.dbPath = StateStore.xml.find("properties").find("property[name=database-path]").text();
 
-            var databasePath = state.xml.find("properties").find("property[name=database-path]").text();
+	    // If an old database is open it should be closed. 
+	    StateStore.dbInstance = new Datastore({ filename: StateStore.dbPath, autoload: true });
+	    // Unneeded dispatching.
+	    if (payload.file != localStorage.getItem("file:last-path", payload.file)){
+		localStorage.setItem("file:last-path", payload.file);
+	    }
 
-            state.databasePath = databasePath;
+	    if (StateStore.workflow != localStorage.getItem("file:last-workflow-name", StateStore.workflow)) {
+		if (localStorage.getItem("file:last-workflow-name", StateStore.workflow) != null) {
+		    alert("Next time you use Dragon, " +
+			  localStorage.getItem("file:last-workflow-name", StateStore.workflow) +
+			  " will be called " + StateStore.workflow + ".");
+		}
+		
+		localStorage.setItem("file:last-workflow-name", StateStore.workflow);
+	    }
 
-            var Datastore = require('nedb');
-            state.db = new Datastore({ filename: state.databasePath, autoload: true });
+	    comps.startTasksWorkflowName.text(StateStore.workflow);
 
-            var button = document.getElementById("component-submit");
+	    views.startIntro.css("display", "none");
+	    views.startTasks.css("display", "block");
 
-        button.addEventListener("click", function () {
-            var form = document.getElementsByTagName("Form");
-            var jsonData = {};
-            var formData = $(form).serializeArray();
-            $(formData).each(function (i, field) {
-                jsonData[field.name] = field.value;
-            });
-            state.db.insert(jsonData,function (err, doc) { });
-        });
+	    var tasks = StateStore.xml.find("task");
 
+	    tasks.each(function(task) {
+		var taskLabel = $(this).attr("label");
+		var taskName = $(this).attr("name");
 
-            if (file != localStorage.getItem("file:last-path", file)){
-                localStorage.setItem("file:last-path", file);
-            }
+		TaskStore.tasks.push({
+		    label: taskLabel,
+		    name: taskName
+		});
 
-            if (workflowName != localStorage.getItem("file:last-workflow-name", workflowName)) {
-                if (localStorage.getItem("file:last-workflow-name", workflowName) != null) {
-                    alert("Next time you use Dragon, " + localStorage.getItem("file:last-workflow-name", workflowName) + " will be called " + workflowName + ".");
-                }
+		var button =
+		    $(document.createElement("button"))
+		    .attr("type", "button")
+		    .addClass("btn btn-lg")
+		    .addClass(taskName == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary")
+		    .text(taskLabel)
+		    .click(function(e) {
+			localStorage.setItem("workflow:last-task-label", taskLabel);
+			localStorage.setItem("workflow:last-task-name", taskName);
 
-                localStorage.setItem("file:last-workflow-name", workflowName);
-            }
+			var form = StateStore.xml.find("form");
 
-            comps.startTasksWorkflowName.text(workflowName);
-            
-            if (localStorage.getItem("workflow:last-task-name") &&
-                localStorage.getItem("workflow:last-task-label"))
-            {
-                comps.startTasksLastTaskName.text(localStorage.getItem("workflow:last-task-label"));
-                comps.startTasksLastTaskName.show();
-            }
-            else {
-                comps.startTasksLastTaskName.hide();
-            }
+			build(views.task, form, name);
+			
+			// comps.topWorkflowName.text(node.attr("label"));
+			// comps.bottomPages.append(
+			//  $(document.createElement("li"))
+			//      .addClass("nav-item")
+			//      .append(
+			//          $(document.createElement("a"))
+			//              .addClass("nav-link btn btn-lrg")
+			//              .attr("href", "#" + node.attr("name"))
+			//              .text(node.attr("label"))
+			//      )
+			// )
 
-            var steps = state.xml.find("step");
+			views.navBottom.css("display", "block");
+			views.startTasks.css("display", "none");
+			views.task.css("display", "block");
+		    });
 
-            steps.each(function(step) {
-                state.stepLabel = $(this).attr("label");
-                state.stepName = $(this).attr("name");
+		comps.startTasksTaskList.append(button);
+	    });
+	}
+    });
 
-                var button =
-                    $(document.createElement("button"))
-                        .attr("type", "button")
-                        .addClass("btn btn-lg")
-                        .addClass(($(this).attr("name")) == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary")
-                        .text($(this).attr("label"))
-                        .click(function(e) {
-                            localStorage.setItem("workflow:last-task-label", state.stepLabel);
-                            localStorage.setItem("workflow:last-task-name", state.stepName);
+    WorkflowDispatcher.register(function(payload) {
+	if (payload.actionType === 'select-task') {
+	    // Get waiting workflows.
+	    // These are started, but incomplete forms, and those waiting from a previous task.
+	    forms.find({ "task": ""}, function(err, documents) {  
+		var waiting = [];
+		
+		results.forEach(function(item) {
+		    waiting.push({
+			"label": item["patient-name"],
+			"id": item._id
+		    });
+		});
 
-                            var form = state.xml.find("form");
+		WorkflowDispatcher.dispatch({
+		    actionType: "update-waiting-workflows",
+		    waiting: waiting
+		});
+	    });
 
-                            build(views.task, form, name)
-                            
-                            // comps.topWorkflowName.text(node.attr("label"));
-                            // comps.bottomPages.append(
-                            //  $(document.createElement("li"))
-                            //      .addClass("nav-item")
-                            //      .append(
-                            //          $(document.createElement("a"))
-                            //              .addClass("nav-link btn btn-lrg")
-                            //              .attr("href", "#" + node.attr("name"))
-                            //              .text(node.attr("label"))
-                            //      )
-                            // )
+	    // Get complete workflows.
+	    forms.find({ "task": ""}, function(err, results) {  
+		var completed = [];
+		
+		results.forEach(function(item) {
+		    completed.push({
+			"label": item["patient-name"],
+			"id": item._id
+		    });
+		});
 
-                            views.navBottom.css("display", "block");
-                            views.startTasks.css("display", "none");
-                            views.task.css("display", "block");
-                        });
+		WorkflowDispatcher.dispatch({
+		    actionType: "update-completed-workflows",
+		    completed: completed
+		});
+	    });
+	}
+    });
+    // Save form for later without sending to next task.
+    // comps.bottomSave.click(function(e) {
+    // 	var form = document.getElementsByTagName("form");
+    // 	var jsonData = {};
+    // 	var formData = $(form).serializeArray();
 
-                comps.startTasksTaskList.append(button);
-            });
+    // 	$(formData).each(function (i, field) {
+    //         jsonData[field.name] = field.value;
+    // 	});
 
-            views.startIntro.css("display", "none");
-            views.startTasks.css("display", "block");
-        });
+    // 	// Need to append step if we are being submitted.
+	
+    // 	forms.insert(jsonData ,function (err, doc) {
+    // 	    // If successfully inserted, update store.
+    // 	    if(err) {
+    // 		return;
+    // 	    }
+	    
+    // 	    workflowDispatcher.dispatch({ actionType: 'city-update', selectedCity: 'paris' });
+    // 	});
+    // 	// state.db.insert(jsonData ,function (err, doc) { });
+    // });
+
+    // Could stick into state to start. Could think of it as outside that flow.
+    if (localStorage.getItem("workflow:last-task-name") &&
+        localStorage.getItem("workflow:last-task-label"))
+    {
+        comps.startTasksLastTaskName.text(localStorage.getItem("workflow:last-task-label"));
+        comps.startTasksLastTaskName.show();
+    }
+    else {
+        comps.startTasksLastTaskName.hide();
     }
 
     comps.startTasksTaskCollectButton.click(function(e){
@@ -185,7 +286,31 @@
     comps.startIntroContinue.click(function(e){
         readWorkflow(localStorage.getItem("file:last-path"));
     });
-}(jQuery));
+
+    // We could get update every time, but why.
+    WorkflowDispatcher.register(function(payload) {
+	if (payload.actionType === 'new-completed-workflow') {
+	    FormStore.completed.push(payload.workflowName);
+	}
+	else if (payload.actionType === 'new-waiting-workflow') {
+	    FormStore.waiting.push(payload.workflowName);
+	}
+    });
+
+    WorkflowDispatcher.register(function(payload) {
+	if (payload.actionType === 'update-completed-workflow') {
+	    FormStore.completed = payload.completed;
+
+	    // Remake the list
+	}
+	else if (payload.actionType === 'update-waiting-workflow') {
+	    FormStore.completed = payload.completed;
+
+	    // Remake the list
+	}
+    });
+
+}($));
 
 
 
