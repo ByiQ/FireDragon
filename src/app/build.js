@@ -5,22 +5,16 @@ var build = function(parent, node) {
     case "form":
 	// <div class="container">
 	//    <div class="row">
-	var container = $(document.createElement("div"))
-	    .addClass("container");
+	var container = $(
+	    `<div class="container">
+	        <div class="row">
+                   <div class="col">
+                   </div>
+                </div>
+             </div>`
+	);
 
-	container.append(
-	    $(document.createElement("div"))
-		.addClass("row")
-		.append(
-		    $(document.createElement("div"))
-			.addClass("col")
-		));
-	// .append(header)));
-
-	parent
-	    .append(
-		$(document.createElement("form"))
-		    .append(container));
+	parent.append($("<form></form>").append(container));
 	
 	node.find("page").each(function(id){
 	    build(container, $(this));
@@ -28,10 +22,8 @@ var build = function(parent, node) {
 
 	break;
     case "page":
-	var page = $(document.createElement("div"))
-	    .attr("id", node.attr("name"))
-	    .addClass("row");
-
+	var page = $(`<div class="row" id="${node.attr("name")}"></div>`);
+	
 	parent.append(page);
 	
 	node.find("section").each(function(id){
@@ -40,18 +32,15 @@ var build = function(parent, node) {
 
 	break;
     case "section":
-	var sectionRow = $(document.createElement("div"))
-	    .addClass("row");
+	var section = $(`<div class="row"></div>`);
+	var col = $(`<div class="col"></div>`);
 
-	var sectionCol = $(document.createElement("div"))
-	    .addClass("col");
+	section.append(col);
 	
-	sectionRow.append(sectionCol);
-
-	parent.append(sectionRow);
+	parent.append(section);
 	
 	node.find("row").each(function(id){
-	    build(sectionCol, $(this));
+	    build(col, $(this));
 	});
 
 	break;

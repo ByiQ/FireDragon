@@ -4,6 +4,15 @@
 // Define action type payloads in documentation.
 // May wish to move these into App.
 
+var createMenuItem = function(label, id) {
+    var menuitem = $(`<a href="#" class="dropdown-item" data-id="${id}">${label}</a>`)
+        .click(function(e) {
+            alert(e.target.dataset.id);
+        });
+
+    return menuitem;
+}
+
 var Datastore = require('nedb');
 var WorkflowDispatcher = new Flux.Dispatcher();
 
@@ -29,8 +38,8 @@ var FormStore = {
     saved: [],
     
     current: {
-	// If this is set, we're editing a saved form.
-	id: null
+        // If this is set, we're editing a saved form.
+        id: null
     }
 };
 
@@ -95,23 +104,23 @@ var App = (function ($) {
     var gui = require('nw.gui');
 
     gui.Window.get().on('close', function() {
-	if (confirm("Unsaved work will not be saved for you. Are you sure?")) {
-	    // Supposedly unnecessary to close the database.
-	    // Yet,
-	    // You can manually call the compaction function with
-	    // yourDatabase.persistence.compactDatafile().
-	    // The datastore will fire a compaction.done event once compaction is finished.
+        if (confirm("Unsaved work will not be saved for you. Are you sure?")) {
+            // Supposedly unnecessary to close the database.
+            // Yet,
+            // You can manually call the compaction function with
+            // yourDatabase.persistence.compactDatafile().
+            // The datastore will fire a compaction.done event once compaction is finished.
 
             this.close(true); // Don't forget.
-	}
+        }
     });
 
     // Would be useful with a callback, then moved to another file.
     var readWorkflow = function(file) {
         var fs = nw.require('fs');
 
-	// UTF-8 includes Latin 1, so we should be okay here for our audience.
-	// I'm sure we could always detect the character set if it became necessary.
+        // UTF-8 includes Latin 1, so we should be okay here for our audience.
+        // I'm sure we could always detect the character set if it became necessary.
         fs.readFile(file, 'utf8', function(err, txt) {
             if (err) {
                 if(confirm("There was a problem opening the file:\n\n" +
@@ -124,11 +133,11 @@ var App = (function ($) {
                 return;
             }
 
-	    // Would be better as a callback.
+            // Would be better as a callback.
             WorkflowDispatcher.dispatch({
                 actionType: "new-file",
                 file: file,
-		// This will send a jQuery-ized XML document.
+                // This will send a jQuery-ized XML document.
                 xml: $($.parseXML(txt))
             });
         });
@@ -152,8 +161,8 @@ var App = (function ($) {
                 localStorage.setItem("file:last-path", payload.file);
             }
 
-	    // Tell user about their last session if we have the information.
-	    // If the workflow they're using now is different than last time
+            // Tell user about their last session if we have the information.
+            // If the workflow they're using now is different than last time
             if (StateStore.workflow != localStorage.getItem("file:last-workflow-name", StateStore.workflow)) {
                 if (localStorage.getItem("file:last-workflow-name", StateStore.workflow) != null) {
                     alert("Next time you use Dragon, " +
@@ -161,14 +170,14 @@ var App = (function ($) {
                           " will be called " + StateStore.workflow + ".");
                 }
 
-		
+                
                 localStorage.setItem("file:last-workflow-name", StateStore.workflow);
             }
 
-	    // Set workflow name in the jumbotron for the next page.
+            // Set workflow name in the jumbotron for the next page.
             comps.startTasksWorkflowName.text(StateStore.workflow);
 
-	    // Set the workflow name in the top bar.
+            // Set the workflow name in the top bar.
             comps.topWorkflowName.text(StateStore.workflow);
 
             views.startIntro.css("display", "none");
@@ -183,12 +192,9 @@ var App = (function ($) {
                     id: index
                 });
 
-		// Rather obnoxious element building.
-		// Create buttons for selecting the task to do.
-                var button = $(document.createElement("button"))
-                    .attr("type", "button")
-                    .addClass("btn btn-lg")
-                    .text($(task).attr("label"))
+                // Rather obnoxious element building.
+                // Create buttons for selecting the task to do.
+                var button = $(`<button type="button" class="btn btn-lg">${$(task).attr("label")}</button>`)
                     .click(function(e) {
                         WorkflowDispatcher.dispatch({
                             actionType: "select-task",
@@ -199,7 +205,7 @@ var App = (function ($) {
                         });                     
                     });
 
-		// Make the button of the last-used task standout.
+                // Make the button of the last-used task standout.
                 if ($(task).attr("name") == localStorage.getItem("workflow:last-task-name")) {
                     button.addClass("btn-primary");
                 }
@@ -277,12 +283,12 @@ var App = (function ($) {
 
                     WorkflowDispatcher.dispatch({
                         actionType: "update-saved-forms",
-			saved: saved
+                        saved: saved
                     });
                 });
 
                 // Get complete workflows.
-		// Update to get only those completed today.
+                // Update to get only those completed today.
                 StateStore.dbInstance.find({
                     // This task.
                     "task": TaskStore.current.id,
@@ -305,30 +311,24 @@ var App = (function ($) {
                     });
                 });
 
-		// Set last task info.
+                // Set last task info.
                 localStorage.setItem("workflow:last-task-label", payload.label);
                 localStorage.setItem("workflow:last-task-name", payload.name);
 
                 var form = StateStore.xml.find("form");
 
-		// Important. Build the form.
+                // Important. Build the form.
                 build(views.task, form, {});
 
-		// Build page list in bottom nav.
-		// Move somewhere else.
-		form.find("page").each(function(index, page) {
-                    comps.bottomPages.append(
-			$(document.createElement("li"))
-			    .addClass("nav-item")
-			    .append(
-				$(document.createElement("a"))
-				    .addClass("nav-link btn btn-lrg")
-				    .attr("href", "#" + $(page).attr("name"))
-				    .text($(page).attr("label"))
-			    )
-                    )
-		});
-		    
+                // Build page list in bottom nav.
+                // Move somewhere else.
+                form.find("page").each(function(index, page) {
+                    comps.bottomPages.append($(
+                        `<li class="nav-item">
+                            <a class="nav-link btn" href="#${$(page).attr("name")}">${$(page).attr("label")}</a>
+                         </li>`));
+                });
+                    
                 views.navBottom.css("display", "block");
                 views.task.css("display", "block");
             }
@@ -343,8 +343,8 @@ var App = (function ($) {
 
         var newDoc = {};
 
-	// If the form is empty, don't save anything.
-	
+        // If the form is empty, don't save anything.
+        
         $($(form).serializeArray()).each(function (index, item) {
             newDoc[item.name] = item.value;
         });
@@ -353,40 +353,40 @@ var App = (function ($) {
         // Need to append step if we are being submitted.
         newDoc["completed"] = false;
 
-	if (FormStore.current.id) {
-	    // Update form
+        if (FormStore.current.id) {
+            // Update form
             StateStore.dbInstance.update({_id: FormStore.current.id}, newDoc, {}, function (err, doc) {
-		// If successfully inserted, update store.
-		if (err) {
-		    alert("Unable to save the form:\n\n" + err);
-		    
+                // If successfully inserted, update store.
+                if (err) {
+                    alert("Unable to save the form:\n\n" + err);
+                    
                     return;
-		}
+                }
 
-		// We will want to handle the case where the patient name changes.
-		// WorkflowDispatcher.dispatch({
+                // We will want to handle the case where the patient name changes.
+                // WorkflowDispatcher.dispatch({
                 //     actionType: 'new-saved-form', 
                 //     label: newDoc["patient-name"],
                 //     id: doc._id
-		// });
+                // });
             });
-	}
-	else {
+        }
+        else {
             StateStore.dbInstance.insert(newDoc, function (err, doc) {
-		// If successfully inserted, update store.
-		if (err) {
-		    alert("Unable to save the form:\n\n" + err);
-		    
+                // If successfully inserted, update store.
+                if (err) {
+                    alert("Unable to save the form:\n\n" + err);
+                    
                     return;
-		}
+                }
 
-		WorkflowDispatcher.dispatch({
+                WorkflowDispatcher.dispatch({
                     actionType: 'new-saved-form', 
                     label: newDoc["patient-name"],
                     id: doc._id
-		});
+                });
             });
-	}
+        }
     });
 
     // Save form for later without sending to next task.
@@ -395,8 +395,8 @@ var App = (function ($) {
 
         var newDoc = {};
 
-	// If the form is empty, don't save anything.
-	
+        // If the form is empty, don't save anything.
+        
         $($(form).serializeArray()).each(function (index, item) {
             newDoc[item.name] = item.value;
         });
@@ -405,37 +405,37 @@ var App = (function ($) {
 
         newDoc["completed"] = true;
 
-	if (FormStore.current.id) {
-	    // Update form
+        if (FormStore.current.id) {
+            // Update form
             StateStore.dbInstance.update({_id: FormStore.current.id}, newDoc, {}, function (err, doc) {
-		if (err) {
-		    alert("Unable to submit the form:\n\n" + err);
-		    
+                if (err) {
+                    alert("Unable to submit the form:\n\n" + err);
+                    
                     return;
-		}
-		
-		WorkflowDispatcher.dispatch({
+                }
+                
+                WorkflowDispatcher.dispatch({
                     actionType: 'new-completed-form', 
                     label: newDoc["patient-name"],
                     id: doc._id
-		});
+                });
             });
-	}
-	else {
+        }
+        else {
             StateStore.dbInstance.insert(newDoc, function (err, doc) {
-		if (err) {
-		    alert("Unable to save the form:\n\n" + err);
+                if (err) {
+                    alert("Unable to save the form:\n\n" + err);
 
                     return;
-		}
+                }
 
-		WorkflowDispatcher.dispatch({
+                WorkflowDispatcher.dispatch({
                     actionType: 'new-completed-form', 
                     label: newDoc["patient-name"],
                     id: doc._id
-		});
+                });
             });
-	}
+        }
     });
 
     // Could stick into state to start. Could think of it as outside that flow.
@@ -475,94 +475,74 @@ var App = (function ($) {
     // We could get update every time, but why.
     WorkflowDispatcher.register(function(payload) {
         if (payload.actionType === 'new-completed-form') {
-	    FormStore.completed.push({
-		label: payload.label,
-		id: payload.id
-	    });
+            FormStore.completed.push({
+                label: payload.label,
+                id: payload.id
+            });
 
-	    // Clear current form and ID;
-	    // We can rebuild the form or we can clear all the items.
-	    FormStore.current.id = null;
+            // Clear current form and ID;
+            // We can rebuild the form or we can clear all the items.
+            FormStore.current.id = null;
 
-	    var menuitem = $(document.createElement("a"))
-	        .attr("href", "#")
-		.addClass("dropdown-item")
-		.text(payload.label);
-	    
-	    $("#comp-bottom-completed-menu").append(menuitem);
+            $("#comp-bottom-completed-menu")
+                .append(createMenuItem(payload.label, payload.id));
 
-	    // Update badge.
-	    $($("#comp-bottom-completed").find(".badge")[0]).text(FormStore.completed.length);
+            // Update badge.
+            $($("#comp-bottom-completed").find(".badge")[0]).text(FormStore.completed.length);
         }
         else if (payload.actionType === 'new-waiting-form') {
             FormStore.waiting.push(payload.waiting);
         }
-	else if (payload.actionType === 'new-saved-form') {
-	    FormStore.saved.push({
-		label: payload.label,
-		id: payload.id
-	    });
+        else if (payload.actionType === 'new-saved-form') {
+            FormStore.saved.push({
+                label: payload.label,
+                id: payload.id
+            });
 
-	    // Set so we can update the form later.
-	    FormStore.current.id = payload.id;
+            // Set so we can update the form later.
+            FormStore.current.id = payload.id;
 
-	    var menuitem = $(document.createElement("a"))
-	        .attr("href", "#")
-		.addClass("dropdown-item")
-		.text(payload.label);
-	    
-	    $("#comp-bottom-saved-menu").append(menuitem);
+            $("#comp-bottom-saved-menu")
+                .append(createMenuItem(payload.label, payload.id));
 
-	    // Update badge.
-	    $($("#comp-bottom-saved").find(".badge")[0]).text(FormStore.saved.length);
-	}
+            // Update badge.
+            $($("#comp-bottom-saved").find(".badge")[0]).text(FormStore.saved.length);
+        }
     });
 
     WorkflowDispatcher.register(function(payload) {
         if (payload.actionType === 'update-completed-forms') {
             FormStore.completed = payload.completed;
 
-	    $(FormStore.completed).each(function(index, item) {
-		var menuitem = $(document.createElement("a"))
-	            .attr("href", "#")
-		    .addClass("dropdown-item")
-		    .text(item.label);
-		
-		$("#comp-bottom-completed-menu").append(menuitem);
-	    });
+            $(FormStore.completed).each(function(index, item) {
+                $("#comp-bottom-completed-menu")
+                    .append(createMenuItem(item.label, item.id));
+            });
 
-	    // Update badge.
-	    $($("#comp-bottom-completed").find(".badge")[0]).text(FormStore.completed.length);
+            // Update badge.
+            $($("#comp-bottom-completed").find(".badge")[0]).text(FormStore.completed.length);
         }
         else if (payload.actionType === 'update-waiting-forms') {
             FormStore.waiting = payload.waiting;
 
-	    $(FormStore.waiting).each(function(index, item) {
-		var menuitem = $(document.createElement("a"))
-	            .attr("href", "#")
-		    .addClass("dropdown-item")
-		    .text(item.label);
-		
-		$("#comp-bottom-waiting-menu").append(menuitem);
-	    });
+            $(FormStore.waiting).each(function(index, item) {
+                $("#comp-bottom-waiting-menu")
+                    .append(createMenuItem(item.label, item.id));
+            });
 
-	    // Update badge.
-	    $($("#comp-bottom-waiting").find(".badge")[0]).text(FormStore.waiting.length);
+            // Update badge.
+            $($("#comp-bottom-waiting").find(".badge")[0]).text(FormStore.waiting.length);
         }
         else if (payload.actionType === 'update-saved-forms') {
             FormStore.saved = payload.saved;
 
-	    $(FormStore.saved).each(function(index, item) {
-		var menuitem = $(document.createElement("a"))
-	            .attr("href", "#")
-		    .addClass("dropdown-item")
-		    .text(item.label);
-		
-		$("#comp-bottom-saved-menu").append(menuitem);
-	    });
+            $(FormStore.saved).each(function(index, item) {
+                $("#comp-bottom-saved-menu")
+                    .append(createMenuItem(item.label, item.id));
+            });
 
-	    // Update badge.
-	    $($("#comp-bottom-saved").find(".badge")[0]).text(FormStore.saved.length);
+            // Update badge.
+            $($("#comp-bottom-saved").find(".badge")[0]).text(FormStore.saved.length);
         }
     });
 
