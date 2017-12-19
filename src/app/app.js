@@ -15,8 +15,10 @@ var StateStore = {
 
 var TaskStore = {
     tasks: [],
-    label: null,
-    name: null
+    current: {
+	label: null,
+	name: null
+    }
 };
 
 var FormStore = {
@@ -26,9 +28,6 @@ var FormStore = {
     // Keeps track of which city is selected
     completed: []
 };
-
-// Variable for database instance.
-var forms;
 
 var App = (function ($) {
     // After research these performance-oriented shortcuts aren't that useful.
@@ -160,35 +159,17 @@ var App = (function ($) {
 		    name: taskName
 		});
 
-		var button =
-		    $(document.createElement("button"))
+		var button = $(document.createElement("button"))
 		    .attr("type", "button")
 		    .addClass("btn btn-lg")
 		    .addClass(taskName == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary")
 		    .text(taskLabel)
 		    .click(function(e) {
-			localStorage.setItem("workflow:last-task-label", taskLabel);
-			localStorage.setItem("workflow:last-task-name", taskName);
-
-			var form = StateStore.xml.find("form");
-
-			build(views.task, form, name);
-			
-			// comps.topWorkflowName.text(node.attr("label"));
-			// comps.bottomPages.append(
-			//  $(document.createElement("li"))
-			//      .addClass("nav-item")
-			//      .append(
-			//          $(document.createElement("a"))
-			//              .addClass("nav-link btn btn-lrg")
-			//              .attr("href", "#" + node.attr("name"))
-			//              .text(node.attr("label"))
-			//      )
-			// )
-
-			views.navBottom.css("display", "block");
-			views.startTasks.css("display", "none");
-			views.task.css("display", "block");
+			WorkflowDispatcher.dispatch({
+			    actionType: "select-task",
+			    label: taskLabel,
+			    name: taskName
+			});			
 		    });
 
 		comps.startTasksTaskList.append(button);
@@ -200,62 +181,93 @@ var App = (function ($) {
 	if (payload.actionType === 'select-task') {
 	    // Get waiting workflows.
 	    // These are started, but incomplete forms, and those waiting from a previous task.
-	    forms.find({ "task": ""}, function(err, documents) {  
-		var waiting = [];
+	    // StateStore.dbInstance.find({ "task": ""}, function(err, documents) {  
+	    // 	var waiting = [];
 		
-		results.forEach(function(item) {
-		    waiting.push({
-			"label": item["patient-name"],
-			"id": item._id
-		    });
-		});
+	    // 	results.forEach(function(item) {
+	    // 	    waiting.push({
+	    // 		"label": item["patient-name"],
+	    // 		"id": item._id
+	    // 	    });
+	    // 	});
 
-		WorkflowDispatcher.dispatch({
-		    actionType: "update-waiting-workflows",
-		    waiting: waiting
-		});
-	    });
+	    // 	WorkflowDispatcher.dispatch({
+	    // 	    actionType: "update-waiting-forms",
+	    // 	    waiting: waiting
+	    // 	});
+	    // });
 
-	    // Get complete workflows.
-	    forms.find({ "task": ""}, function(err, results) {  
-		var completed = [];
+	    // // Get complete workflows.
+	    // StateStore.dbInstance.find({ "task": ""}, function(err, results) {  
+	    // 	var completed = [];
 		
-		results.forEach(function(item) {
-		    completed.push({
-			"label": item["patient-name"],
-			"id": item._id
-		    });
-		});
+	    // 	results.forEach(function(item) {
+	    // 	    completed.push({
+	    // 		"label": item["patient-name"],
+	    // 		"id": item._id
+	    // 	    });
+	    // 	});
 
-		WorkflowDispatcher.dispatch({
-		    actionType: "update-completed-workflows",
-		    completed: completed
-		});
-	    });
+	    // 	WorkflowDispatcher.dispatch({
+	    // 	    actionType: "update-completed-forms",
+	    // 	    completed: completed
+	    // 	});
+	    // });
+
+	    localStorage.setItem("workflow:last-task-label", payload.label);
+	    localStorage.setItem("workflow:last-task-name", payload.name);
+
+	    var form = StateStore.xml.find("form");
+
+	    build(views.task, form, name);
+			
+	    // comps.topWorkflowName.text(node.attr("label"));
+	    // comps.bottomPages.append(
+	    //  $(document.createElement("li"))
+	    //      .addClass("nav-item")
+	    //      .append(
+	    //          $(document.createElement("a"))
+	    //              .addClass("nav-link btn btn-lrg")
+	    //              .attr("href", "#" + node.attr("name"))
+	    //              .text(node.attr("label"))
+	    //      )
+	    // )
+
+	    views.navBottom.css("display", "block");
+	    views.startTasks.css("display", "none");
+	    views.task.css("display", "block");
 	}
     });
+    
     // Save form for later without sending to next task.
-    // comps.bottomSave.click(function(e) {
-    // 	var form = document.getElementsByTagName("form");
-    // 	var jsonData = {};
-    // 	var formData = $(form).serializeArray();
+    comps.bottomSave.click(function(e) {
+    	var form = document.getElementsByTagName("form");
+    	var jsonData = {};
+    	var formData = $(form).serializeArray();
 
-    // 	$(formData).each(function (i, field) {
-    //         jsonData[field.name] = field.value;
-    // 	});
+    	$(formData).each(function (i, field) {
+            jsonData[field.name] = field.value;
+    	});
 
-    // 	// Need to append step if we are being submitted.
+	jsonData["task"] = "";
+    	// Need to append step if we are being submitted.
 	
-    // 	forms.insert(jsonData ,function (err, doc) {
-    // 	    // If successfully inserted, update store.
-    // 	    if(err) {
-    // 		return;
-    // 	    }
+    	StateStore.dbInstance.insert(jsonData ,function (err, doc) {
+    	    // If successfully inserted, update store.
+    	    if(err) {
+    		return;
+    	    }
 	    
-    // 	    workflowDispatcher.dispatch({ actionType: 'city-update', selectedCity: 'paris' });
-    // 	});
-    // 	// state.db.insert(jsonData ,function (err, doc) { });
-    // });
+    	    WorkflowDispatcher.dispatch({
+		actionType: 'new-waiting-form',
+		label: jsonData["patient-name"],
+	        id: doc._id
+	    });
+
+	    alert("did it");
+    	});
+    	// state.db.insert(jsonData ,function (err, doc) { });
+    });
 
     // Could stick into state to start. Could think of it as outside that flow.
     if (localStorage.getItem("workflow:last-task-name") &&
@@ -289,21 +301,23 @@ var App = (function ($) {
 
     // We could get update every time, but why.
     WorkflowDispatcher.register(function(payload) {
-	if (payload.actionType === 'new-completed-workflow') {
+	if (payload.actionType === 'new-completed-form') {
 	    FormStore.completed.push(payload.workflowName);
 	}
-	else if (payload.actionType === 'new-waiting-workflow') {
+	else if (payload.actionType === 'new-waiting-form') {
 	    FormStore.waiting.push(payload.workflowName);
+
+	    
 	}
     });
 
     WorkflowDispatcher.register(function(payload) {
-	if (payload.actionType === 'update-completed-workflow') {
+	if (payload.actionType === 'update-completed-forms') {
 	    FormStore.completed = payload.completed;
 
 	    // Remake the list
 	}
-	else if (payload.actionType === 'update-waiting-workflow') {
+	else if (payload.actionType === 'update-waiting-forms') {
 	    FormStore.completed = payload.completed;
 
 	    // Remake the list
