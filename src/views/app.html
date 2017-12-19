@@ -40,7 +40,7 @@
      <div id="view-start-intro">
        <div class="jumbotron">
          <div class="container">
-           <h1 class="display-3">Welcome!</h1>
+           <h1 class="display-4">Welcome!</h1>
            <p id="comp-start-intro-firsttime">Open a workflow to begin.</p>
            <p id="comp-start-intro-not-firsttime">Last time you were here you were using the <strong id="comp-start-intro-last-workflow-name"></strong> workflow.<br />
              Click <strong>Continue &raquo</strong> to keep using it, or click <strong>Open</strong>.
@@ -58,7 +58,7 @@
      <div id="view-start-tasks" style="display: none;">
        <div class="jumbotron">
          <div class="container">
-           <h2 class="display-3" id="comp-start-tasks-workflow-name"></h2>
+           <h1 class="display-3" id="comp-start-tasks-workflow-name"></h1>
            <p id="comp-start-tasks-last-task">You previously were doing <strong id="comp-start-tasks-last-task-name"></strong>.</p>
            <p>Choose a task to start.</p>
            <p id="comp-start-tasks-task-list"></p>
@@ -74,23 +74,40 @@
      <div id="view-collect" style="display: none;">
        <div class="jumbotron">
          <div class="container">
-           <h1 class="display-3">Collect Data</h1>
+	   <h1 class="display-3">Collect Data</h1>
+	   <!-- <p id="comp-collect-notice"><strong>There are forms in-progress that will not be collected.</strong></p> -->
+           
            <p id="comp-collect-intro-firsttime">Data has not been collected for this workflow yet.</p>
            <p id="comp-collect-intro-not-firsttime">Data has been exported through <strong id="comp-collect-intro-last-collection-date"></strong>.</p>
-           <p>
-             <!-- Export since last collection. -->
-             <a class="btn btn-primary btn-lg" id="comp-collect-since-last" href="#" role="button">Collect From</a><br />
-
-             <!-- Export date range. -->
-             Start date: <input type="datetime" name="comp-collect-range-start-date" id="comp-collect-range-start-date" /><br />
-             End date: <input type="datetime" name="comp-collect-range-end-date" id="comp-collect-range-start-date" /><br />
-             <a class="btn btn-primary btn-lg" id="comp-collect-range-button" href="#" role="button">Collect</a><br />
-             
-             <!-- Export all data. -->
-             <a class="btn btn-primary btn-lg" id="comp-collect-all-button" href="#" role="button">Since Beginning Of Time</a>
-           </p>
+           <p>What would you like to collect?</p>
 
            <input type="file" id="comp-start-intro-file" accept=".xml" style="display: none;">
+
+	   <div class="form-check">
+	     <label class="form-check-label">
+	       <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-through">
+	       All completed forms since last collection through 
+	       <input type="date" name="comp-collect-through-date" id="comp-collect-through-date">
+	     </label>
+	   </div>
+
+	   <div class="form-check">
+	     <label class="form-check-label">
+	       <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-range">
+	       Forms complete between
+	       <input type="date" name="comp-collect-range-start-date" id="comp-collect-range-start-date">
+	       and
+	       <input type="date" name="comp-collect-range-end-date" id="comp-collect-range-end-date">.
+	     </label>
+	   </div>
+
+	   <div class="form-check">
+	     <label class="form-check-label">
+	       <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-everything">
+	       Every completed form since the beginning of time.
+	     </label>
+	   </div>
+	   
          </div>
        </div>
      </div>
@@ -100,13 +117,18 @@
      <div class="collapse navbar-collapse" id="navbarCollapse">
        <ul class="navbar-nav mr-auto">
          <li class="nav-item dropup">
-           <a class="nav-link dropdown-toggle" id="dropdown10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Waiting <span class="badge badge-danger">2</span></a>
-           <div class="dropdown-menu">
+           <a class="nav-link dropdown-toggle" id="comp-bottom-waiting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Waiting <span class="badge badge-danger"></span></a>
+           <div class="dropdown-menu" id="comp-bottom-waiting-menu">
            </div>
          </li>
          <li class="nav-item dropup">
-           <a class="nav-link dropdown-toggle" id="dropdown20" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Completed <span class="badge badge-success">3</span></a>
-           <div class="dropdown-menu">
+           <a class="nav-link dropdown-toggle" id="comp-bottom-saved" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">In-Progress <span class="badge badge-warning"></span></a>
+           <div class="dropdown-menu" id="comp-bottom-saved-menu">
+           </div>
+         </li>
+         <li class="nav-item dropup">
+           <a class="nav-link dropdown-toggle" id="comp-bottom-completed" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Completed <span class="badge badge-success"></span></a>
+           <div class="dropdown-menu" id="comp-bottom-completed-menu">
            </div>
          </li>
          <li class="nav-item">
@@ -115,9 +137,8 @@
            </ul>
          </li>
        </ul>
-
-       <button class="btn btn-success" type="button" id="comp-bottom-save">Save</button>
-       <button class="btn btn-success" type="button" id="comp-bottom-submit">Submit</button>
+       <button class="btn btn-secondary" type="button" id="comp-bottom-save">Save For Later</button>&nbsp;
+       <button class="btn btn-primary" type="button" id="comp-bottom-submit">Finalize</button>
      </div>
    </nav>
 

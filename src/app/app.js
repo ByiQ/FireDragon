@@ -16,17 +16,21 @@ var StateStore = {
 var TaskStore = {
     tasks: [],
     current: {
-	label: null,
-	name: null
+        label: null,
+        name: null,
+        id: null
     }
 };
 
 var FormStore = {
-    // Keeps track of which country is selected
     waiting: [],
-
-    // Keeps track of which city is selected
-    completed: []
+    completed: [],
+    saved: [],
+    
+    current: {
+	// If this is set, we're editing a saved form.
+	id: null
+    }
 };
 
 var App = (function ($) {
@@ -37,7 +41,7 @@ var App = (function ($) {
         startIntro: $("#view-start-intro"),
         startTasks: $("#view-start-tasks"),
         task:       $("#view-task"),
-	collect:    $("#view-collect"),
+        collect:    $("#view-collect"),
         navTop:     $("#view-top"),
         navBottom:  $("#view-bottom")
     };
@@ -54,19 +58,22 @@ var App = (function ($) {
         startTasksLastTask: $("#comp-start-tasks-last-task"),
         startTasksLastTaskName: $("#comp-start-tasks-last-task-name"),
         startTasksTaskList: $("#comp-start-tasks-task-list"),
-	startTasksTaskCollectButton: $("#comp-start-tasks-task-collect-button"),
+        startTasksTaskCollectButton: $("#comp-start-tasks-task-collect-button"),
         bottomPages: $("#comp-bottom-pages"),
-	collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
-	collectIntroNotFirstTime: $("#comp-collect-intro-not-firsttime"),
-	collectIntroLastCollectionDate: $("#comp-collect-intro-last-collection-date"),
-	collectSinceLast: $("#comp-collect-since-last"),
-	collectRangeStartDate: $("#comp-collect-range-start-date"),
-	collectRangeEndDate: $("#comp-collect-range-end-date"),
-	collectRangeButton: $("#comp-collect-range-button"),
-	collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
-	collectAllButton: $("#comp-collect-all-button"),
-	bottomSave: $("#comp-bottom-save"),
-	bottomSubmit: $("#comp-bottom-submit")
+        collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
+        collectIntroNotFirstTime: $("#comp-collect-intro-not-firsttime"),
+        collectIntroLastCollectionDate: $("#comp-collect-intro-last-collection-date"),
+        collectSinceLast: $("#comp-collect-since-last"),
+        collectRangeStartDate: $("#comp-collect-range-start-date"),
+        collectRangeEndDate: $("#comp-collect-range-end-date"),
+        collectRangeButton: $("#comp-collect-range-button"),
+        collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
+        collectAllButton: $("#comp-collect-all-button"),
+        bottomSave: $("#comp-bottom-save"),
+        bottomSubmit: $("#comp-bottom-submit"),
+        bottomWaiting: $("#comp-bottom-waiting"),
+        bottomInProgress: $("#comp-bottom-inprogress"),
+        bottomCompleted: $("#comp-bottom-completed"),
     };
 
     
@@ -93,180 +100,336 @@ var App = (function ($) {
     //  }
     // });
 
+    // Would be useful with a callback, then moved to another file.
     var readWorkflow = function(file) {
         var fs = nw.require('fs');
 
+	// UTF-8 includes Latin 1, so we should be okay here for our audience.
+	// I'm sure we could always detect the character set if it became necessary.
         fs.readFile(file, 'utf8', function(err, txt) {
             if (err) {
                 if(confirm("There was a problem opening the file:\n\n" +
-			   file + "\n\nWould you like to try a different file?"))
-		{
-		    // Sufficient. More abstract event not necessary at this moment.
+                           file + "\n\nWould you like to try a different file?"))
+                {
+                    // Sufficient. More abstract event not necessary at this moment.
                     comps.startIntroFile.trigger("click");
                 }
                 
                 return;
             }
 
-	    WorkflowDispatcher.dispatch({
-		actionType: "new-file",
-		file: file,
-		xml: $($.parseXML(txt))
-	    });
-	});
+	    // Would be better as a callback.
+            WorkflowDispatcher.dispatch({
+                actionType: "new-file",
+                file: file,
+		// This will send a jQuery-ized XML document.
+                xml: $($.parseXML(txt))
+            });
+        });
     }
 
     WorkflowDispatcher.register(function(payload) {
-	if (payload.actionType === 'new-file') {
-	    StateStore.xml = payload.xml;
+        if (payload.actionType === 'new-file') {
+            StateStore.xml = payload.xml;
 
-	    // If the document is valid, this should not cause errors.
-            StateStore.workflow = StateStore.xml.find("properties").find("property[name=workflow-name]").text();
+            // If the document is valid, this should not cause errors.
+            StateStore.workflow = StateStore.xml.find("workflow").attr("label");
 
-	    // Same.
+            // Same.
             StateStore.dbPath = StateStore.xml.find("properties").find("property[name=database-path]").text();
 
-	    // If an old database is open it should be closed. 
-	    StateStore.dbInstance = new Datastore({ filename: StateStore.dbPath, autoload: true });
-	    // Unneeded dispatching.
-	    if (payload.file != localStorage.getItem("file:last-path", payload.file)){
-		localStorage.setItem("file:last-path", payload.file);
-	    }
+            // If an old database is open it should be closed. 
+            StateStore.dbInstance = new Datastore({ filename: StateStore.dbPath, autoload: true });
 
-	    if (StateStore.workflow != localStorage.getItem("file:last-workflow-name", StateStore.workflow)) {
-		if (localStorage.getItem("file:last-workflow-name", StateStore.workflow) != null) {
-		    alert("Next time you use Dragon, " +
-			  localStorage.getItem("file:last-workflow-name", StateStore.workflow) +
-			  " will be called " + StateStore.workflow + ".");
-		}
+            // Unneeded dispatching.
+            if (payload.file != localStorage.getItem("file:last-path", payload.file)){
+                localStorage.setItem("file:last-path", payload.file);
+            }
+
+	    // Tell user about their last session if we have the information.
+	    // If the workflow they're using now is different than last time
+            if (StateStore.workflow != localStorage.getItem("file:last-workflow-name", StateStore.workflow)) {
+                if (localStorage.getItem("file:last-workflow-name", StateStore.workflow) != null) {
+                    alert("Next time you use Dragon, " +
+                          localStorage.getItem("file:last-workflow-name", StateStore.workflow) +
+                          " will be called " + StateStore.workflow + ".");
+                }
+
 		
-		localStorage.setItem("file:last-workflow-name", StateStore.workflow);
-	    }
+                localStorage.setItem("file:last-workflow-name", StateStore.workflow);
+            }
 
-	    comps.startTasksWorkflowName.text(StateStore.workflow);
+	    // Set workflow name in the jumbotron for the next page.
+            comps.startTasksWorkflowName.text(StateStore.workflow);
 
-	    views.startIntro.css("display", "none");
-	    views.startTasks.css("display", "block");
+	    // Set the workflow name in the top bar.
+            comps.topWorkflowName.text(StateStore.workflow);
 
-	    var tasks = StateStore.xml.find("task");
+            views.startIntro.css("display", "none");
+            views.startTasks.css("display", "block");
 
-	    tasks.each(function(task) {
-		var taskLabel = $(this).attr("label");
-		var taskName = $(this).attr("name");
+            var tasks = StateStore.xml.find("task");
 
-		TaskStore.tasks.push({
-		    label: taskLabel,
-		    name: taskName
-		});
+            tasks.each(function(index, task) {
+                TaskStore.tasks.push({
+                    label: $(task).attr("label"),
+                    name: $(task).attr("name"),
+                    id: index
+                });
 
-		var button = $(document.createElement("button"))
-		    .attr("type", "button")
-		    .addClass("btn btn-lg")
-		    .addClass(taskName == localStorage.getItem("workflow:last-task-name") ? "btn-primary" : "btn-secondary")
-		    .text(taskLabel)
-		    .click(function(e) {
-			WorkflowDispatcher.dispatch({
-			    actionType: "select-task",
-			    label: taskLabel,
-			    name: taskName
-			});			
-		    });
+		// Rather obnoxious element building.
+		// Create buttons for selecting the task to do.
+                var button = $(document.createElement("button"))
+                    .attr("type", "button")
+                    .addClass("btn btn-lg")
+                    .text($(task).attr("label"))
+                    .click(function(e) {
+                        WorkflowDispatcher.dispatch({
+                            actionType: "select-task",
+                            label: $(task).attr("label"),
+                            name: $(task).attr("name"),
+                            id: index,
+                            collect: false
+                        });                     
+                    });
 
-		comps.startTasksTaskList.append(button);
-	    });
-	}
+		// Make the button of the last-used task standout.
+                if ($(task).attr("name") == localStorage.getItem("workflow:last-task-name")) {
+                    button.addClass("btn-primary");
+                }
+                else {
+                    button.addClass("btn-secondary");
+                }
+                
+                comps.startTasksTaskList.append(button);
+            });
+        }
     });
 
     WorkflowDispatcher.register(function(payload) {
-	if (payload.actionType === 'select-task') {
-	    // Get waiting workflows.
-	    // These are started, but incomplete forms, and those waiting from a previous task.
-	    // StateStore.dbInstance.find({ "task": ""}, function(err, documents) {  
-	    // 	var waiting = [];
-		
-	    // 	results.forEach(function(item) {
-	    // 	    waiting.push({
-	    // 		"label": item["patient-name"],
-	    // 		"id": item._id
-	    // 	    });
-	    // 	});
+        if (payload.actionType === 'select-task') {
+            if (payload.collect) {
+                views.collect.css("display", "block");
 
-	    // 	WorkflowDispatcher.dispatch({
-	    // 	    actionType: "update-waiting-forms",
-	    // 	    waiting: waiting
-	    // 	});
-	    // });
+            }
+            else {
+                // Store selected task.
+                TaskStore.current = {
+                    label: payload.label,
+                    name: payload.name,
+                    id: payload.id
+                };
 
-	    // // Get complete workflows.
-	    // StateStore.dbInstance.find({ "task": ""}, function(err, results) {  
-	    // 	var completed = [];
-		
-	    // 	results.forEach(function(item) {
-	    // 	    completed.push({
-	    // 		"label": item["patient-name"],
-	    // 		"id": item._id
-	    // 	    });
-	    // 	});
+                // Get waiting forms.
+                // These are started, but incomplete forms, and those completed in a previous task.
+                // If this is the first task then we will skip this since there are no
+                // previous tasks to create waiting stuff. We should hide the control then.
+                if (TaskStore.current.id == 0) {
+                    comps.bottomWaiting.css("display", "none");
+                }
+                else {
+                    StateStore.dbInstance.find({
+                        // Scary string conversion to integer.
+                        "task": TaskStore.current.id - 1,
+                        // Get incomplete forms.
+                        "completed": true
+                    },
+                    function(err, results) {
+                        var waiting = [];
+                
+                        results.forEach(function(item) {
+                            waiting.push({
+                                "label": item["patient-name"],
+                                "id": item._id
+                            });
+                        });
+                        
+                        WorkflowDispatcher.dispatch({
+                            actionType: "update-waiting-forms",
+                            waiting: waiting
+                        });
+                    });
+                }
 
-	    // 	WorkflowDispatcher.dispatch({
-	    // 	    actionType: "update-completed-forms",
-	    // 	    completed: completed
-	    // 	});
-	    // });
+                // Get saved forms.
+                // These are started, but incomplete forms, and those completed in a previous task.
+                StateStore.dbInstance.find({
+                    // This task.
+                    "task": TaskStore.current.id,
+                    // Get incomplete forms.
+                    "completed": false
+                },
+                function(err, results) {  
+                    var saved = [];
+                
+                    results.forEach(function(item) {
+                        saved.push({
+                            "label": item["patient-name"],
+                            "id": item._id
+                        });
+                    });
 
-	    localStorage.setItem("workflow:last-task-label", payload.label);
-	    localStorage.setItem("workflow:last-task-name", payload.name);
+                    WorkflowDispatcher.dispatch({
+                        actionType: "update-saved-forms",
+			saved: saved
+                    });
+                });
 
-	    var form = StateStore.xml.find("form");
+                // Get complete workflows.
+		// Update to get only those completed today.
+                StateStore.dbInstance.find({
+                    // This task.
+                    "task": TaskStore.current.id,
+                    // Get incomplete forms.
+                    "completed": true
+                },
+                function(err, results) {  
+                    var completed = [];
+                    
+                    results.forEach(function(item) {
+                        completed.push({
+                            "label": item["patient-name"],
+                            "id": item._id
+                        });
+                    });
+                    
+                    WorkflowDispatcher.dispatch({
+                        actionType: "update-completed-forms",
+                        completed: completed
+                    });
+                });
 
-	    build(views.task, form, name);
-			
-	    // comps.topWorkflowName.text(node.attr("label"));
-	    // comps.bottomPages.append(
-	    //  $(document.createElement("li"))
-	    //      .addClass("nav-item")
-	    //      .append(
-	    //          $(document.createElement("a"))
-	    //              .addClass("nav-link btn btn-lrg")
-	    //              .attr("href", "#" + node.attr("name"))
-	    //              .text(node.attr("label"))
-	    //      )
-	    // )
+		// Set last task info.
+                localStorage.setItem("workflow:last-task-label", payload.label);
+                localStorage.setItem("workflow:last-task-name", payload.name);
 
-	    views.navBottom.css("display", "block");
-	    views.startTasks.css("display", "none");
-	    views.task.css("display", "block");
-	}
+                var form = StateStore.xml.find("form");
+
+		// Important. Build the form.
+                build(views.task, form, name);
+
+		// Build page list in bottom nav.
+		// Move somewhere else.
+		form.find("page").each(function(index, page) {
+                    comps.bottomPages.append(
+			$(document.createElement("li"))
+			    .addClass("nav-item")
+			    .append(
+				$(document.createElement("a"))
+				    .addClass("nav-link btn btn-lrg")
+				    .attr("href", "#" + $(page).attr("name"))
+				    .text($(page).attr("label"))
+			    )
+                    )
+		});
+		    
+                views.navBottom.css("display", "block");
+                views.task.css("display", "block");
+            }
+
+            views.startTasks.css("display", "none");
+        }
     });
     
     // Save form for later without sending to next task.
     comps.bottomSave.click(function(e) {
-    	var form = document.getElementsByTagName("form");
-    	var jsonData = {};
-    	var formData = $(form).serializeArray();
+        var form = document.getElementsByTagName("form");
 
-    	$(formData).each(function (i, field) {
-            jsonData[field.name] = field.value;
-    	});
+        var newDoc = {};
 
-	jsonData["task"] = "";
-    	// Need to append step if we are being submitted.
+	// If the form is empty, don't save anything.
 	
-    	StateStore.dbInstance.insert(jsonData ,function (err, doc) {
-    	    // If successfully inserted, update store.
-    	    if(err) {
-    		return;
-    	    }
-	    
-    	    WorkflowDispatcher.dispatch({
-		actionType: 'new-waiting-form',
-		label: jsonData["patient-name"],
-	        id: doc._id
-	    });
+        $($(form).serializeArray()).each(function (index, item) {
+            newDoc[item.name] = item.value;
+        });
 
-	    alert("did it");
-    	});
-    	// state.db.insert(jsonData ,function (err, doc) { });
+        newDoc["task"] = TaskStore.current.id;
+        // Need to append step if we are being submitted.
+        newDoc["completed"] = false;
+
+	if (FormStore.current.id) {
+	    // Update form
+            StateStore.dbInstance.update({_id: FormStore.current.id}, newDoc, {}, function (err, doc) {
+		// If successfully inserted, update store.
+		if (err) {
+		    alert("Unable to save the form:\n\n" + err);
+		    
+                    return;
+		}
+
+		// We will want to handle the case where the patient name changes.
+		// WorkflowDispatcher.dispatch({
+                //     actionType: 'new-saved-form', 
+                //     label: newDoc["patient-name"],
+                //     id: doc._id
+		// });
+            });
+	}
+	else {
+            StateStore.dbInstance.insert(newDoc, function (err, doc) {
+		// If successfully inserted, update store.
+		if (err) {
+		    alert("Unable to save the form:\n\n" + err);
+		    
+                    return;
+		}
+
+		WorkflowDispatcher.dispatch({
+                    actionType: 'new-saved-form', 
+                    label: newDoc["patient-name"],
+                    id: doc._id
+		});
+            });
+	}
+    });
+
+    // Save form for later without sending to next task.
+    comps.bottomSubmit.click(function(e) {
+        var form = document.getElementsByTagName("form");
+
+        var newDoc = {};
+
+	// If the form is empty, don't save anything.
+	
+        $($(form).serializeArray()).each(function (index, item) {
+            newDoc[item.name] = item.value;
+        });
+
+        newDoc["task"] = TaskStore.current.id;
+
+        newDoc["completed"] = true;
+
+	if (FormStore.current.id) {
+	    // Update form
+            StateStore.dbInstance.update({_id: FormStore.current.id}, newDoc, {}, function (err, doc) {
+		if (err) {
+		    alert("Unable to submit the form:\n\n" + err);
+		    
+                    return;
+		}
+		
+		WorkflowDispatcher.dispatch({
+                    actionType: 'new-completed-form', 
+                    label: newDoc["patient-name"],
+                    id: doc._id
+		});
+            });
+	}
+	else {
+            StateStore.dbInstance.insert(newDoc, function (err, doc) {
+		if (err) {
+		    alert("Unable to save the form:\n\n" + err);
+
+                    return;
+		}
+
+		WorkflowDispatcher.dispatch({
+                    actionType: 'new-completed-form', 
+                    label: newDoc["patient-name"],
+                    id: doc._id
+		});
+            });
+	}
     });
 
     // Could stick into state to start. Could think of it as outside that flow.
@@ -281,8 +444,12 @@ var App = (function ($) {
     }
 
     comps.startTasksTaskCollectButton.click(function(e){
-	views.collect.css("display", "block");
-	views.startTasks.css("display", "none");
+        WorkflowDispatcher.dispatch({
+            actionType: "select-task",
+            label: "",
+            name: "",
+            collect: true
+        });
     });
 
     comps.startIntroFile.change(function(e){
@@ -301,67 +468,101 @@ var App = (function ($) {
 
     // We could get update every time, but why.
     WorkflowDispatcher.register(function(payload) {
-	if (payload.actionType === 'new-completed-form') {
-	    FormStore.completed.push(payload.workflowName);
-	}
-	else if (payload.actionType === 'new-waiting-form') {
-	    FormStore.waiting.push(payload.workflowName);
+        if (payload.actionType === 'new-completed-form') {
+	    FormStore.completed.push({
+		label: payload.label,
+		id: payload.id
+	    });
 
+	    // Clear current form and ID;
+	    // We can rebuild the form or we can clear all the items.
+	    FormStore.current.id = null;
+
+	    var menuitem = $(document.createElement("a"))
+	        .attr("href", "#")
+		.addClass("dropdown-item")
+		.text(payload.label);
 	    
+	    $("#comp-bottom-completed-menu").append(menuitem);
+
+	    // Update badge.
+	    $($("#comp-bottom-completed").find(".badge")[0]).text(FormStore.completed.length);
+        }
+        else if (payload.actionType === 'new-waiting-form') {
+            FormStore.waiting.push(payload.waiting);
+        }
+	else if (payload.actionType === 'new-saved-form') {
+	    FormStore.saved.push({
+		label: payload.label,
+		id: payload.id
+	    });
+
+	    FormStore.current.id = payload.id;
+
+	    var menuitem = $(document.createElement("a"))
+	        .attr("href", "#")
+		.addClass("dropdown-item")
+		.text(payload.label);
+	    
+	    $("#comp-bottom-saved-menu").append(menuitem);
+
+	    // Update badge.
+	    $($("#comp-bottom-saved").find(".badge")[0]).text(FormStore.saved.length);
 	}
     });
 
     WorkflowDispatcher.register(function(payload) {
-	if (payload.actionType === 'update-completed-forms') {
-	    FormStore.completed = payload.completed;
+        if (payload.actionType === 'update-completed-forms') {
+            FormStore.completed = payload.completed;
 
-	    // Remake the list
-	}
-	else if (payload.actionType === 'update-waiting-forms') {
-	    FormStore.completed = payload.completed;
+	    $(FormStore.completed).each(function(index, item) {
+		var menuitem = $(document.createElement("a"))
+	            .attr("href", "#")
+		    .addClass("dropdown-item")
+		    .text(item.label);
+		
+		$("#comp-bottom-completed-menu").append(menuitem);
+	    });
 
-	    // Remake the list
-	}
+	    // Update badge.
+	    $($("#comp-bottom-completed").find(".badge")[0]).text(FormStore.completed.length);
+        }
+        else if (payload.actionType === 'update-waiting-forms') {
+            FormStore.waiting = payload.waiting;
+
+	    $(FormStore.waiting).each(function(index, item) {
+		var menuitem = $(document.createElement("a"))
+	            .attr("href", "#")
+		    .addClass("dropdown-item")
+		    .text(item.label);
+		
+		$("#comp-bottom-waiting-menu").append(menuitem);
+	    });
+
+	    // Update badge.
+	    $($("#comp-bottom-waiting").find(".badge")[0]).text(FormStore.waiting.length);
+        }
+        else if (payload.actionType === 'update-saved-forms') {
+            FormStore.saved = payload.saved;
+
+	    $(FormStore.saved).each(function(index, item) {
+		var menuitem = $(document.createElement("a"))
+	            .attr("href", "#")
+		    .addClass("dropdown-item")
+		    .text(item.label);
+		
+		$("#comp-bottom-saved-menu").append(menuitem);
+	    });
+
+	    // Update badge.
+	    $($("#comp-bottom-saved").find(".badge")[0]).text(FormStore.saved.length);
+        }
     });
 
+    // Add handler to refresh each of the lists when they are clicked.
+    // Add handler to poll for new items with frequency.
 }($));
 
-
-
-// window.onload = function () {
-//     var fileInput = document.getElementById('fileInput');
-//     var fileDisplayArea = document.getElementById('fileDisplayArea');
-
-//     fileInput.addEventListener('change', function(e) {
-//         var file = fileInput.files[0];
-//         var textType = /text.*/;
-
-//         if(file.type.match(textType)) {
-//             var reader = new FileReader();
-
-//             reader.onload = function (e) {
-//                 fileDisplayArea.innerText = reader.result;
-//             };
-//             reader.readAsText(file);
-//         } else {
-//             fileDisplayArea.innerText = "File not supported";
-//         }
-//     });
-//     };
-
-// function allowDrop(ev) {
-//     ev.preventDefault();
-// }
-
-// function drag(ev) {
-//     ev.dataTransfer.setData("text", ev.target.id);
-// }
-
-// function drop(ev) {
-//     ev.preventDefault();
-//     var data = ev.dataTransfer.getData("text");
-//     ev.target.appendChild(document.getElementById(data));
-// }
-// function newDoc() {
-//     window.location.assign('./FormPage.html');
-// }
+// Repopulating a form.
+// We will have a list of form element names that correspond to database document properties.
+// We could provide an object to build.
