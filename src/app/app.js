@@ -2,6 +2,7 @@
 // Flux diagram.
 // Make sure to register everything before dispatching.
 // Define action type payloads in documentation.
+// May wish to move these into App.
 
 var Datastore = require('nedb');
 var WorkflowDispatcher = new Flux.Dispatcher();
@@ -93,12 +94,17 @@ var App = (function ($) {
 
     var gui = require('nw.gui');
 
-    // gui.Window.get().on('close', function() {
-    //  // operations
-    //  if(confirm("Are you sure?")) {
-    //      this.close(true); // don't forget this line, else you can't close it (I tried)
-    //  }
-    // });
+    gui.Window.get().on('close', function() {
+	if (confirm("Unsaved work will not be saved for you. Are you sure?")) {
+	    // Supposedly unnecessary to close the database.
+	    // Yet,
+	    // You can manually call the compaction function with
+	    // yourDatabase.persistence.compactDatafile().
+	    // The datastore will fire a compaction.done event once compaction is finished.
+
+            this.close(true); // Don't forget.
+	}
+    });
 
     // Would be useful with a callback, then moved to another file.
     var readWorkflow = function(file) {
@@ -306,7 +312,7 @@ var App = (function ($) {
                 var form = StateStore.xml.find("form");
 
 		// Important. Build the form.
-                build(views.task, form, name);
+                build(views.task, form, {});
 
 		// Build page list in bottom nav.
 		// Move somewhere else.
@@ -497,6 +503,7 @@ var App = (function ($) {
 		id: payload.id
 	    });
 
+	    // Set so we can update the form later.
 	    FormStore.current.id = payload.id;
 
 	    var menuitem = $(document.createElement("a"))

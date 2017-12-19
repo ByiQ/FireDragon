@@ -189,8 +189,8 @@ var build = function(parent, node) {
 	// }
 	
 	formCheck
-	    .append(label)
-	    .append(input);
+	    .append(input)
+	    .append(label);
 
 	formGroup.append(formCheck);
 
