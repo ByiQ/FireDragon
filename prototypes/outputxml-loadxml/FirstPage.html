@@ -12,6 +12,13 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
     <script language="javascript" type="text/javascript">
+		/** 
+		 * @function WriteXmlFile allows users read data from .xml file back to form
+		 * and allow adding more elements,then again saved to .xml updated file.
+		 * 
+		 * @author Huong Truong, 
+		 * 
+		 */
 		var filename = "PatientForm.xml";
 		var filenameText= "Patientcode.csv";
 		var contentCsv = "";
@@ -118,26 +125,31 @@
 </head>
 <body style="background-color: #bdd3e0; font-family: 'Noto Sans', sans-serif;" >
 	<div class="containerheader" style="text-align: center;">
-    <h1>Health Systems Form Builder</h1>
-    <h2>Prototype v 1.0</h2>
+		<h1>Health Systems Form Builder</h1>
+		<h2>Prototype v 1.0</h2>
 	</div>
-<div class="row">
+	<div class="row">
     
-    <div class="column" style="margin: 80px;">
-        <h2>Load new document</h2>
-        <input type="button" value="New" onclick="newDoc()">
-    </div>
-    
-	<div class="column" style="margin: 80px;">
+		<div class="column" style="margin: 80px;">
+			<h2>Load new document</h2>
+			<input type="button" value="New" onclick="newDoc()">
+		</div>
+		
+		<div class="column" style="margin: 80px;">
 
-	<form>
-		<h3> Select XML file to convert to Csv file:</h3>
-		<input type='file' accept='text/xml' onchange='openFile(event)'><br />
-		<input type="button" class="btn btn-primary mr-2" value="Download" style="margin-left:100px;" onclick="downloadCsv();">
-		<ul id="output"></ul>
-	</form>
+			<form>
+				<h3 id="choose file" class="chfile" align-text:right;> Select a xml file to view the patient info on plain text:</h3>
+					<!-- <input type='file' accept='text/xml' onchange='openFile(event)'><br /><br> -->
+					<!-- <!-- <input type="submit" value="View Patient Info"> -->
+					<!-- <ul id="output"></ul> -->
+					
+					
+					<input type='file' accept='text/xml' onchange='openFile(event)'><br />
+					<input type="button" class="btn btn-primary mr-2" value="Download" style="margin-left:100px;" onclick="downloadCsv();">
+					<ul id="output"></ul>
+			</form>
+		</div>
 	</div>
-</div>
 <script>
     /* Prevent default submit form action from happening on "enter" action" */
     document.querySelector('#search_records').addEventListener("submit", function (e) {

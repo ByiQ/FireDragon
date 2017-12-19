@@ -3,11 +3,12 @@
 	<title>Hospital Forms</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="../styles/app.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+	<script src="jquery-1.7.2.js"></script>
+	<script src="jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
 	<script src="formGeneration.js" language="Javascript" type="text/javascript"></script>
-    <!--<script src="jquery-3.2.1.min.js"></script>-->
     <script>
 		/** 
 		 * @function writeInput from Form.html, then outpot to a .xml file. Then allow download .xml file to folder in your computer.
@@ -53,8 +54,16 @@
     <script src="Global.js" language="javascript"></script>
     <script src="XMLWriter.js" language="javascript"></script>
     <script language="javascript" type="text/javascript">
-		
-		var filename = "PatientForm.xml";	
+		/** 
+		 * @function WriteXmlFile allows users read data from .xml file back to form
+		 * and allow adding more elements,then again saved to .xml updated file.
+		 * 
+		 * @author Huong Truong, 
+		 * 
+		 */
+		var filename = "PatientForm.xml";
+		var filenameText= "Patientcode.csv";
+		var contentCsv = "";
 		
 		function WriteXmlFile(e) {
             try {
@@ -94,6 +103,66 @@
             }
             return false;
         }
+		
+		var downloadCsv = function(){
+			//var content = $("#output").text();
+			var pom = document.createElement('a');
+			pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(contentCsv));
+			pom.setAttribute('download', filenameText);
+			pom.style.display = 'none';
+			document.body.appendChild(pom);
+
+			pom.click();
+
+			document.body.removeChild(pom);
+		};
+		
+		//function ReadXMLToFile(){
+			//openFile will read XML file and input it into text field
+			var openFile = function(event) {
+				var input = event.target;
+				var text = "";
+				
+				var reader = new FileReader();
+				var onload = function(event) {
+					text = reader.result;
+					parseFile(text);
+
+				};
+
+				reader.onload = onload;
+				reader.readAsText(input.files[0]);			
+			};
+
+		//this will parse XML file and output it to website
+			var parseFile = function(text) {
+				var xmlDoc = $.parseXML(text),
+					$xml = $(xmlDoc);
+					//$options = $xml.find("option");
+
+				/*$.each($options, function() {
+					$("#output").append("<li>" + $(this).text() + "</li >");
+				});*/
+
+				$nodes = $xml.find("*").eq(0)[0].children; //$xml.find(":root")[0].children;
+				$.each($nodes, function() {
+					var $tagName = $(this).prop("tagName");
+					var $thisAttr = $(this).attr("checked");
+					//$("#output").append("<li>" + $tagName +" - " + $(this).text() + "</li >");
+					
+					if ( typeof($(this).attr("checked")) == "undefined" ) {
+						$("#output").append("<li>" + $tagName +" - " + $(this).text() + "</li >");
+						contentCsv = contentCsv + $tagName + "," + $(this).text();
+					} else {
+						if ($thisAttr == "true") {
+							$("#output").append("<li>" + $tagName +" - " + $(this).text() + "</li >");
+							contentCsv = contentCsv + $tagName + "," + $(this).text();
+						}
+					}
+					
+				});
+			};
+		//}
     </script>
 	
 	
@@ -176,120 +245,12 @@
 		 }
 
 
-		/** 
-		 * @function addDivElement
-		 * @memberOf addAllInputs
-		 * @author Ben Sprunger
-		 * @param divName - The name of the div the new div element will appendTo().
-		 * @param idOfElement - The id attribute the new div element will be given.
-		 * @param {optional} className - The name of the class attribute the new div element will be given.
-		 * @param {optional} textValue - The default text value of the new div element.
-		 * 
-		 * @description The addDivElement function will dynamically generate a div element from the given parameters.
-		 */
-
-		 <!-- function addDivElement(divName, idOfElement, className, textValue) -->
-		 <!-- { -->
-			 <!-- if (textValue === undefined) -->
-			 <!-- { -->
-				 <!-- textValue === ""; -->
-			 <!-- } -->
-
-			 <!-- if (className === undefined) -->
-			 <!-- { -->
-				 <!-- className = "classNameNotGiven"; -->
-			 <!-- } -->
-
-			 <!-- var newFormDiv = $("<div/>", { -->
-				<!-- html : textValue,  -->
-				<!-- "class" : className, -->
-				<!-- "id" : idOfElement, -->
-				 <!-- appendTo : document.getElementById(divName) -->
-			 <!-- }) -->
-			 
-			 <!-- return newFormDiv; -->
-		 <!-- } -->
-
-		 <!-- /**  -->
-		 <!-- * @function addHeaderElement -->
-		 <!-- * @memberOf addAllInputs -->
-		 <!-- * @author Ben Sprunger -->
-		 <!-- * @param divName - The name of the div the new header element will appendTo(). -->
-		 <!-- * @param textValue - The text value of the header element. -->
-		 <!-- * @param {optional} className - The name of the class attribute the new header element will be given. -->
-		 <!-- * @param {optional} idOfElement - The id attribute the new header element will be given. -->
-		 <!-- *  -->
-		 <!-- * @description The addHeaderElement function will dynamically generate a header element from the given parameters. -->
-		 <!-- */ -->
-
-		 <!-- function addHeaderElement(divName, textValue, className, idOfElement) -->
-		 <!-- { -->
-			<!-- if (className === undefined) -->
-			<!-- { -->
-				<!-- className = "classNameNotGiven"; -->
-			<!-- } -->
-
-			<!-- if (idOfElement === undefined) -->
-			<!-- { -->
-				<!-- idOfElement = "idNotGiven"; -->
-			<!-- } -->
-
-			<!-- var newHeader = $("<h1 />", { -->
-				<!-- html : textValue, -->
-				<!-- "class" : className, -->
-				<!-- "id" : idOfElement, -->
-				<!-- appendTo : document.getElementById(divName) -->
-			 <!-- }) -->
-		 <!-- } -->
-		 
-		 <!-- /**  -->
-		 <!-- * @function addSectionElement -->
-		 <!-- * @memberOf addAllInputs -->
-		 <!-- * @author Ben Sprunger -->
-		 <!-- * @param divName - The name of the div the new section element will appendTo(). -->
-		 <!-- * @param {optional} textValue - The text value of the section element. -->
-		 <!-- * @param {optional} className - The name of the class attribute the new section element will be given. -->
-		 <!-- * @param {optional} idOfElement - The id attribute the new section element will be given. -->
-		 <!-- *  -->
-		 <!-- * @description The addSectionElement function will dynamically generate a section element from the given parameters. -->
-		 <!-- */ -->
-
-		 <!-- function addSectionElement(divName, textValue, className, idOfElement) -->
-		 <!-- { -->
-			<!-- if (textValue === undefined) -->
-			<!-- { -->
-				<!-- textValue = ""; -->
-			<!-- } -->
-
-			<!-- if (className === undefined) -->
-			<!-- { -->
-				<!-- className = "classNameNotGiven"; -->
-			<!-- } -->
-
-			<!-- if (idOfElement === undefined) -->
-			<!-- { -->
-				<!-- idOfElement = "idNotGiven"; -->
-			<!-- } -->
-
-			<!-- var newSection = $("<section />", { -->
-				<!-- "text" : textValue, -->
-				<!-- "class" : className, -->
-				<!-- "idOfElement" : idOfElement, -->
-				<!-- appendTo: document.getElementById(divName) -->
-			<!-- }) -->
-
-		 <!-- } -->
+		
 
 		 /** 
 		 * @function addDateTimeElement
 		 * @memberOf addAllInputs
 		 * @author Ben Sprunger
-		 * @param divName - The name of the div the new dateTime element will appendTo().
-		 * @param nameOfElement - The name of the new datetime element.
-		 * @param label - The label of the new datetime element.
-		 * @param {optional} textValue - The text value of the dateTime element.
-		 * @param {optional} className - The name of the class attribute the new dateTime element will be given.
-		 * @param {optional} idOfElement - The id attribute the new dateTime element will be given.
 		 * 
 		 * @description The addDateTimeElement function will dynamically generate a dateTime element from the given parameters.
 		 */
@@ -322,21 +283,14 @@
 				<!-- "id" : idOfElement, -->
 				<!-- insertAfter : newDateField -->
 			<!-- }); -->
-			$("<span>" + label + "</span>").insertBefore(newDateField);
+			$("<span>" + label + "</span><br />").insertBefore(newDateField);
+			$("<br />").insertAfter(newDateField);
 		 }
 
 		  /** 
 		 * @function addInputElement
 		 * @memberOf addAllInputs
-		 * @author Ben Sprunger
-		 * @param divName - The name of the div the new dateTime element will appendTo().
-		 * @param elementType - The type of input element to be generated.
-		 * @param nameOfElement - The name attribute of the input element to be generated.
-		 * @param label - The label that insertBefore() will add before the input element to be generated.
-		 * @param {optional} className - The name of the class attribute the new input element will be given.
-		 * @param {optional} textValue - The text value of the input element.
-		 * @param {optional} idOfElement - The id attribute the new input element will be given.
-		 * 
+		 * @author Ben Sprunger		 
 		 * @description The addInputElement function will dynamically generate an input element from the given parameters.
 		 */
 
@@ -359,14 +313,15 @@
 			 }
 
 			 var newInputElement = $("<input />", {
-				 "type" : elementType,
+				 //"type" : elementType,
 				 "name" : nameOfElement,
-				 "class" : className,
+				 //"class" : className,
 				 "value" : textValue,
-				 "id" : idOfElement,
+				 //"id" : idOfElement,
 				 appendTo : document.getElementById(divName)
 			 });
-			 $("<span>" + label + "</span>").insertBefore(newInputElement);
+			 $("<span>" + label + "</span><br />").insertBefore(newInputElement);
+			 $("<br />").insertAfter(newInputElement);
 
 		 }
 
@@ -374,13 +329,6 @@
 		 * @function addYesNo
 		 * @memberOf addAllInputs
 		 * @author Ben Sprunger
-		 * @param divName - The name of the div the new yesNo element will appendTo().
-		 * @param nameOfElement - The name attribute of the yesNo element to be generated.
-		 * @param label - The label that insertBefore() will add before the yesNo element to be generated.
-		 * @param {optional} whichRadioSelected - The variable used to determine which radio box(yes/no) is selected if any. 
-		 *                                        <br>"yes" : the yes radio button is selected. 
-		 *                                        <br>"no" : the no radio button is selected
-		 *                                        <br>undefined : neither radio button will be selected.
 		 * 
 		 * @description The addYesNo function will dynamically generate a yesNo element from the given parameters.
 		 */
@@ -399,6 +347,7 @@
 			$("<span>" + label + "</span>").insertBefore(newRadioButtonOne);
 			$("<span>   Yes : </span>").insertBefore(newRadioButtonOne);
 			$("<span>   No : </span>").insertBefore(newRadioButtonTwo);
+			$("<br />").insertAfter(newRadioButtonTwo);
 			
 			if (whichRadioSelected === undefined)
 			{
@@ -420,14 +369,7 @@
 		 /** 
 		 * @function addRadio
 		 * @memberOf addAllInputs
-		 * @author Ben Sprunger
-		 * @param divName - The name of the div the new radio element will appendTo().
-		 * @param nameOfElement - The name attribute of the radio element to be generated.
-		 * @param label - The label that insertBefore() will add before the radio element to be generated.
-		 * @param {optional} radioSelected - The variable used to determine if the radio box is selectd.
-		 *                                   <br>true : The radio button will be selected.
-		 *                                   <br>false/undefined : The radio button will not be selected.
-		 * 
+		 * @author Ben Sprunger		 
 		 * @description The addRadio function will dynamically generate a radio element from the given parameters.
 		 */
 
@@ -440,6 +382,7 @@
 			 });
 
 			 $("<span>" + label + "</span>").insertBefore(newRadioButton);
+			 $("<br />").insertAfter(newRadioButton);
 
 			 if (radioSelected === undefined || false)
 			 {
@@ -454,14 +397,7 @@
 		 /** 
 		 * @function addCheckBoxElement
 		 * @memberOf addAllInputs
-		 * @author Ben Sprunger
-		 * @param divName - The name of the div the new checkbox element will appendTo().
-		 * @param nameOfElement - The name attribute of the checkbox element to be generated.
-		 * @param label - The label that insertBefore() will add before the checkbox element to be generated.
-		 * @param {optional} isChecked - The variable used to determine if the checkbox is selectd.
-		 *                                   <br>true : The checkbox will be selected.
-		 *                                   <br>false/undefined : The checkbox will not be selected.
-		 * 
+		 * @author Ben Sprunger		 
 		 * @description The addCheckBoxElement function will dynamically generate a checkbox element from the given parameters.
 		 */
 		 function addCheckBoxElement(divName, nameOfElement, label, isChecked)
@@ -471,7 +407,7 @@
 				 "name" : nameOfElement,
 				 appendTo : document.getElementById(divName)
 			 });
-			 $("<span>" + label + "</span>").insertAfter(newCheckbox);
+			 $("<span>" + label + "</span><br />").insertAfter(newCheckbox);
 
 			 if (isChecked === undefined || false)
 			 {
@@ -486,13 +422,7 @@
 		/** 
 		 * @function addTextAreaElement
 		 * @memberOf addAllInputs
-		 * @author Ben Sprunger
-		 * @param divName - The name of the div the new textarea element will appendTo().
-		 * @param nameOfElement - The name attribute of the textarea element to be generated.
-		 * @param label - The label that insertBefore() will add before the textarea element to be generated.
-		 * @param placeHolder - The placeholder text value.
-		 * @param {optional} - The html text content of the textarea element if any.  
-		 * 
+		 * @author Ben Sprunger		 
 		 * @description The addTextAreaElement function will dynamically generate a textarea element from the given parameters.
 		 */
 		 function addTextAreaElement(divName, nameOfElement, label, placeHolder, textValue)
@@ -508,11 +438,12 @@
 				 html : textValue,
 				 appendTo : document.getElementById(divName)
 			 });
-			 $("<span>" + label + "</span><br>").insertBefore(newTextArea);
+			 $("<span>" + label + "</span><br />").insertBefore(newTextArea);
+			 $("<br />").insertAfter(newTextArea);
 		 }
 	</script>
 </head>
-<body>
+<body style="background-color: #bdd3e0; font-family: 'Noto Sans', sans-serif;">
 	<h3>
     <div class="container-fluid">
         <div class="row">
@@ -525,15 +456,16 @@
 	<form name="patient" onsubmit="return WriteXmlFile(event)" method = "POST">
 		
 		<hr size="20" noshade>
+		
 		<div class="container">
 			<div class="row">
 				<div class="col">
 					<h5>Patient Information <br></h5>
-					<label for="name">Name:</label> &nbsp;&nbsp;<input type="text" name="name" size="53"><br>
-					<label for="dob">DOB:</label> &emsp;<input type="date" name="dob" id="dob"> &nbsp;&nbsp; <label for="mrn">MRN:</label> <input type="text" name="mbn" size="25"><br>
-					<label for="address">Address/Nurs:</label> <input type="text" name="address" size="48"><br>
-					<label for="phone">Phone:</label> &nbsp;<input type="text" name="phone" id="phone"> &nbsp; 
-					<label for="cell">Cell:</label> <input type="text" name="cell" id="cell" size="23"><br>
+					<label for="patientName">Name:</label> &nbsp;&nbsp;<input type="text" name="Patient_Name" size="40"><br>
+					<label for="dob">DOB:</label> &emsp;<input type="date" name="DOB" id="dob"> &nbsp;&nbsp; <label for="mrn">MRN:</label> <input type="text" name="mbn" size="15"><br>
+					<label for="address">Address/Nurs:</label> <input type="text" name="address" size="37"><br>
+					<label for="phone">Phone:</label> &nbsp;<input type="text" name="phone" id="phone" size="13"> &nbsp; 
+					<label for="cell">Cell:</label> <input type="text" name="cell" id="cell" size="13"><br>
 				</div>
 				<div class="col">
 					<div id="colinput">
@@ -541,7 +473,7 @@
 						<table>
 							<tr>
 								<td>Referring Physician:</td>
-								<td><input type="text" name="ref.Physician"></td>
+								<td><input type="text" name="ref_Physician"></td>
 							</tr>
 							<tr>
 								<td>Contact:</td>
@@ -549,11 +481,11 @@
 							</tr>
 							<tr>
 								<td>Insurance Primary:</td>
-								<td><input type="text" name="insur.Primary"></td>
+								<td><input type="text" name="insur_Primary"></td>
 							</tr>
 							<tr>
 								<td>Insurance Secondary:</td>
-								<td><input type="text" name="insur.Second"></td>
+								<td><input type="text" name="insur_Second"></td>
 							</tr>
 						</table>
 					</div>
@@ -569,21 +501,21 @@
 					<h5>
 						Clinical Information <br>
 					</h5>
-					<label for="note">Note:</label> &emsp;&emsp;<textarea rows=2 cols=55> </textarea><br>
-					<label for="diagnosis">Diagnosis:</label> <input type="text" name="dob"<label for="cell">ICD10: <input type="text" name="mbn"><br>
-					<label for="diagnosis">Diagnosis:</label> <input type="text" name="dob"> ICD10: <input type="text" name="mbn"><br>
+					<label for="note">Note:</label> &emsp;&emsp;<textarea rows=2 cols=50> </textarea><br>
+					<label for="diagnosis">Diagnosis:</label> <input type="text" name="diagnosis"<label for="cell">ICD10: <input type="text" name="mbn"><br>
+					<label for="diagnosis">Diagnosis:</label> <input type="text" name="diagnosis1"> ICD10: <input type="text" name="mbn1"><br>
 					<div class="container">
 						<div class="row">
 							<div class="col">
-								Diabetes &emsp;&emsp;&emsp;&emsp;<input type="checkbox" name="yes">Yes <input type="checkbox"
-																											  name="no">No<br>
-								Allergies &emsp;&emsp;&emsp;&emsp;<input type="checkbox" name="yes">Yes <input type="checkbox"
-																											   name="no">No<br>
-								Allergies Contrast <input type="checkbox" name="yes">Yes <input type="checkbox" name="no">No<br>
-								Blood Thinners &nbsp;&emsp;<input type="checkbox" name="yes">Yes <input type="checkbox"
-																										name="no">No<br>
-								Avastin/Zaltrap &nbsp;&emsp;<input type="checkbox" name="yes">Yes <input type="checkbox"
-																										 name="no">No<br>
+								Diabetes &emsp;&emsp;&emsp;&emsp;<input type="checkbox" name="Diabetes" value="yes">Yes <input type="checkbox"
+																											  name="Diabetes" value="no">No<br>
+								Allergies &emsp;&emsp;&emsp;&emsp;<input type="checkbox" name="Allergies" value="yes">Yes <input type="checkbox"
+																											   name="Allergies" value="no">No<br>
+								Allergies Contrast <input type="checkbox" name="AllergiesContrast" value="yes">Yes <input type="checkbox" name="AllergiesContrast" value="no">No<br>
+								Blood Thinners &nbsp;&emsp;<input type="checkbox" name="BloodThinners" value="yes">Yes <input type="checkbox"
+																										name="BloodThinners" value="no">No<br>
+								Avastin/Zaltrap &nbsp;&emsp;<input type="checkbox" name="AvastinZaltrap" value="yes">Yes <input type="checkbox"
+																										 name="AvastinZaltrap" value="no">No<br>
 							</div>
 							<div class="col">
 								Note: <textarea rows=4 cols=28> </textarea><br>
@@ -629,23 +561,23 @@
 								<table>
 									<tr>
 										<td>Outside films</td>
-										<td><input type="text" name="film" size=10></td>
+										<td><input type="text" name="Outside_films" size=10></td>
 									</tr>
 									<tr>
 										<td>Courier</td>
-										<td><input type="text" name="courier" size=10></td>
+										<td><input type="text" name="Courier" size=10></td>
 									</tr>
 									<tr>
 										<td>FedEx/Mail</td>
-										<td><input type="text" name="fedex" size=10></td>
+										<td><input type="text" name="Fedex" size=10></td>
 									</tr>
 									<tr>
 										<td>Imaging Info Center</td>
-										<td><input type="text" name="iic" size=10></td>
+										<td><input type="text" name="Imaging_Info_Center" size=10></td>
 									</tr>
 									<tr>
 										<td>VPN</td>
-										<td><input type="text" name="vpn" size=10></td>
+										<td><input type="text" name="VPN" size=10></td>
 									</tr>
 								</table>
 							</div>
@@ -662,55 +594,55 @@
 				<div class="col">
 					<h5>Procedure/CPT <br></h5>
 					<h6>Biopsies</h6>
-					<input type="checkbox" name="bone">Bone Marrow (38221, 77002) Sedation <br>
-					<input type="checkbox" name="liver">Liver (47000) <br>
-					<input type="checkbox" name="lung">Lung (32405) <input type="checkbox" name="rt">Rt <input type="checkbox"
-																											   name="lt">Lt <br>
-					<input type="checkbox" name="kidney">Kidney (50200)<br>
-					<input type="checkbox" name="lymph">Lymph node (38505)<br>
-					<input type="checkbox" name="lymph"><input type="text" name="lines" size=30><br>
+					<input type="checkbox" name="Bone_Marrow_Sedation" value="BoneMarrowSedation">Bone Marrow (38221 77002) Sedation <br>
+					<input type="checkbox" name="Liver" value="liver">Liver (47000) <br>
+					<input type="checkbox" name="Lung" value="lung">Lung (32405) <input type="checkbox" name="Rt" value="rt">Rt <input type="checkbox"
+																											   name="Lt" value="lt">Lt <br>
+					<input type="checkbox" name="Kidney" value="kidney">Kidney (50200)<br>
+					<input type="checkbox" name="Lymph_node" value="lymph_node">Lymph node (38505)<br>
+					<input type="checkbox" name="lines" value="addition1"><input type="text" size=28><br>
 					<h6>Vascular</h6>
-					<input type="checkbox" name="pic">PIC (36569, 769 <input type="checkbox" name="double">Double <input
-						type="checkbox" name="triple">Triple<br>
-					<input type="checkbox" name="port">Port (36561, 76937, 77001)<br>
-					<input type="checkbox" name="line"><input type="text" name="lines" size=30><br>
+					<input type="checkbox" name="PIC" value="pic">PIC (36569 769..) <input type="checkbox" name="Double" value="double">Double <input
+						type="checkbox" name="Triple" value="triple">Triple<br>
+					<input type="checkbox" name="Port_26561_76937_77001" value="port">Port (36561 76937 77001)<br>
+					<input type="checkbox" name="line0" value="addition2"><input type="text" size=28><br>
 				</div>
 
 				<div class="col">
 					<br>
 					<h6>Drainage </h6>
-					<input type="checkbox" name="nephtube">Neph Tube (50394, 74425) <br>
-					<input type="checkbox" name="abscess">Abscess <br>
-					<input type="checkbox" name="nephrostomy">Nephrostomy (50390, 50392, 74475)<br>
-					<input type="checkbox" name="cttubecheck">CT Tube Check <input type="text" name="lines" size=20><br>
-					<input type="checkbox" name="fluorotubecheck">Fluoro Tube Check (49424, 76080)<br>
-					<input type="checkbox" name="paracentesis">Paracentesis(49083)<br>
-					<input type="checkbox" name="Thoracentesis">Thoracentesis (32555) <input type="checkbox" name="rt">Rt <input
-						type="checkbox" name="lt">Lt <br>
-					<input type="checkbox" name="abdpleurx">Abd Pleurx(49418) <br>
-					<input type="checkbox" name="chestpleurx">Chest Pleurx (32550, 75...) <input type="checkbox" name="rt">Rt
-					<input type="checkbox" name="lt">Lt <br>
-					<input type="checkbox" name="lp">LP (62270, 77003)<br> <br>
+					<input type="checkbox" name="Neph_Tube" value="Nephtube">Neph Tube (50394 74425) <br>
+					<input type="checkbox" name="Abscess" value="abscess">Abscess <br>
+					<input type="checkbox" name="Nephrostomy" value="nephrostomy">Nephrostomy (50390 50392 74475)<br>
+					<input type="checkbox" name="CT_Tube_Check" value="CTTubeCheck">CT Tube Check <input type="text" size=15><br>
+					<input type="checkbox" name="Fluoro_Tube_Check" value="FluoroTubeCheck">Fluoro Tube Check (49424 76080)<br>
+					<input type="checkbox" name="Paracentesis" value="paracentesis">Paracentesis(49083)<br>
+					<input type="checkbox" name="Thoracentesis" value="thoracentesis">Thoracentesis (32555) <input type="checkbox" name="Rt1" value="rt1">Rt <input
+						type="checkbox" name="Lt1" value="lt1">Lt <br>
+					<input type="checkbox" name="Abd_Pleurx" value="AbdPleurx">Abd Pleurx(49418) <br>
+					<input type="checkbox" name="Chest_Pleurx">Chest Pleurx (32550 75...) <input type="checkbox" name="Rt2" value="rt2">Rt
+					<input type="checkbox" name="Lt2" value="lt2">Lt <br>
+					<input type="checkbox" name="LP" value="lp">LP (62270 77003)<br> <br>
 				</div>
 
 				<div class="col">
 					<br>
 					<h6>Ortho</h6>
-					<input type="checkbox" name="hiping">Hiping (20610)<br>
-					<input type="checkbox" name="shouldering">Shouldering (206?0) <br>
-					<input type="checkbox" name="injection">Injection<input type="checkbox" name="rt">Rt <input type="checkbox"
-																												name="lt">Lt
+					<input type="checkbox" name="Hiping" value="hiping">Hiping (20610)<br>
+					<input type="checkbox" name="Shouldering" value="shouldering">Shouldering (206?0) <br>
+					<input type="checkbox" name="Injection" value="injection">Injection<input type="checkbox" name="Rt3" value ="rt3>Rt <input type="checkbox"
+																												name="Lt3" value="lt3">Lt
 					<br>
-					<input type="checkbox" name="arthrogram">Arthrogram<input type="checkbox" name="hip">Hip <input
-						type="checkbox" name="Shoulder">Shoulder <br>
-					<input type="checkbox" name="myelogram">Myelogram<input type="checkbox" name="cerv">Cerv. <input
-						type="checkbox" name="lt">Lt <input type="checkbox" name="lumber">Lumber<br>
-					<input type="checkbox" name="thoracic">ESI&emsp;<input type="text" name="film" size=25><br>
+					<input type="checkbox" name="Arthrogram" value="arthrogram">Arthrogram<input type="checkbox" name="Hip" value="hip">Hip <input
+						type="checkbox" name="Shoulder" value="shoulder">Shoulder <br>
+					<input type="checkbox" name="Myelogram" value="myelogram">Myelogram<input type="checkbox" name="Cerv" value="cerv">Cerv. <input
+						type="checkbox" name="Lt4" value="lt4">Lt <input type="checkbox" name="Lumber" value="lumber">Lumber<br>
+					<input type="checkbox" name="ESI" value="esi">ESI&emsp;<input type="text" size=23><br>
 					<h6>Specialized</h6>
-					<input type="checkbox" name="vertebroplasty">Vertebroplasty L-22511/T-22510<br>
-					<input type="checkbox" name="ablation">Ablation<br>
-					<input type="checkbox" name="embolization">Embolization<br>
-					<input type="checkbox" name="line"><input type="text" name="lines" size=30><br>
+					<input type="checkbox" name="Vertebroplasty" value="vertebroplasty">Vertebroplasty L-22511/T-22510<br>
+					<input type="checkbox" name="Ablation" value="ablation">Ablation<br>
+					<input type="checkbox" name="Embolization" value="embolization">Embolization<br>
+					<input type="checkbox" name="Addition3" ><input type="text" size=28><br>
 				</div>
 			</div>
 		</div>
@@ -730,29 +662,29 @@
 				</div>
 				<div class="col"><br>
 					<h6>Same Day <br></h6>
-					<input type="checkbox" name="Consult/Order">Consult/Order<br>
-					<input type="checkbox" name="Anesthesia">Anesthesia <br>
-					<input type="checkbox" name="PreOp">PreOp <br>
-					<input type="checkbox" name="Vent">Vent <br>
-					<input type="checkbox" name="Consent"> Consent <br>
-					<input type="checkbox" name="NPO">NPO <br>
-					<input type="checkbox" name="RN">RN <br>
-					<input type="checkbox" name="Care Manager">Care Manager <br>
-					<input type="checkbox" name="outPt registration">OutPt Registration <br>
-					<input type="checkbox" name="IR Core">IR Core <br>
+					<input type="checkbox" name="Consult_Order" value="ConsultOrder">Consult/Order<br>
+					<input type="checkbox" name="Anesthesia" value="anesthesia">Anesthesia <br>
+					<input type="checkbox" name="PreOp" value="Preop">PreOp <br>
+					<input type="checkbox" name="Vent" value="vent">Vent <br>
+					<input type="checkbox" name="Consent" value="consent"> Consent <br>
+					<input type="checkbox" name="NPO" value="npo">NPO <br>
+					<input type="checkbox" name="RN" value="rn">RN <br>
+					<input type="checkbox" name="CareManager" value="caremanager">Care Manager <br>
+					<input type="checkbox" name="OutPtregistration" value="outPtregistration">OutPt Registration <br>
+					<input type="checkbox" name="IRCore" value="IRCore">IR Core <br>
 				</div>
 				<div class="col"><br>
 					<h6>Scheduled <br></h6>
-					<input type="checkbox" name="Consult/Order">Patient<br>
-					<input type="checkbox" name="Anesthesia">Office <br>
-					<input type="checkbox" name="PreOp">OR <br>
-					<input type="checkbox" name="Vent">Access <br>
-					<input type="checkbox" name="Consent">Orders/Labs <br>
-					<input type="checkbox" name="NPO">Schedule <br>
-					<input type="checkbox" name="RN">H&P /Notes <br>
-					<input type="checkbox" name="Care Manager">Specimen Test <br>
-					<input type="checkbox" name="outPt registration">Pathology x4583 <br>
-					<input type="checkbox" name="IR Core">Histology x4572 <br>
+					<input type="checkbox" name="Patient" value="patient">Patient<br>
+					<input type="checkbox" name="Office" value="office">Office <br>
+					<input type="checkbox" name="OR" value="or">OR <br>
+					<input type="checkbox" name="Access" value="access">Access <br>
+					<input type="checkbox" name="Orders_Labs" value="ordersLabs">Orders/Labs <br>
+					<input type="checkbox" name="Schedule" value="schedule">Schedule <br>
+					<input type="checkbox" name="HP_Notes" value="HPNotes">H&P /Notes <br>
+					<input type="checkbox" name="SpecimenTest" value="Specimen">Specimen Test <br>
+					<input type="checkbox" name="Pathologyx4583" value="Pathology">Pathology x4583 <br>
+					<input type="checkbox" name="Histologyx4572" value="histology">Histology x4572 <br>
 				</div>
 			</div>
 		</div>
@@ -766,21 +698,18 @@
 			<p>
 				<select name = "inputSelect">
 					<option value = "date">date</option>
-					<option value = "text">text field</option>
+					<option type="text" value = "text">text field</option>
 				</select>
 				<select name = "textOption">
-					<option value = "">blank</option>
+					<option type="input" value = ""></option>
 					<option value = "Test Text!">Test Text!</option> 
 					<option value = "01/15/2017">Date</option>
 				</select>
+				<input type="text" name="textInput" id="textInput">
 				<br>
 					
-					<!-- <input type = "button" value = "Add selected input" onclick = "addAllInputs('dynamicInputs', document.patient.inputSelect.value, 'form', document.myForm.textOption.value);"> -->
-					<!-- <input type = "button" value = "Add Div Element" onclick = "addDivElement('dynamicInputs', document.patient.textOption.value);"> -->
-					<!-- <input type = "button" value = "Add Header Element" onclick = "addHeaderElement('dynamicInputs', document.patient.textOption.value);"> -->
-					<!-- <input type = "button" value = "Add Section Element" onclick = "addSectionElement('dynamicInputs', document.patient.textOption.value);"> -->
-					<input type = "button" value = "Add DateTime Element" onclick = "addDateTimeElement('dynamicInputs', document.patient.textOption.value);">
-					<input type = "button" value = "Add Input Element" onclick = "addInputElement('dynamicInputs', document.patient.inputSelect.value, 'inputTest', 'Test Input Label: ', 'className', document.myForm.textOption.value);">
+					<input type = "button" value = "Add DateTime Element" onclick = "addDateTimeElement('dynamicInputs', document.patient.textInput.value);">
+					<input type = "button" value = "Add Input Element" onclick = "addInputElement('dynamicInputs', document.patient.textOption.value, 'inputTest', 'Input Label: ', 'className', document.patient.textOption.value);">
 					<input type = "button" value = "Add yesNo" onclick = "addYesNo('dynamicInputs', 'elementName', document.patient.textOption.value);">
 					<input type = "button" value = "Add radio" onclick = "addRadio('dynamicInputs', 'elementName', document.patient.textOption.value, true);">
 					<input type = "button" value = "Add checkbox" onclick = "addCheckBoxElement('dynamicInputs', document.patient.inputSelect.value, 'checkboxTest');">
@@ -789,66 +718,44 @@
 			</p>
 		</div>
 		
-		<!-- <hr size="10" noshade>
-	
-
-		<p>
-		<div class="container">
-			<div class="row">
-
-				<div id="myModal" class="modal">
-
-					<!-- Modal content -->
-
-
-					<!-- <div class="modal-content"> -->
-<!-- <<<<<<< HEAD -->
-						<!-- <span class="close">&times;</span> -->
-						<!-- <!-- <div class="alert success"> --> 
-							<!-- <strong>Success!</strong> Page has been submitted. -->
-						<!-- </div> -->
-
-						<!-- <a id="myReturnButton" class="btn btn-primary mr-2" href="FirstPage.html" role="button">Return To -->
-							<!-- Start</a> -->
-					<!-- </div> -->
-
-
-				</div>
-
-				<a id="modalButton" class="btn btn-primary mr-2" role="button">Submit</a>
-				<a id="cancelButton" class="btn btn-primary mr-2" href="FirstPage.html">Cancel</a>
-				<input type="submit" value="SAVE">
-				<script>
-					// Get the modal
-					var modal = document.getElementById('myModal');
-
-					// Get the button that opens the modal
-					var btn = document.getElementById("modalButton");
-
-					// Get the <span> element that closes the modal
-					var span = document.getElementsByClassName("close")[0];
-
-					// When the user clicks the button, open the modal
-					btn.onclick = function () {
-						modal.style.display = "block";
-					};
-
-					// When the user clicks on <span> (x), close the modal
-					span.onclick = function () {
-						modal.style.display = "none";
-					};
-
-					// When the user clicks anywhere outside of the modal, close it
-					window.onclick = function (event) {
-						if (event.target == modal) {
-							modal.style.display = "none";
-						}
-					}
-				</script>
-			</div>
-		</div>
-		</p>
-		
+			<!-- <a id="modalButton" class="btn btn-primary mr-2" role="button">Submit</a> -->
+			<a id="cancelButton" class="btn btn-primary mr-2" href="FirstPage.html" style="margin-left:80px;">Cancel</a>
+			<input type="submit" class="btn btn-primary mr-2" value="SAVE" style="margin-left:100px;">
 	</form>
+		<div>
+			<script>
+				// Get the modal
+				var modal = document.getElementById('myModal');
+
+				// Get the button that opens the modal
+				var btn = document.getElementById("modalButton");
+
+				// Get the <span> element that closes the modal
+				var span = document.getElementsByClassName("close")[0];
+
+				// When the user clicks the button, open the modal
+				btn.onclick = function () {
+					modal.style.display = "block";
+				};
+
+				// When the user clicks on <span> (x), close the modal
+				span.onclick = function () {
+					modal.style.display = "none";
+				};
+
+				// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function (event) {
+					if (event.target == modal) {
+						modal.style.display = "none";
+					}
+				}
+			</script>
+		</div>
+	
+	<h3> Select XML file to upload:</h3>
+	<input type='file' accept='text/xml' onchange='openFile(event)'><br />
+	<input type="button" class="btn btn-primary mr-2" value="Download" style="margin-left:100px;" onclick="downloadCsv();">
+	<ul id="output"></ul>
+	
 </body>
 </html>

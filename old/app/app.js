@@ -55,6 +55,8 @@ function newDoc() {
     window.location.assign('../../prototypes/outputxml-loadxml/XMLTest1.html');
 }
 
+
+
 function emptyDoc() {
     window.location.assign('./FormPage.html');
 }

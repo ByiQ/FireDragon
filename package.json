@@ -2,7 +2,7 @@
   "name": "fire-dragon",
   "version": "0.1.0",
   "description": "description",
-  "main": "./src/views/app.html",
+  "main": "./prototypes/outputxml-loadxml/FirstPage.html",
   "window": {
     "width": 1000,
     "height": 800

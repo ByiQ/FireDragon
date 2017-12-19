@@ -8,7 +8,7 @@
 </LastName>
 <BirthDate>1-1-1234
 </BirthDate>
-<radioTest>Option 1
+<radioTest checked="true">Option 1
 </radioTest>
 <radioTest>Option 2
 </radioTest>
