@@ -4,15 +4,6 @@
 // Define action type payloads in documentation.
 // May wish to move these into App.
 
-var createMenuItem = function(label, id) {
-    var menuitem = $(`<a href="#" class="dropdown-item" data-id="${id}">${label}</a>`)
-        .click(function(e) {
-            alert(e.target.dataset.id);
-        });
-
-    return menuitem;
-}
-
 var Datastore = require('nedb');
 var WorkflowDispatcher = new Flux.Dispatcher();
 
@@ -20,7 +11,8 @@ var StateStore = {
     xml: null,
     workflow: null,
     dbPath: null,
-    dbInstance: null
+    dbInstance: null,
+    elements: null
 };
 
 var TaskStore = {
@@ -37,56 +29,123 @@ var FormStore = {
     completed: [],
     saved: [],
     
-    current: {
-        // If this is set, we're editing a saved form.
-        id: null
-    }
+    current: null
 };
+
+var views = {
+    startIntro: $("#view-start-intro"),
+    startTasks: $("#view-start-tasks"),
+    task:       $("#view-task"),
+    collect:    $("#view-collect"),
+    navTop:     $("#view-top"),
+    navBottom:  $("#view-bottom")
+};
+
+var comps = {
+    topWorkflowName: $("#comp-top-workflow-name"),
+    startIntroFirsttime: $("#comp-start-intro-firsttime"),
+    startIntroNotFirsttime: $("#comp-start-intro-not-firsttime"),
+    startIntroLastWorkflowName: $("#comp-start-intro-last-workflow-name"),
+    startIntroContinue: $("#comp-start-intro-continue"),
+    startIntroOpen: $("#comp-start-intro-open"),
+    startIntroFile: $("#comp-start-intro-file"),
+    startTasksWorkflowName: $("#comp-start-tasks-workflow-name"),
+    startTasksLastTask: $("#comp-start-tasks-last-task"),
+    startTasksLastTaskName: $("#comp-start-tasks-last-task-name"),
+    startTasksTaskList: $("#comp-start-tasks-task-list"),
+    startTasksTaskCollectButton: $("#comp-start-tasks-task-collect-button"),
+    bottomPages: $("#comp-bottom-pages"),
+    collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
+    collectIntroNotFirstTime: $("#comp-collect-intro-not-firsttime"),
+    collectIntroLastCollectionDate: $("#comp-collect-intro-last-collection-date"),
+    collectSinceLast: $("#comp-collect-since-last"),
+    collectRangeStartDate: $("#comp-collect-range-start-date"),
+    collectRangeEndDate: $("#comp-collect-range-end-date"),
+    collectRangeButton: $("#comp-collect-range-button"),
+    collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
+    collectAllButton: $("#comp-collect-all-button"),
+    bottomSave: $("#comp-bottom-save"),
+    bottomSubmit: $("#comp-bottom-submit"),
+    bottomWaiting: $("#comp-bottom-waiting"),
+    bottomInProgress: $("#comp-bottom-inprogress"),
+    bottomCompleted: $("#comp-bottom-completed"),
+};
+ 
+/**
+   Get list of elements used in form and return them.
+**/
+var getElementList = function(xml){
+    var elements = [
+	"textbox",
+	"textarea",
+	"yesno",
+	"date",
+	"datetime",
+	"checkbox"
+    ];
+
+    var result = [];
+
+    $(elements).each(function(index, element){
+	var items = xml.find(element);
+
+	items.each(function(index, item){
+	    result.push({
+		label: $(item).attr("label"),
+		name: $(item).attr("name"),
+		type: element
+	    });
+	});
+    });
+
+    return result;
+}   
+
+var loadForm = function(id) {
+    // Form being displayed right now.
+    if (FormStore.current != null) {
+	// Do we care?
+	if (!confirm("There is unsaved data.\n\nWould you like to open the new form anyway?")) {
+	    return;
+	}
+    }
+    else {
+	$("#view-task").css("display", "block");
+	$("#comp-bottom-save").css("display", "block");
+	$("#comp-bottom-submit").css("display", "block");
+    }
+
+    StateStore.dbInstance.findOne({
+   	"_id": id
+    },
+    function(err, doc) {
+	if (err) {
+	    alert(`An error was encountered trying to find the form.\n\nThe form ID was "${id}".\n\n${err}`);
+	    
+	    return;
+	}
+	
+	WorkflowDispatcher.dispatch({
+	    actionType: "new-form",
+	    form: doc
+	});
+    });
+}
+
+var createMenuItem = function(label, id) {
+    var menuitem = $(`<a href="#" class="dropdown-item" data-id="${id}">${label}</a>`)
+        .click(function(e) {
+            loadForm(e.target.dataset.id);
+        });
+
+    return menuitem;
+}
 
 var App = (function ($) {
     // After research these performance-oriented shortcuts aren't that useful.
     // jQuery claims that its select, especially for IDs is very fast
     // thansk to brower enhancements.
-    var views = {
-        startIntro: $("#view-start-intro"),
-        startTasks: $("#view-start-tasks"),
-        task:       $("#view-task"),
-        collect:    $("#view-collect"),
-        navTop:     $("#view-top"),
-        navBottom:  $("#view-bottom")
-    };
 
-    var comps = {
-        topWorkflowName: $("#comp-top-workflow-name"),
-        startIntroFirsttime: $("#comp-start-intro-firsttime"),
-        startIntroNotFirsttime: $("#comp-start-intro-not-firsttime"),
-        startIntroLastWorkflowName: $("#comp-start-intro-last-workflow-name"),
-        startIntroContinue: $("#comp-start-intro-continue"),
-        startIntroOpen: $("#comp-start-intro-open"),
-        startIntroFile: $("#comp-start-intro-file"),
-        startTasksWorkflowName: $("#comp-start-tasks-workflow-name"),
-        startTasksLastTask: $("#comp-start-tasks-last-task"),
-        startTasksLastTaskName: $("#comp-start-tasks-last-task-name"),
-        startTasksTaskList: $("#comp-start-tasks-task-list"),
-        startTasksTaskCollectButton: $("#comp-start-tasks-task-collect-button"),
-        bottomPages: $("#comp-bottom-pages"),
-        collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
-        collectIntroNotFirstTime: $("#comp-collect-intro-not-firsttime"),
-        collectIntroLastCollectionDate: $("#comp-collect-intro-last-collection-date"),
-        collectSinceLast: $("#comp-collect-since-last"),
-        collectRangeStartDate: $("#comp-collect-range-start-date"),
-        collectRangeEndDate: $("#comp-collect-range-end-date"),
-        collectRangeButton: $("#comp-collect-range-button"),
-        collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
-        collectAllButton: $("#comp-collect-all-button"),
-        bottomSave: $("#comp-bottom-save"),
-        bottomSubmit: $("#comp-bottom-submit"),
-        bottomWaiting: $("#comp-bottom-waiting"),
-        bottomInProgress: $("#comp-bottom-inprogress"),
-        bottomCompleted: $("#comp-bottom-completed"),
-    };
-
-    
     /* If a previous workflow is not in localStorage then 
        it's probably not their first time using the app. */
     if (localStorage.getItem("file:last-workflow-name")) {
@@ -135,7 +194,7 @@ var App = (function ($) {
 
             // Would be better as a callback.
             WorkflowDispatcher.dispatch({
-                actionType: "new-file",
+                actionType: "process-file",
                 file: file,
                 // This will send a jQuery-ized XML document.
                 xml: $($.parseXML(txt))
@@ -144,7 +203,7 @@ var App = (function ($) {
     }
 
     WorkflowDispatcher.register(function(payload) {
-        if (payload.actionType === 'new-file') {
+        if (payload.actionType === 'process-file') {
             StateStore.xml = payload.xml;
 
             // If the document is valid, this should not cause errors.
@@ -155,6 +214,8 @@ var App = (function ($) {
 
             // If an old database is open it should be closed. 
             StateStore.dbInstance = new Datastore({ filename: StateStore.dbPath, autoload: true });
+
+	    StateStore.elements = getElementList(StateStore.xml);
 
             // Unneeded dispatching.
             if (payload.file != localStorage.getItem("file:last-path", payload.file)){
@@ -222,7 +283,6 @@ var App = (function ($) {
         if (payload.actionType === 'select-task') {
             if (payload.collect) {
                 views.collect.css("display", "block");
-
             }
             else {
                 // Store selected task.
@@ -231,6 +291,8 @@ var App = (function ($) {
                     name: payload.name,
                     id: payload.id
                 };
+
+		$("#comp-top-newform").css("display", "inline-block");
 
                 // Get waiting forms.
                 // These are started, but incomplete forms, and those completed in a previous task.
@@ -315,22 +377,21 @@ var App = (function ($) {
                 localStorage.setItem("workflow:last-task-label", payload.label);
                 localStorage.setItem("workflow:last-task-name", payload.name);
 
-                var form = StateStore.xml.find("form");
+		var form = StateStore.xml.find("form");
 
-                // Important. Build the form.
-                build(views.task, form, {});
+		// Important. Build the form.
+		build(views.task, form, {});
 
-                // Build page list in bottom nav.
-                // Move somewhere else.
-                form.find("page").each(function(index, page) {
-                    comps.bottomPages.append($(
-                        `<li class="nav-item">
-                            <a class="nav-link btn" href="#${$(page).attr("name")}">${$(page).attr("label")}</a>
-                         </li>`));
-                });
-                    
+		// Build page list in bottom nav.
+		// Move somewhere else.
+		form.find("page").each(function(index, page) {
+		    comps.bottomPages.append($(
+			`<li class="nav-item">
+                     <a class="nav-link" href="#${$(page).attr("name")}">${$(page).attr("label")}</a>
+                 </li>`));
+		});
+
                 views.navBottom.css("display", "block");
-                views.task.css("display", "block");
             }
 
             views.startTasks.css("display", "none");
@@ -353,9 +414,9 @@ var App = (function ($) {
         // Need to append step if we are being submitted.
         newDoc["completed"] = false;
 
-        if (FormStore.current.id) {
+        if (FormStore.current) {
             // Update form
-            StateStore.dbInstance.update({_id: FormStore.current.id}, newDoc, {}, function (err, doc) {
+            StateStore.dbInstance.update({_id: FormStore.current._id}, newDoc, {}, function (err, doc) {
                 // If successfully inserted, update store.
                 if (err) {
                     alert("Unable to save the form:\n\n" + err);
@@ -363,12 +424,12 @@ var App = (function ($) {
                     return;
                 }
 
-                // We will want to handle the case where the patient name changes.
-                // WorkflowDispatcher.dispatch({
-                //     actionType: 'new-saved-form', 
-                //     label: newDoc["patient-name"],
-                //     id: doc._id
-                // });
+		FormStore.current = null;
+
+		$("#view-task").css("display", "none");
+
+		$("#comp-bottom-save").css("display", "none");
+		$("#comp-bottom-submit").css("display", "none");
             });
         }
         else {
@@ -380,6 +441,13 @@ var App = (function ($) {
                     return;
                 }
 
+		FormStore.current = null;
+
+		$("#view-task").css("display", "none");
+
+		$("#comp-bottom-save").css("display", "none");
+		$("#comp-bottom-submit").css("display", "none");
+
                 WorkflowDispatcher.dispatch({
                     actionType: 'new-saved-form', 
                     label: newDoc["patient-name"],
@@ -387,6 +455,21 @@ var App = (function ($) {
                 });
             });
         }
+    });
+
+    $("#comp-top-newform").css("display", "none");
+
+    $("#comp-top-newform").click(function(e) {
+	FormStore.current = null;
+
+	$("#view-task").css("display", "block");
+	$("#comp-bottom-save").css("display", "block");
+	$("#comp-bottom-submit").css("display", "block");
+
+	WorkflowDispatcher.dispatch({
+	    actionType: "new-form",
+	    form: {}
+	});
     });
 
     // Save form for later without sending to next task.
@@ -405,15 +488,22 @@ var App = (function ($) {
 
         newDoc["completed"] = true;
 
-        if (FormStore.current.id) {
+        if (FormStore.current._id) {
             // Update form
-            StateStore.dbInstance.update({_id: FormStore.current.id}, newDoc, {}, function (err, doc) {
+            StateStore.dbInstance.update({_id: FormStore.current._id}, newDoc, {}, function (err, doc) {
                 if (err) {
                     alert("Unable to submit the form:\n\n" + err);
                     
                     return;
                 }
                 
+		FormStore.current = null;
+
+		$("#view-task").css("display", "none");
+
+		$("#comp-bottom-save").css("display", "none");
+		$("#comp-bottom-submit").css("display", "none");
+
                 WorkflowDispatcher.dispatch({
                     actionType: 'new-completed-form', 
                     label: newDoc["patient-name"],
@@ -428,6 +518,13 @@ var App = (function ($) {
 
                     return;
                 }
+
+		FormStore.current = null;
+
+		$("#view-task").css("display", "none");
+
+		$("#comp-bottom-save").css("display", "none");
+		$("#comp-bottom-submit").css("display", "none");
 
                 WorkflowDispatcher.dispatch({
                     actionType: 'new-completed-form', 
@@ -482,7 +579,7 @@ var App = (function ($) {
 
             // Clear current form and ID;
             // We can rebuild the form or we can clear all the items.
-            FormStore.current.id = null;
+            // FormStore.current.id = null;
 
             $("#comp-bottom-completed-menu")
                 .append(createMenuItem(payload.label, payload.id));
@@ -500,7 +597,7 @@ var App = (function ($) {
             });
 
             // Set so we can update the form later.
-            FormStore.current.id = payload.id;
+            FormStore.current._id = payload.id;
 
             $("#comp-bottom-saved-menu")
                 .append(createMenuItem(payload.label, payload.id));
@@ -553,3 +650,51 @@ var App = (function ($) {
 // Repopulating a form.
 // We will have a list of form element names that correspond to database document properties.
 // We could provide an object to build.
+
+WorkflowDispatcher.register(function(payload){
+    if (payload.actionType === 'new-form') {
+	FormStore.current = payload.form;
+	
+	// Have element list in StateStore
+	$(StateStore.elements).each(function(item, element) {
+	    switch (element.type) {
+	    case "textbox":
+	    case "date":
+	    case "datetime":
+	    case "textarea":
+		$(`#${element.name}`).attr("value", FormStore.current[element.name] || "");
+		
+		break;
+	    case "checkbox":
+		if (FormStore.current[element.name] == "on") {
+		    $(`#${element.name}`).attr("checked", "checked");
+		}
+		else {
+		    $(`#${element.name}`).removeAttr("checked");
+		}
+
+		break;
+	    case "yesno":
+		if (FormStore.current[element.name] == "yes") {
+		    $(`#${element.name}-yes`).attr("checked");
+
+		    $(`#${element.name}-yes`).parent().addClass("active");
+		    $(`#${element.name}-no`).parent().removeClass("active");
+		}
+		else if (FormStore.current[element.name] == "no") {
+		    $(`#${element.name}-no`).attr("checked");
+
+		    $(`#${element.name}-no`).parent().addClass("active");
+		    $(`#${element.name}-yes`).parent().removeClass("active");
+		}
+		else {
+		    console.log(`Invalid value "${element.name}" for ${element.type} element.`);
+		}
+		
+		break;
+	    default:
+		break;
+	    }
+	});
+    }
+});

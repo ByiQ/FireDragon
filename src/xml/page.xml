@@ -1,3 +1,19 @@
+<!--
+    Additional elements to add:
+    - select
+    - optgroup
+    - option
+    - input type=email
+    - input type=color
+    - input type=number
+    - input type=password
+    - input type=tel
+    - input type=time
+    - input type=url
+    - input type=month
+    - input type=week
+-->
+
 <workflow label="Interventional Radiology" name="interventional-radiology">
   <properties>
     <property name="form-desc-field">patient-name</property>
@@ -9,18 +25,32 @@
     <task label="Clinic" name="clinic" />
     <task label="Scheduling" name="scheduling" />
   </tasks>
+  <!-- <data> -->
+  <!--   <csv name="icd10" src="src/data/icd.csv" /> -->
+  <!--   <datalist name=" -->
+  <!-- </data> -->
+  <!-- <validation> -->
+  <!--   <rule name="first-last-name"> -->
+  <!--   <rule name="date-iso8601-yyymmdd"> -->
+  <!--   <rule name="mrn"> -->
+  <!--   <rule name="address"> -->
+  <!--   <rule name="phone"> -->
+  <!--   <rule name=""> -->
+  <!--   <rule name=""> -->
+  <!--   <rule name=""> -->
+  <!-- </validation> -->
+
   <forms>
     <form label="Interventional Radiology">
       <pages>
 	<page label="Main Info" name="main-info">
 	  <section label="Patient Information" name="patient-information">
 	    <row>
-	      <column>
-		<header>Patient Information</header>
+	      <column label="Patient Information">
 		<textbox label="Name" name="patient-name" validation="first-last-name" task="reception" required="required" />
 		<date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="reception" required="required" />
 		<textbox label="MRN" name="med-rec-num" validation="mrn" task="reception" required="required" />
-		<textbox label="Address/Nurs" name="address-nurs" validation="address" task="reception" required="required" />
+		<textbox label="Address/Nurse" name="address-nurs" validation="address" task="reception" required="required" />
 		<textbox label="Phone" name="patient-phone" validation="phone" task="reception" required="required" />
 		<textbox label="Cell" name="patient-cell" validation="phone" task="reception" required="required" />
 	      </column>
@@ -28,32 +58,29 @@
 		<datetime label="Date" name="date" validation="date" task="reception" required="required" />
 		<textbox label="Referring Physician" name="referring-physician" validation="first-last-name" task="reception" required="required" />
 		<textbox label="Contact" name="contact" validation="first-last-name" task="reception" required="required" />
-		<textbox label="Insurance Primary" name="insurance-primary" validation="free-required" task="reception" required="required" />
-		<textbox label="Insurance Secondary" name="insurance-secondary" validation="free-allow-empty" task="reception" />
+		<textbox label="Insurance Primary" name="insurance-primary" task="reception" required="required" />
+		<textbox label="Insurance Secondary" name="insurance-secondary" task="reception" />
 	      </column>
 	    </row>
 	  </section>
 	  <section>
 	    <row>
-	      <column>
-		<header>Clinical Information</header>
-		<textbox label="Diagnosis" name="clinical-diagnosis1" validation="free" task="clinic" />
-		<textbox label="Diagnosis" name="clinical-diagnosis2" validation="free-allow-empty" task="clinic" />
-		<yesno label="Diabetes" name="has-diabetes" validation="required" task="clinic" />
-		<yesno label="Allergies" name="has-allergies" validation="required" task="clinic" />
-		<yesno label="Allergies Contrast" name="has-allergies-contrast" validation="required" task="clinic" />
-		<yesno label="Blood Thinners" name="has-blood-thinners" validation="required" task="clinic" />
-		<yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" validation="required" task="clinic" />
+	      <column label="Clinical Information">
+		<textbox label="Diagnosis" name="clinical-diagnosis1" task="clinic" required="required" />
+		<textbox label="Diagnosis" name="clinical-diagnosis2" task="clinic" />
+		<yesno label="Diabetes" name="has-diabetes" task="clinic" required="required" />
+		<yesno label="Allergies" name="has-allergies" task="clinic" required="required" />
+		<yesno label="Allergies Contrast" name="has-allergies-contrast" task="clinic" required="required" />
+		<yesno label="Blood Thinners" name="has-blood-thinners" task="clinic" required="required" />
+		<yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" task="clinic" required="required" />
 	      </column>
-	      <column>
-		<header>Labs</header>
+	      <column label="Labs">
 	      </column>
 	    </row>
 	  </section>
 	  <section>
 	    <row>
-	      <column>
-		<header>Procedure/CPT</header>
+	      <column label="Procedure/CPT">
 		<textbox data-source="ir-common-cpt" />
 	      </column>
 	    </row>
@@ -62,12 +89,11 @@
 	<page label="Scheduling" name="page-2">
 	  <section>
 	    <row>
-	      <column>
-		<header>Scheduling Details</header>
-		<textbox name="scheduling-details" validation="free-allow-empty" />
+	      <column label="Scheduling Details">
+		<textbox name="scheduling-details" required="required" />
 	      </column>
-	      <column>
-		<header>Reason For Delay</header>
+	      <column label="Reason For Delay">
+		<checkbox label="They're Dumb" name="rfd-dumbness" />
 		<checkbox label="Cancelled" name="rfd-cancelled" />
 		<checkbox label="1st Available Slot" name="rfd-1st-avail-slot" />
 		<checkbox label="Medical Clearance" name="rfd-med-clearance" />
@@ -78,8 +104,7 @@
 		<checkbox label="Outside Films" name="rfd-outside-films" />
 		<checkbox label="Contacting Patient" name="rfd-contacting-pat" />
 	      </column>
-	      <column>
-		<header>Same Day</header>
+	      <column label="Same Day">
 		<checkbox label="Consult/Order" name="sameday-cons-order" />
 		<checkbox label="Anesthesia" name="sameday-anesthesia" />
 		<checkbox label="PreOp" name="sameday-preop" />
@@ -91,8 +116,7 @@
 		<checkbox label="OutPt Registration" name="sameday-op-reg" />
 		<checkbox label="IR Core" name="sameday-ir-core" />
 	      </column>
-	      <column>
-		<header>Scheduled</header>
+	      <column label="Scheduled">
 		<checkbox label="Patient" name="scheduled-pat" />
 		<checkbox label="Office" name="scheduled-office" />
 		<checkbox label="OR" name="scheduled-or" />
