@@ -4,6 +4,8 @@
 // Define action type payloads in documentation.
 // May wish to move these into App.
 
+var fs = nw.require('fs');
+
 var Datastore = require('nedb');
 var WorkflowDispatcher = new Flux.Dispatcher();
 
@@ -176,8 +178,6 @@ var App = (function ($) {
 
     // Would be useful with a callback, then moved to another file.
     var readWorkflow = function(file) {
-        var fs = nw.require('fs');
-
         // UTF-8 includes Latin 1, so we should be okay here for our audience.
         // I'm sure we could always detect the character set if it became necessary.
         fs.readFile(file, 'utf8', function(err, txt) {
@@ -555,6 +555,51 @@ var App = (function ($) {
         });
     });
 
+    $("#comp-collect-button").click(function(e) {
+	$("#comp-collect-save").trigger("click");
+    });
+    
+    $("#comp-collect-save").change(function(e){
+	var result = "";
+
+	// Add header.
+	$(StateStore.elements).each(function(index, element) {
+	    result += `"${element.label}",`;
+	});
+
+	result += "\n";
+
+	StateStore.dbInstance.find({}, function(err, docs) {
+	    if (err) {
+		alert(err);
+
+		return;
+	    }
+
+	    $(docs).each(function(index, doc) {
+		$(StateStore.elements).each(function(index, element) {
+		    result += (doc[element.name]) ? `"${doc[element.name]}"` : `""`;
+		    result += ",";
+		});
+
+		result += "\n";
+	    });
+	    
+            var file = e.target.files[0].path;
+
+	    fs.writeFile(file, result, function(err) {
+		if (err) {
+		    console.info("There was an error attempting to save your data.");
+		    console.warn(err.message);
+
+		    return;
+		} 
+
+		alert("File saved.");
+	    });
+	});
+    });
+    
     comps.startIntroFile.change(function(e){
         var file = $(this).prop("files")[0].path;
 

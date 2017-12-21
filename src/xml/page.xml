@@ -80,8 +80,8 @@
 	  </section>
 	  <section>
 	    <row>
-	      <column label="Procedure/CPT">
-		<textbox data-source="ir-common-cpt" />
+	      <column>
+		<textbox label="Procedure/CPT" name="procedure-cpt" task="reception" />
 	      </column>
 	    </row>
 	  </section>
@@ -89,8 +89,8 @@
 	<page label="Scheduling" name="page-2">
 	  <section>
 	    <row>
-	      <column label="Scheduling Details">
-		<textbox name="scheduling-details" required="required" />
+	      <column label="Additional Info">
+		<textarea label="Scheduling Details" name="scheduling-details" task="reception" />
 	      </column>
 	      <column label="Reason For Delay">
 		<checkbox label="They're Dumb" name="rfd-dumbness" />

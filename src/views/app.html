@@ -83,43 +83,45 @@
        <div class="jumbotron">
          <div class="container">
 	   <h1 class="display-3">Collect Data</h1>
+	   <p>Export all data.</p>
 	   <!-- <p id="comp-collect-notice"><strong>There are forms in-progress that will not be collected.</strong></p> -->
            
-           <p id="comp-collect-intro-firsttime">Data has not been collected for this workflow yet.</p>
-           <p id="comp-collect-intro-not-firsttime">Data has been exported through <strong id="comp-collect-intro-last-collection-date"></strong>.</p>
-           <p>What would you like to collect?</p>
+           <!-- <p id="comp-collect-intro-firsttime">Data has not been collected for this workflow yet.</p> -->
+           <!-- <p id="comp-collect-intro-not-firsttime">Data has been exported through <strong id="comp-collect-intro-last-collection-date"></strong>.</p> -->
+           <!-- <p>What would you like to collect?</p> -->
 
-           <input type="file" id="comp-start-intro-file" accept=".xml" style="display: none;">
+           <!-- <input type="file" id="comp-start-intro-file" accept=".xml" style="display: none;"> -->
 
-	   <div class="form-check">
-	     <label class="form-check-label">
-	       <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-through">
-	       All completed forms since last collection through 
-	       <input type="date" name="comp-collect-through-date" id="comp-collect-through-date">
-	     </label>
-	   </div>
+	   <!-- <div class="form-check"> -->
+	   <!--   <label class="form-check-label"> -->
+	   <!--     <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-through"> -->
+	   <!--     All completed forms since last collection through  -->
+	   <!--     <input type="date" name="comp-collect-through-date" id="comp-collect-through-date"> -->
+	   <!--   </label> -->
+	   <!-- </div> -->
 
-	   <div class="form-check">
-	     <label class="form-check-label">
-	       <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-range">
-	       Forms complete between
-	       <input type="date" name="comp-collect-range-start-date" id="comp-collect-range-start-date">
-	       and
-	       <input type="date" name="comp-collect-range-end-date" id="comp-collect-range-end-date">.
-	     </label>
-	   </div>
+	   <!-- <div class="form-check"> -->
+	   <!--   <label class="form-check-label"> -->
+	   <!--     <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-range"> -->
+	   <!--     Forms complete between -->
+	   <!--     <input type="date" name="comp-collect-range-start-date" id="comp-collect-range-start-date"> -->
+	   <!--     and -->
+	   <!--     <input type="date" name="comp-collect-range-end-date" id="comp-collect-range-end-date">. -->
+	   <!--   </label> -->
+	   <!-- </div> -->
 
-	   <div class="form-check">
-	     <label class="form-check-label">
-	       <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-everything">
-	       Every completed form since the beginning of time.
-	     </label>
-	   </div>
+	   <!-- <div class="form-check"> -->
+	   <!--   <label class="form-check-label"> -->
+	   <!--     <input class="form-check-input" type="radio" name="comp-collect-choice" id="comp-collect-everything"> -->
+	   <!--     Every completed form since the beginning of time. -->
+	   <!--   </label> -->
+	   <!-- </div> -->
 
-	   <!-- Temporary. -->
-	   <br />
-	   <!-- End Temporary. -->
-	   
+	   <!-- <\!-- Temporary. -\-> -->
+	   <!-- <br /> -->
+	   <!-- <\!-- End Temporary. -\-> -->
+
+	   <input type="file" id="comp-collect-save" nwsaveas accept=".csv" style="display: none">
 	   <button class="btn btn-primary btn-lg" id="comp-collect-button">Collect</button>
          </div>
        </div>
@@ -154,14 +156,9 @@
    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-     <script src="/node_modules/flux/dist/Flux.js"></script>
-     <script src="/vendor/jquery-flexdatalist/jquery.flexdatalist.js"></script>
-   <script>
-// window.$ = require('jquery')
-// window.Popper = require('popper.js')
-// require('bootstrap')
-   </script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+   <script src="/node_modules/flux/dist/Flux.js"></script>
+   <script src="/vendor/jquery-flexdatalist/jquery.flexdatalist.js"></script>
 
    <!-- Project JavaScript -->
    <script src="/src/app/app.js"></script>
@@ -169,33 +166,3 @@
    <script src="/src/app/mapArrayToObject.js"></script>
   </body>
 </html>
-
-<!--    <script src="/src/app/formGeneration.js"></script>-->
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>-->
-<!--    <script>
-        $(window).load(function () {
-        var phones = [{"mask": "(###) ###-####"}, {"mask": "(###) ###-##############"}];
-        $('#phone').inputmask({
-        mask: phones,
-        greedy: false,
-        definitions: {'#': {validator: "[0-9]", cardinality: 1}}
-        });
-        $('#cell').inputmask({
-        mask: phones,
-        greedy: false,
-        definitions: {'#': {validator: "[0-9]", cardinality: 1}}
-        });
-        });
-
-        function changeText(){
-        var userInputname = document.getElementById('name').value;
-        var userInputcolor = Array.prototype.slice.call(document.querySelectorAll(".color:checked")).map(function(el) {
-        return el.value;
-        }).join(', ')
-
-        document.getElementById('output1').innerHTML = userInputname;
-        document.getElementById('output2').innerHTML = userInputcolor;
-        return false;
-        }
-        </script>-->
-
