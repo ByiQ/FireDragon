@@ -468,7 +468,7 @@ var App = (function ($) {
 
 	WorkflowDispatcher.dispatch({
 	    actionType: "new-form",
-	    form: {}
+	    form: null
 	});
     });
 
@@ -595,9 +595,6 @@ var App = (function ($) {
                 label: payload.label,
                 id: payload.id
             });
-
-            // Set so we can update the form later.
-            FormStore.current._id = payload.id;
 
             $("#comp-bottom-saved-menu")
                 .append(createMenuItem(payload.label, payload.id));
