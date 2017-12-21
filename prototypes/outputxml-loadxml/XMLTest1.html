@@ -697,23 +697,22 @@
 			</div>
 			<p>
 				<select name = "inputSelect">
-					<option value = "date">date</option>
-					<option type="text" value = "text">text field</option>
+					<!-- <option value = "date">date</option> -->
+					<!-- <option type="text" value = "text">text field</option> -->
 				</select>
 				<select name = "textOption">
-					<option type="input" value = ""></option>
-					<option value = "Test Text!">Test Text!</option> 
-					<option value = "01/15/2017">Date</option>
+					<!-- <option type="input" value = ""></option> -->
+					<!-- <option value = "Test Text!">Test Text!</option>  -->
+					<!-- <option value = "01/15/2017">Date</option> -->
 				</select>
-				<input type="text" name="textInput" id="textInput">
 				<br>
 					
-					<input type = "button" value = "Add DateTime Element" onclick = "addDateTimeElement('dynamicInputs', document.patient.textInput.value);">
+					<input type = "button" value = "Add DateTime Element" onclick = "addDateTimeElement('dynamicInputs', document.patient.textOption.value, 'Date:');">
 					<input type = "button" value = "Add Input Element" onclick = "addInputElement('dynamicInputs', document.patient.textOption.value, 'inputTest', 'Input Label: ', 'className', document.patient.textOption.value);">
 					<input type = "button" value = "Add yesNo" onclick = "addYesNo('dynamicInputs', 'elementName', document.patient.textOption.value);">
 					<input type = "button" value = "Add radio" onclick = "addRadio('dynamicInputs', 'elementName', document.patient.textOption.value, true);">
-					<input type = "button" value = "Add checkbox" onclick = "addCheckBoxElement('dynamicInputs', document.patient.inputSelect.value, 'checkboxTest');">
-					<input type = "button" value = "Add textarea" onclick = "addTextAreaElement('dynamicInputs', 'elementName', 'testTextArea: ', 'This is the placeholder...', 'test');">
+					<input type = "button" value = "Add checkbox" onclick = "addCheckBoxElement('dynamicInputs', document.patient.inputSelect.value, 'checkbox');">
+					<input type = "button" value = "Add textarea" onclick = "addTextAreaElement('dynamicInputs', 'elementName', 'TextArea: ', 'This is the placeholder...', 'test');">
 				<br>
 			</p>
 		</div>
@@ -751,11 +750,5 @@
 				}
 			</script>
 		</div>
-	
-	<h3> Select XML file to upload:</h3>
-	<input type='file' accept='text/xml' onchange='openFile(event)'><br />
-	<input type="button" class="btn btn-primary mr-2" value="Download" style="margin-left:100px;" onclick="downloadCsv();">
-	<ul id="output"></ul>
-	
 </body>
 </html>
