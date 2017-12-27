@@ -93,49 +93,51 @@
 	  </section-list>
 	</page>
 	<page label="Scheduling" name="page-2">
-	  <section label="Additional Information" name="additional-information">
-	    <row>
-	      <column label="Additional Info">
-		<textarea label="Scheduling Details" name="scheduling-details" task="reception" />
-	      </column>
-	      <column label="Reason For Delay">
-		<checkbox label="They're Dumb" name="rfd-dumbness" />
-		<checkbox label="Cancelled" name="rfd-cancelled" />
-		<checkbox label="1st Available Slot" name="rfd-1st-avail-slot" />
-		<checkbox label="Medical Clearance" name="rfd-med-clearance" />
-		<checkbox label="Req Date" name="rfd-req-date" />
-		<checkbox label="Scheduling " name="rfd-sched" />
-		<checkbox label="Within 5-7 Days" name="rfd-wi-57-days" />
-		<checkbox label="Insurance" name="rfd-ins" />
-		<checkbox label="Outside Films" name="rfd-outside-films" />
-		<checkbox label="Contacting Patient" name="rfd-contacting-pat" />
-	      </column>
-	      <column label="Same Day">
-		<checkbox label="Consult/Order" name="sameday-cons-order" />
-		<checkbox label="Anesthesia" name="sameday-anesthesia" />
-		<checkbox label="PreOp" name="sameday-preop" />
-		<checkbox label="Vent" name="sameday-vent" />
-		<checkbox label="Consent" name="sameday-consent" />
-		<checkbox label="NPO" name="sameday-npo" />
-		<checkbox label="RN" name="sameday-rn" />
-		<checkbox label="Care Manager" name="sameday-care-mgr" />
-		<checkbox label="OutPt Registration" name="sameday-op-reg" />
-		<checkbox label="IR Core" name="sameday-ir-core" />
-	      </column>
-	      <column label="Scheduled">
-		<checkbox label="Patient" name="scheduled-pat" />
-		<checkbox label="Office" name="scheduled-office" />
-		<checkbox label="OR" name="scheduled-or" />
-		<checkbox label="Access" name="scheduled-access" />
-		<checkbox label="Orders/Labs" name="scheduled-orders-labs" />
-		<checkbox label="Schedule" name="scheduled-schedule" />
-		<checkbox label="H&amp;P/Notes" name="scheduled-hp-notes" />
-		<checkbox label="Specimen Test" name="scheduled-specimen-test" />
-		<checkbox label="Pathology x4583" name="scheduled-path" />
-		<checkbox label="Histology x4572" name="scheduled-hist" />
-	      </column>
-	    </row>
-	  </section>
+	  <section-list>
+	    <section label="Additional Information" name="additional-information">
+	      <row>
+		<column label="Additional Info">
+		  <textarea label="Scheduling Details" name="scheduling-details" task="reception" />
+		</column>
+		<column label="Reason For Delay">
+		  <checkbox label="They're Dumb" name="rfd-dumbness" />
+		  <checkbox label="Cancelled" name="rfd-cancelled" />
+		  <checkbox label="1st Available Slot" name="rfd-1st-avail-slot" />
+		  <checkbox label="Medical Clearance" name="rfd-med-clearance" />
+		  <checkbox label="Req Date" name="rfd-req-date" />
+		  <checkbox label="Scheduling " name="rfd-sched" />
+		  <checkbox label="Within 5-7 Days" name="rfd-wi-57-days" />
+		  <checkbox label="Insurance" name="rfd-ins" />
+		  <checkbox label="Outside Films" name="rfd-outside-films" />
+		  <checkbox label="Contacting Patient" name="rfd-contacting-pat" />
+		</column>
+		<column label="Same Day">
+		  <checkbox label="Consult/Order" name="sameday-cons-order" />
+		  <checkbox label="Anesthesia" name="sameday-anesthesia" />
+		  <checkbox label="PreOp" name="sameday-preop" />
+		  <checkbox label="Vent" name="sameday-vent" />
+		  <checkbox label="Consent" name="sameday-consent" />
+		  <checkbox label="NPO" name="sameday-npo" />
+		  <checkbox label="RN" name="sameday-rn" />
+		  <checkbox label="Care Manager" name="sameday-care-mgr" />
+		  <checkbox label="OutPt Registration" name="sameday-op-reg" />
+		  <checkbox label="IR Core" name="sameday-ir-core" />
+		</column>
+		<column label="Scheduled">
+		  <checkbox label="Patient" name="scheduled-pat" />
+		  <checkbox label="Office" name="scheduled-office" />
+		  <checkbox label="OR" name="scheduled-or" />
+		  <checkbox label="Access" name="scheduled-access" />
+		  <checkbox label="Orders/Labs" name="scheduled-orders-labs" />
+		  <checkbox label="Schedule" name="scheduled-schedule" />
+		  <checkbox label="H&amp;P/Notes" name="scheduled-hp-notes" />
+		  <checkbox label="Specimen Test" name="scheduled-specimen-test" />
+		  <checkbox label="Pathology x4583" name="scheduled-path" />
+		  <checkbox label="Histology x4572" name="scheduled-hist" />
+		</column>
+	      </row>
+	    </section>
+	  </section-list>
 	</page>
       </page-list>
     </form>

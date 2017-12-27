@@ -250,11 +250,7 @@
       <attribute name="label"><text /></attribute>
       <attribute name="name"><text /></attribute>
 
-      <choice>
-	<ref name="section-list" />
-	<ref name="section" />
-
-      </choice>
+      <ref name="section-list" />
     </element><!--page-->    
   </define>
   
