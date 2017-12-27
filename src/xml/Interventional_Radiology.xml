@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <!--
     Additional elements to add:
     - select
@@ -15,16 +17,18 @@
 -->
 
 <workflow label="Interventional Radiology" name="interventional-radiology">
-  <properties>
+  <property-list>
     <property name="form-desc-field">patient-name</property>
     <property name="storage-dir">Test</property>
     <property name="database-path">src/data/test.db</property>
-  </properties>
-  <tasks>
+  </property-list>
+  
+  <task-list>
     <task label="Reception" name="reception" />
     <task label="Clinic" name="clinic" />
     <task label="Scheduling" name="scheduling" />
-  </tasks>
+  </task-list>
+
   <!-- <data> -->
   <!--   <csv name="icd10" src="src/data/icd.csv" /> -->
   <!--   <datalist name=" -->
@@ -40,54 +44,56 @@
   <!--   <rule name=""> -->
   <!-- </validation> -->
 
-  <forms>
+  <form-list>
     <form label="Interventional Radiology">
-      <pages>
+      <page-list>
 	<page label="Main Info" name="main-info">
-	  <section label="Patient Information" name="patient-information">
-	    <row>
-	      <column label="Patient Information">
-		<textbox label="Name" name="patient-name" validation="first-last-name" task="reception" required="required" />
-		<date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="reception" required="required" />
-		<textbox label="MRN" name="med-rec-num" validation="mrn" task="reception" required="required" />
-		<textbox label="Address/Nurse" name="address-nurs" validation="address" task="reception" required="required" />
-		<textbox label="Phone" name="patient-phone" validation="phone" task="reception" required="required" />
-		<textbox label="Cell" name="patient-cell" validation="phone" task="reception" required="required" />
-	      </column>
-	      <column>
-		<datetime label="Date" name="date" validation="date" task="reception" required="required" />
-		<textbox label="Referring Physician" name="referring-physician" validation="first-last-name" task="reception" required="required" />
-		<textbox label="Contact" name="contact" validation="first-last-name" task="reception" required="required" />
-		<textbox label="Insurance Primary" name="insurance-primary" task="reception" required="required" />
-		<textbox label="Insurance Secondary" name="insurance-secondary" task="reception" />
-	      </column>
-	    </row>
-	  </section>
-	  <section>
-	    <row>
-	      <column label="Clinical Information">
-		<textbox label="Diagnosis" name="clinical-diagnosis1" task="clinic" required="required" />
-		<textbox label="Diagnosis" name="clinical-diagnosis2" task="clinic" />
-		<yesno label="Diabetes" name="has-diabetes" task="clinic" required="required" />
-		<yesno label="Allergies" name="has-allergies" task="clinic" required="required" />
-		<yesno label="Allergies Contrast" name="has-allergies-contrast" task="clinic" required="required" />
-		<yesno label="Blood Thinners" name="has-blood-thinners" task="clinic" required="required" />
-		<yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" task="clinic" required="required" />
-	      </column>
-	      <column label="Labs">
-	      </column>
-	    </row>
-	  </section>
-	  <section>
-	    <row>
-	      <column>
-		<textbox label="Procedure/CPT" name="procedure-cpt" task="reception" />
-	      </column>
-	    </row>
-	  </section>
+	  <section-list>
+	    <section label="Patient Information" name="patient-information">
+	      <row>
+		<column label="Patient Information">
+		  <textbox label="Name" name="patient-name" validation="first-last-name" task="reception" required="required" />
+		  <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="reception" required="required" />
+		  <textbox label="MRN" name="med-rec-num" validation="mrn" task="reception" required="required" />
+		  <textbox label="Address/Nurse" name="address-nurs" validation="address" task="reception" required="required" />
+		  <textbox label="Phone" name="patient-phone" validation="phone" task="reception" required="required" />
+		  <textbox label="Cell" name="patient-cell" validation="phone" task="reception" required="required" />
+		</column>
+		<column>
+		  <datetime label="Date" name="date" validation="date" task="reception" required="required" />
+		  <textbox label="Referring Physician" name="referring-physician" validation="first-last-name" task="reception" required="required" />
+		  <textbox label="Contact" name="contact" validation="first-last-name" task="reception" required="required" />
+		  <textbox label="Insurance Primary" name="insurance-primary" task="reception" required="required" />
+		  <textbox label="Insurance Secondary" name="insurance-secondary" task="reception" />
+		</column>
+	      </row>
+	    </section>
+	    <section label="Clincal Information" name="clinical-information">
+	      <row>
+		<column label="Clinical Information">
+		  <textbox label="Diagnosis" name="clinical-diagnosis1" task="clinic" required="required" />
+		  <textbox label="Diagnosis" name="clinical-diagnosis2" task="clinic" />
+		  <yesno label="Diabetes" name="has-diabetes" task="clinic" required="required" />
+		  <yesno label="Allergies" name="has-allergies" task="clinic" required="required" />
+		  <yesno label="Allergies Contrast" name="has-allergies-contrast" task="clinic" required="required" />
+		  <yesno label="Blood Thinners" name="has-blood-thinners" task="clinic" required="required" />
+		  <yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" task="clinic" required="required" />
+		</column>
+<!--		<column label="Labs">
+		</column>-->
+	      </row>
+	    </section>
+	    <section label="Procedure/CPT" name="proc-cpt">
+	      <row>
+		<column>
+		  <textbox label="Procedure/CPT" name="procedure-cpt" task="reception" />
+		</column>
+	      </row>
+	    </section>
+	  </section-list>
 	</page>
 	<page label="Scheduling" name="page-2">
-	  <section>
+	  <section label="Additional Information" name="additional-information">
 	    <row>
 	      <column label="Additional Info">
 		<textarea label="Scheduling Details" name="scheduling-details" task="reception" />
@@ -131,7 +137,7 @@
 	    </row>
 	  </section>
 	</page>
-      </pages>
+      </page-list>
     </form>
-  </forms>
+  </form-list>
 </workflow>

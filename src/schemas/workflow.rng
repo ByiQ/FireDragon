@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+* Containers: .container .container-fluid
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+  </div>
+</div>
+
+* You can remove the margin from rows and padding from columns with .no-gutters on the .row.
+* Grid breakpoints are based on minimum width media queries, meaning they apply to that one breakpoint and all those above it.
+* Setting one column width: col-#
+* Allow adding own classes for column layout.
+-->
+
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <start>
+    <element name="workflow">
+      <attribute name="label"><text /></attribute>
+      <attribute name="name"><text /></attribute>
+
+      <interleave>
+	<ref name="property-list" />
+	<ref name="task-list" />
+	<ref name="form-list" />
+      </interleave>
+    </element><!--workflow-->
+  </start>
+
+  <!-- <define name="helpItem"> -->
+  <!--   <element name="help"> -->
+  <!--     <attribute name="type"> -->
+  <!-- 	<choice> -->
+  <!-- 	  <value>tooltip</value> -->
+  <!-- 	  <value>page</value> -->
+  <!-- 	</choice> -->
+  <!--     </attribute> -->
+  <!--     <attribute name="title"><text /></attribute> -->
+  <!--     <text /> -->
+  <!--   </element> -->
+  <!-- </define> -->
+
+  <!--
+      // Extra small devices (portrait phones, less than 576px)
+      // Small devices (landscape phones, 576px and up)
+      // Medium devices (tablets, 768px and up)
+      // Large devices (desktops, 992px and up)
+      // Extra large devices (large desktops, 1200px and up)
+  -->
+
+  <!-- Mix and match column widths are not supported. -->
+  <!-- You get one. -->
+  <define name="column-width">
+    <attribute name="width">
+      <choice>
+	<text />
+	<value>auto</value>
+      </choice>
+    </attribute>
+  </define>
+
+  <define name="column-breakpoint">
+    <attribute name="column-breakpoint">
+      <ref name="breakpoint-choice" />
+    </attribute>
+  </define>
+
+  <define name="breakpoint-choice">
+    <choice>
+      <value>xs</value>
+      <value>sm</value>
+      <value>md</value>
+      <value>lg</value>
+      <value>xl</value>
+    </choice>
+  </define>
+
+  <define name="vertical-alignment">
+    <attribute name="vertical-alignment">
+      <choice>
+	<value>start</value>
+	<value>center</value>
+	<value>end</value>
+      </choice>
+    </attribute>
+  </define>
+
+  <define name="horizontal-alignment">
+    <attribute name="horizontal-alignment">
+      <choice>
+	<value>start</value>
+	<value>center</value>
+	<value>end</value>
+	<value>around</value>
+	<value>between</value>
+      </choice>
+    </attribute>
+  </define>
+
+  <define name="row">
+    <element name="row">
+      <!-- .no-gutters -->
+      <optional>
+	<!-- .align-items-start -->
+	<ref name="vertical-alignment" />
+      </optional>
+      <optional>
+	<!-- .justify-content-start -->
+	<ref name="horizontal-alignment" />
+      </optional>
+      
+      <!-- Column breaks not supported. -->
+      <!-- Use a new row. -->
+      <!-- Reordering not supported. -->
+      <!-- Offsets not supported. -->
+      <!-- Margin utilities not supported. -->
+
+      <oneOrMore>
+	<ref name="column" />
+      </oneOrMore>
+    </element><!-- row -->
+  </define>
+
+  <define name="column">
+    <element name="column">
+      <!-- Maybe headers should be handled with just a tag. -->
+      <optional>
+	<attribute name="label"><text /></attribute>
+      </optional>
+      
+      <optional>
+	<!-- .align-self-start -->
+	<ref name="vertical-alignment" />
+      </optional>
+      <optional>
+	<ref name="column-breakpoint" />
+      </optional>
+      <optional>
+	<ref name="column-width" />
+      </optional>
+
+      <oneOrMore>
+	<ref name="element" />
+      </oneOrMore>
+    </element><!-- col -->
+  </define>
+  
+  <define name="element-common">
+    <attribute name="label"><text /></attribute>
+    <attribute name="name"><text /></attribute>
+
+    <!-- Temporary optionalness -->
+    <optional>
+      <attribute name="task"><text /></attribute>
+    </optional>
+    
+    <optional>
+      <attribute name="validation"><text /></attribute>
+    </optional>
+
+    <optional>
+      <attribute name="required">
+	<value>required</value>
+      </attribute>
+    </optional>    
+  </define>
+  
+  <define name="element" combine="choice">
+    <element name="textbox">
+      <ref name="element-common" />
+    </element>
+  </define>
+
+  <define name="element" combine="choice">
+    <element name="textarea">
+      <ref name="element-common" />
+    </element>
+  </define>
+
+  <define name="element" combine="choice">
+    <element name="date">
+      <ref name="element-common" />
+    </element>
+  </define>
+
+  <define name="element" combine="choice">
+    <element name="datetime">
+      <ref name="element-common" />
+    </element>
+  </define>
+
+  <define name="element" combine="choice">
+    <element name="yesno">
+      <ref name="element-common" />
+    </element>
+  </define>
+
+  <define name="element" combine="choice">
+    <element name="checkbox">
+      <ref name="element-common" />
+    </element>
+  </define>
+
+  <define name="element" combine="choice">
+    <element name="radio">
+      <ref name="element-common" />
+    </element>
+  </define>
+
+  <define name="form-list">
+    <element name="form-list">
+      <oneOrMore>
+	<ref name="form" />
+      </oneOrMore>
+    </element><!--form-list-->
+  </define>
+
+  <define name="form">
+    <element name="form">
+      <!-- .container-fluid -->
+
+      <attribute name="label"><text /></attribute>
+
+      <ref name="page-list" />
+    </element><!--form-->
+  </define>
+
+  <define name="page-list">
+    <element name="page-list">
+      <oneOrMore>
+	<ref name="page" />
+      </oneOrMore>
+    </element><!--page-list-->
+  </define>
+
+  <define name="page">
+    <element name="page">
+      <attribute name="label"><text /></attribute>
+      <attribute name="name"><text /></attribute>
+
+      <choice>
+	<ref name="section-list" />
+	<ref name="section" />
+
+      </choice>
+    </element><!--page-->    
+  </define>
+  
+  <define name="property-list">
+    <element name="property-list">
+      <oneOrMore>
+	<ref name="property" />
+      </oneOrMore>
+    </element><!--property-list-->
+  </define>
+
+  <define name="property">
+    <element name="property">
+      <attribute name="name"><text /></attribute>
+      <text />
+    </element><!--property-->
+  </define>
+
+  <define name="section-list">
+    <element name="section-list">
+      <oneOrMore>
+	<ref name="section" />
+      </oneOrMore>
+    </element><!--section-list-->
+  </define>
+  
+  <define name="section">
+    <element name="section">
+      <attribute name="label"><text /></attribute>
+      <attribute name="name"><text /></attribute>
+      
+      <oneOrMore>
+	<ref name="row" />
+      </oneOrMore>
+    </element><!--section-->
+  </define>
+  
+  <define name="task-list">
+    <element name="task-list">
+      <oneOrMore>
+	<ref name="task" />
+      </oneOrMore>
+    </element><!--task-list-->
+  </define>
+  
+  <define name="task">
+    <element name="task">
+      <attribute name="label"><text /></attribute>
+      <attribute name="name"><text /></attribute>
+    </element><!--task-->
+  </define>
+</grammar>
