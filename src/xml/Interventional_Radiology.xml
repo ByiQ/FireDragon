@@ -87,10 +87,10 @@
 	      <row>
 		<column>
 		  <textbox label="Procedure/CPT" name="procedure-cpt" task="reception" />
-		  <radio label="Test Radio" name="test-radio" task="reception">
-		    <option label="First item" value="first-item" />
-		    <option label="Second" value="second" />
-		  </radio>
+		  <radio-group label="Test Radio" name="test-radio" task="reception">
+		    <radio label="First item" value="first-item" />
+		    <radio label="Second" value="second" />
+		  </radio-group>
 		  <select label="Test Select" name="test-select" task="reception">
 		    <option-group label="Special Group">
 		      <option label="First item" value="first-item" />

@@ -214,11 +214,11 @@
   </define>
 
   <define name="element" combine="choice">
-    <element name="radio">
+    <element name="radio-group">
       <ref name="element-common" />
 
       <oneOrMore>
-	<ref name="option" />
+	<ref name="radio" />
       </oneOrMore>
     </element>
   </define>
@@ -248,6 +248,13 @@
   
   <define name="option">
     <element name="option">
+      <attribute name="label"><text /></attribute>
+      <attribute name="value"><text /></attribute>
+    </element>
+  </define>
+
+  <define name="radio">
+    <element name="radio">
       <attribute name="label"><text /></attribute>
       <attribute name="value"><text /></attribute>
     </element>
