@@ -216,6 +216,40 @@
   <define name="element" combine="choice">
     <element name="radio">
       <ref name="element-common" />
+
+      <oneOrMore>
+	<ref name="option" />
+      </oneOrMore>
+    </element>
+  </define>
+
+  <define name="element" combine="choice">
+    <element name="select">
+      <ref name="element-common" />
+
+      <oneOrMore>
+	<choice>
+	  <ref name="option-group" />
+	  <ref name="option" />
+	</choice>
+      </oneOrMore>
+    </element>
+  </define>
+
+  <define name="option-group">
+    <element name="option-group">
+      <attribute name="label"><text /></attribute>
+
+      <oneOrMore>
+	<ref name="option" />
+      </oneOrMore>
+    </element>
+  </define>
+  
+  <define name="option">
+    <element name="option">
+      <attribute name="label"><text /></attribute>
+      <attribute name="value"><text /></attribute>
     </element>
   </define>
 
@@ -232,7 +266,8 @@
       <!-- .container-fluid -->
 
       <attribute name="label"><text /></attribute>
-
+      <attribute name="name"><text /></attribute>
+      
       <ref name="page-list" />
     </element><!--form-->
   </define>

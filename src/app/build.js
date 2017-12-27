@@ -16,8 +16,8 @@ var build = function(parent, node) {
 
 	parent.append($("<form></form>").append(container));
 	
-	node.find("page").each(function(id){
-	    build(container, $(this));
+	node.find("page").each(function(index, page){
+	    build(container, $(page));
 	});
 
 	break;
@@ -28,8 +28,8 @@ var build = function(parent, node) {
 	page.append(col);
 	parent.append(page);
 	
-	node.find("section").each(function(id){
-	    build(col, $(this));
+	node.find("section").each(function(index, section){
+	    build(col, $(section));
 	});
 
 	break;
@@ -40,41 +40,35 @@ var build = function(parent, node) {
 	section.append(col);
 	parent.append(section);
 	
-	node.find("row").each(function(id){
-	    build(col, $(this));
+	node.find("row, form-row").each(function(index, row){
+	    build(col, $(row));
 	});
 
 	break;
     case "form-row":
-	var row = $(`<div class="form-row"></div>`);
-
-	parent.append(row);
-	
-	node.find("column").each(function(id){
-	    build(row, $(this));
-	});
-
-	break;
     case "row":
-	var row = $(`<div class="row"></div>`);
+	var row = $(`<div class="${nodeName}"></div>`);
 
 	parent.append(row);
 	
-	node.find("column").each(function(id){
-	    build(row, $(this));
+	node.find("column").each(function(index, column){
+	    build(row, $(column));
 	});
 
 	break;
     case "column":
 	var column = $(`<div class="col"></div>`);
+
+	// If header isn't set then just put a space in a header.
+	// We want to align the headers. If none of the headers are set then we're just wasting space.
 	var header = $(`<h3>${node.attr("label")||"&nbsp;"}</h3>`);
 
 	column.append(header);
 	
 	parent.append(column);
 	
-	node.children().each(function(id){
-	    build(column, $(this));
+	node.children().each(function(index, item){
+	    build(column, $(item));
 	});
 
 	break;
@@ -120,58 +114,29 @@ var build = function(parent, node) {
 	parent.append(group);
 	
 	break;
-    case "date":	
-	var formGroup = $(document.createElement("div"))
-	    .addClass("form-group");
-	
-	var label = $(document.createElement("label"))
-	    .addClass("form-label")
-	    .text(node.attr("label"))
-	    .attr("for", node.attr("name"));
-	
-	var input = $(document.createElement("input"))
-	    .attr("type", "date")
-	    .attr("name", node.attr("name"))
-	    .attr("id", node.attr("name"))
-	    .addClass("form-control");
-
-	if(node.attr("required") == "required") {
-	    input.attr("required");
-	}
-	
-	formGroup
-	    .append(label)
-	    .append(input);
-	
-	// parent.append(formGroup, $("<br />"));
-	parent.append(formGroup);
-	
-	break;
+    case "date":
     case "datetime":
-	var formGroup = $(document.createElement("div"))
-	    .addClass("form-group");
+	var group = $(`<div class="form-group"></div>`);
+	var label = $(
+            `<label class="form-label" for="${node.attr("name")}">
+                 ${node.attr("label")}
+             </label>`
+	);
+
+	var type = nodeName == "date" ? "date" : "datetime-local";
 	
-	var label = $(document.createElement("label"))
-	    .addClass("form-label")
-	    .text(node.attr("label"))
-	    .attr("for", node.attr("name"));
-	
-	var input = $(document.createElement("input"))
-	    .attr("type", "datetime-local")
-	    .attr("name", node.attr("name"))
-	    .attr("id", node.attr("name"))
-	    .addClass("form-control");
+	var input = $(
+	    `<input type="${type}" name="$(node.attr("name")}" id="$(node.attr("name")}" class="form-control" />`
+	);
 
 	if(node.attr("required") == "required") {
 	    input.attr("required");
 	}
 	
-	formGroup
-	    .append(label)
-	    .append(input);
+	label.append(input);
+	group.append(label);
 	
-	// parent.append(formGroup, $("<br />"));
-	parent.append(formGroup);
+	parent.append(group);
 	
 	break;
     case "checkbox":
@@ -225,6 +190,36 @@ var build = function(parent, node) {
 
 	parent.append(label, buttons);
 	
+	break;
+    case "radio":
+	
+
+	break;
+    case "select":
+	var select = $(`<select class="form-control"></select>`);
+	
+	parent.append(select);
+
+	node.find("option-group, > option").each(function(index, item){
+	    build(select, $(item));
+	});
+
+	break;
+    case "option-group":
+	var optionGroup = $(`<optgroup label="${node.attr("label")}"></optgroup>`);
+
+	parent.append(optionGroup);
+
+	node.find("option").each(function(index, option){
+	    build(optionGroup, $(option));
+	});
+
+	break;
+    case "option":
+	var option = $(`<option value="${node.attr("value")}">${node.attr("label")}</option>`);
+
+	parent.append(option);
+
 	break;
     default:
 	break;

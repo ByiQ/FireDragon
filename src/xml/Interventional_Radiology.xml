@@ -45,7 +45,7 @@
   <!-- </validation> -->
 
   <form-list>
-    <form label="Interventional Radiology">
+    <form label="Interventional Radiology" name="interventional-radiology">
       <page-list>
 	<page label="Main Info" name="main-info">
 	  <section-list>
@@ -87,6 +87,17 @@
 	      <row>
 		<column>
 		  <textbox label="Procedure/CPT" name="procedure-cpt" task="reception" />
+		  <radio label="Test Radio" name="test-radio" task="reception">
+		    <option label="First item" value="first-item" />
+		    <option label="Second" value="second" />
+		  </radio>
+		  <select label="Test Select" name="test-select" task="reception">
+		    <option-group label="Special Group">
+		      <option label="First item" value="first-item" />
+		      <option label="Second" value="second" />
+		    </option-group>
+		    <option label="Outsid group" value="outside" />
+		  </select>
 		</column>
 	      </row>
 	    </section>
