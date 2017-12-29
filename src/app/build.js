@@ -3,8 +3,6 @@ var build = function(parent, node) {
 
     switch(nodeName) {
     case "form":
-        // <div class="container">
-        //    <div class="row">
         var container = $(
             `<div class="container">
                 <div class="row">
@@ -13,6 +11,10 @@ var build = function(parent, node) {
                 </div>
              </div>`
         );
+
+        if (node.attr("label")) {
+	    container.find(".col").append($(`<h1>${node.attr("label")}</h1>`));
+	}
 
         parent.append($("<form></form>").append(container));
         
@@ -23,7 +25,10 @@ var build = function(parent, node) {
         break;
     case "page":
         var page = $(`<div class="row" id="${node.attr("name")}"></div>`);
-        var col = $(`<div class="col"></div>`);
+        var col = $(
+	    `<div class="col">
+                 <h2>${node.attr("label")}</h2>
+             </div>`);
 
         page.append(col);
         parent.append(page);
@@ -35,7 +40,10 @@ var build = function(parent, node) {
         break;
     case "section":
         var section = $(`<div class="row"></div>`);
-        var col = $(`<div class="col"></div>`);
+        var col = $(
+	    `<div class="col">
+                 <h3>${node.attr("label")}</h3>
+             </div>`);
 
         section.append(col);
         parent.append(section);
@@ -59,12 +67,6 @@ var build = function(parent, node) {
     case "column":
         var column = $(`<div class="col"></div>`);
 
-        // If header isn't set then just put a space in a header.
-        // We want to align the headers. If none of the headers are set then we're just wasting space.
-        var header = $(`<h3>${node.attr("label")||"&nbsp;"}</h3>`);
-
-        column.append(header);
-        
         parent.append(column);
         
         node.children().each(function(index, item){
@@ -72,6 +74,12 @@ var build = function(parent, node) {
         });
 
         break;
+    case "header":
+	var header = $(`<h4>${node.text()}</h4>`);
+
+	parent.append(header);
+	
+	break;
     case "textbox":
         var group = $(
             `<div class="form-group">
@@ -84,7 +92,7 @@ var build = function(parent, node) {
         var input = $(`<input type="text" name="${node.attr("name")}" id="${node.attr("name")}" class="form-control">`);
         
         if(node.attr("required") == "required") {
-            input.attr("required");
+            input.attr("required", "required");
         }
         
         group.append(input);
@@ -105,7 +113,7 @@ var build = function(parent, node) {
         var input = $(`<textarea name="${node.attr("name")}" id="${node.attr(name)}" class="form-control">`);
         
         if(node.attr("required") == "required") {
-            input.attr("required");
+            input.attr("required", "required");
         }
         
         group.append(input);
@@ -130,49 +138,53 @@ var build = function(parent, node) {
         );
 
         if(node.attr("required") == "required") {
-            input.attr("required");
+            input.attr("required", "required");
         }
         
         label.append(input);
+
         group.append(label);
         
         parent.append(group);
         
         break;
     case "checkbox":
-        var group =
+        var group = $(
            `<div class="form-group">
                <div class="form-check">
                   <label class="form-check-label">
                      <input class="form-check-input" type="checkbox" name="${node.attr("name")}" id="${node.attr("name")}">${node.attr("label")}
                   </label>
                </div>
-            </div>`;
+            </div>`
+	);
         
-        // if(node.attr("required") == "required") {
-        //      input.attr("required");
-        // }
+        if(node.attr("required") == "required") {
+	    group.find("input").attr("required", "required");
+        }
         
         parent.append(group);
         
         break;
     case "yesno":
-        var label =
+        var label = $(
            `<div class="form-group">
                <label>${node.attr("label")}</label>
             </div>`
+	);
 
-        var buttons =
+        var buttons = $(
             `<div class="btn-group form-group mx-sm-3" role="group" data-toggle="buttons">
-            <label class="btn btn-secondary">
-               Yes
-               <input type="radio" name="${node.attr("name")}" value="yes" id="${node.attr("name")}-yes" />
-            </label>
-            <label class="btn btn-secondary">
-               No
-               <input type="radio" name="${node.attr("name")}" value="no" id="${node.attr("name")}-no" />
-            </label>
-         </div>`
+                 <label class="btn btn-secondary">
+                     Yes
+                     <input type="radio" name="${node.attr("name")}" value="yes" id="${node.attr("name")}-yes" />
+                 </label>
+                 <label class="btn btn-secondary">
+                     No
+                     <input type="radio" name="${node.attr("name")}" value="no" id="${node.attr("name")}-no" />
+                 </label>
+             </div>`
+	);
 
         // if(node.attr("default") == "yes") {
         //     yesLabel.addClass("active")

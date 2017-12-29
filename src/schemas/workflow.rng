@@ -156,7 +156,7 @@
       </oneOrMore>
     </element><!-- col -->
   </define>
-  
+
   <define name="element-common">
     <attribute name="label"><text /></attribute>
     <attribute name="name"><text /></attribute>
@@ -175,6 +175,12 @@
 	<value>required</value>
       </attribute>
     </optional>    
+  </define>
+  
+  <define name="element" combine="choice">
+    <element name="header">
+      <text />
+    </element>
   </define>
   
   <define name="element" combine="choice">
@@ -272,8 +278,10 @@
     <element name="form">
       <!-- .container-fluid -->
 
-      <attribute name="label"><text /></attribute>
-      <attribute name="name"><text /></attribute>
+      <optional>
+	<attribute name="label"><text /></attribute>
+	<attribute name="name"><text /></attribute>
+      </optional>
       
       <ref name="page-list" />
     </element><!--form-->

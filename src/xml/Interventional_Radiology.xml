@@ -45,13 +45,13 @@
   <!-- </validation> -->
 
   <form-list>
-    <form label="Interventional Radiology" name="interventional-radiology">
+    <form>
       <page-list>
 	<page label="Main Info" name="main-info">
 	  <section-list>
 	    <section label="Patient Information" name="patient-information">
 	      <row>
-		<column label="Patient Information">
+		<column>
 		  <textbox label="Name" name="patient-name" validation="first-last-name" task="reception" required="required" />
 		  <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="reception" required="required" />
 		  <textbox label="MRN" name="med-rec-num" validation="mrn" task="reception" required="required" />
@@ -70,7 +70,7 @@
 	    </section>
 	    <section label="Clincal Information" name="clinical-information">
 	      <row>
-		<column label="Clinical Information">
+		<column>
 		  <textbox label="Diagnosis" name="clinical-diagnosis1" task="clinic" required="required" />
 		  <textbox label="Diagnosis" name="clinical-diagnosis2" task="clinic" />
 		  <yesno label="Diabetes" name="has-diabetes" task="clinic" required="required" />
@@ -79,8 +79,9 @@
 		  <yesno label="Blood Thinners" name="has-blood-thinners" task="clinic" required="required" />
 		  <yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" task="clinic" required="required" />
 		</column>
-<!--		<column label="Labs">
-		</column>-->
+		<column>
+		  <header>Labs</header>
+		</column>
 	      </row>
 	    </section>
 	    <section label="Procedure/CPT" name="proc-cpt">
@@ -107,11 +108,12 @@
 	  <section-list>
 	    <section label="Additional Information" name="additional-information">
 	      <row>
-		<column label="Additional Info">
+		<column>
 		  <textarea label="Scheduling Details" name="scheduling-details" task="reception" />
 		</column>
-		<column label="Reason For Delay">
-		  <checkbox label="They're Dumb" name="rfd-dumbness" />
+		<column>
+		  <header>Reason For Delay</header>
+		  <checkbox label="They're Dumb" name="rfd-dumbness" required="required" />
 		  <checkbox label="Cancelled" name="rfd-cancelled" />
 		  <checkbox label="1st Available Slot" name="rfd-1st-avail-slot" />
 		  <checkbox label="Medical Clearance" name="rfd-med-clearance" />
@@ -122,7 +124,8 @@
 		  <checkbox label="Outside Films" name="rfd-outside-films" />
 		  <checkbox label="Contacting Patient" name="rfd-contacting-pat" />
 		</column>
-		<column label="Same Day">
+		<column>
+		  <header>Same Day</header>
 		  <checkbox label="Consult/Order" name="sameday-cons-order" />
 		  <checkbox label="Anesthesia" name="sameday-anesthesia" />
 		  <checkbox label="PreOp" name="sameday-preop" />
@@ -134,7 +137,8 @@
 		  <checkbox label="OutPt Registration" name="sameday-op-reg" />
 		  <checkbox label="IR Core" name="sameday-ir-core" />
 		</column>
-		<column label="Scheduled">
+		<column>
+		  <header>Scheduled</header>
 		  <checkbox label="Patient" name="scheduled-pat" />
 		  <checkbox label="Office" name="scheduled-office" />
 		  <checkbox label="OR" name="scheduled-or" />
