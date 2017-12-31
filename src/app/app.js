@@ -492,7 +492,7 @@ var App = (function ($) {
 
         newDoc["completed"] = true;
 
-        if (FormStore.current._id) {
+        if (FormStore.current) {
             // Update form
             StateStore.dbInstance.update({_id: FormStore.current._id}, newDoc, {}, function (err, doc) {
                 if (err) {

@@ -134,7 +134,7 @@ var build = function(parent, node) {
         var type = nodeName == "date" ? "date" : "datetime-local";
         
         var input = $(
-            `<input type="${type}" name="$(node.attr("name")}" id="$(node.attr("name")}" class="form-control" />`
+            `<input type="${type}" name="${node.attr("name")}" id="${node.attr("name")}" class="form-control" />`
         );
 
         if(node.attr("required") == "required") {
