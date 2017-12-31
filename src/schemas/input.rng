@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+  <include href="validation-rule.rng"/>
+
+  <define name="input" combine="choice">
+    <element name="input">
+      <attribute name="type">
+	<choice>
+	  <value>text</value>
+	  <value>textarea</value>
+	  <value>email</value>
+	  <value>url</value>
+	  <value>tel</value>
+	</choice>
+      </attribute>
+
+      <ref name="input-common" />
+      <ref name="validation-rule-text" />
+    </element>
+  </define>
+
+  <define name="input" combine="choice">
+    <element name="input">
+      <attribute name="type">
+	<choice>
+	  <value>date</value>
+	  <value>datetime</value>
+	  <value>number</value>
+	</choice>
+      </attribute>
+    
+      <ref name="input-common" />
+      <ref name="validation-rule-numeric" />
+    </element>
+  </define>
+
+  <define name="input" combine="choice">
+    <element name="input">
+      <attribute name="type">
+	<choice>
+	  <value>color</value>
+	  <value>checkbox</value>
+	</choice>
+      </attribute>
+
+      <ref name="input-common" />
+    </element>
+  </define>
+
+  <!-- <define name="input" combine="choice"> -->
+  <!--   <element name="range"> -->
+  <!--     <ref name="input-common" /> -->
+  <!--     <ref name="validation-rule-numeric" /> -->
+
+  <!--     <choice> -->
+  <!-- 	<oneOrMore> -->
+  <!-- 	  <ref name="option-optional-label" /> -->
+  <!-- 	</oneOrMore> -->
+  <!--     </choice> -->
+  <!--   </element> -->
+  <!-- </define> -->
+
+  <define name="input-common">
+    <attribute name="label"><text /></attribute>
+    <attribute name="name"><text /></attribute>
+
+    <!-- Temporary optionalness -->
+    <optional>
+      <attribute name="task"><text /></attribute>
+    </optional>
+    
+    <optional>
+      <attribute name="placeholder"><text /></attribute>
+    </optional>
+
+    <optional>
+      <attribute name="autocomplete">
+	<!-- https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill -->
+	<!-- Allow a default value. -->
+	<choice>
+	  <value>on</value>
+	  <value>off</value>
+	</choice>
+      </attribute>
+    </optional>
+  </define>
+
+  <!-- <define name="option-optional-label"> -->
+  <!--   <element name="option"> -->
+  <!--     <optional> -->
+  <!-- 	<attribute name="label"><text /></attribute> -->
+  <!--     </optional> -->
+  <!--     <attribute name="value"><text /></attribute> -->
+  <!--   </element> -->
+  <!-- </define> -->
+
+  <define name="input" combine="choice">
+    <element name="yesno">
+      <ref name="input-common" />
+      <ref name="validation-rule-choice" />
+    </element>
+  </define>
+
+  <define name="input" combine="choice">
+    <element name="radio">
+      <ref name="input-common" />
+
+      <oneOrMore>
+	<ref name="option" />
+      </oneOrMore>
+    </element>
+  </define>
+
+  <define name="input" combine="choice">
+    <element name="select">
+      <ref name="input-common" />
+
+      <oneOrMore>
+	<choice>
+	  <ref name="option-group" />
+	  <ref name="option" />
+	</choice>
+      </oneOrMore>
+    </element>
+  </define>
+
+  <define name="option-group">
+    <element name="option-group">
+      <attribute name="label"><text /></attribute>
+
+      <oneOrMore>
+	<ref name="option" />
+      </oneOrMore>
+    </element>
+  </define>
+  
+  <define name="option">
+    <element name="option">
+      <attribute name="label"><text /></attribute>
+      <attribute name="value"><text /></attribute>
+    </element>
+  </define>
+
+</grammar>

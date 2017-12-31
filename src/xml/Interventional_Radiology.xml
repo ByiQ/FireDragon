@@ -30,21 +30,6 @@
     <task label="Scheduling" name="scheduling" />
   </task-list>
 
-  <!-- <data> -->
-  <!--   <csv name="icd10" src="src/data/icd.csv" /> -->
-  <!--   <datalist name=" -->
-  <!-- </data> -->
-  <!-- <validation> -->
-  <!--   <rule name="first-last-name"> -->
-  <!--   <rule name="date-iso8601-yyymmdd"> -->
-  <!--   <rule name="mrn"> -->
-  <!--   <rule name="address"> -->
-  <!--   <rule name="phone"> -->
-  <!--   <rule name=""> -->
-  <!--   <rule name=""> -->
-  <!--   <rule name=""> -->
-  <!-- </validation> -->
-
   <form-list>
     <form>
       <page-list>
@@ -53,32 +38,63 @@
 	    <section label="Patient Information" name="patient-information">
 	      <row>
 		<column>
-		  <textbox label="Name" name="patient-name" validation="first-last-name" task="reception" required="required" />
-		  <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="reception" required="required" />
-		  <textbox label="MRN" name="med-rec-num" validation="mrn" task="reception" required="required" />
-		  <textbox label="Address/Nurse" name="address-nurse" validation="address" task="reception" required="required" />
-		  <textbox label="Phone" name="patient-phone" validation="phone" task="reception" required="required" />
-		  <textbox label="Cell" name="patient-cell" validation="phone" task="reception" required="required" />
+		  <input type="text" label="Name" name="patient-name" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="date" label="DOB" name="date-of-birth" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="text" label="MRN" name="med-rec-num" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="text" label="Address/Nurse" name="address-nurse" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="text" label="Phone" name="patient-phone" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="text" label="Cell" name="patient-cell" task="reception">
+		    <validation-rule required="required" />
+		  </input>
 		</column>
 		<column>
-		  <datetime label="Date" name="date" validation="date" task="reception" required="required" />
-		  <textbox label="Referring Physician" name="referring-physician" validation="first-last-name" task="reception" required="required" />
-		  <textbox label="Contact" name="contact" validation="first-last-name" task="reception" required="required" />
-		  <textbox label="Insurance Primary" name="insurance-primary" task="reception" required="required" />
-		  <textbox label="Insurance Secondary" name="insurance-secondary" task="reception" />
+		  <input type="datetime" label="Date" name="date" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="text" label="Referring Physician" name="referring-physician" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="text" label="Contact" name="contact" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="text" label="Insurance Primary" name="insurance-primary" task="reception">
+		    <validation-rule required="required" />
+		  </input>
+		  <input type="text" label="Insurance Secondary" name="insurance-secondary" task="reception" />
 		</column>
 	      </row>
 	    </section>
 	    <section label="Clincal Information" name="clinical-information">
 	      <row>
 		<column>
-		  <textbox label="Diagnosis" name="clinical-diagnosis1" task="clinic" required="required" />
-		  <textbox label="Diagnosis" name="clinical-diagnosis2" task="clinic" />
-		  <yesno label="Diabetes" name="has-diabetes" task="clinic" required="required" />
-		  <yesno label="Allergies" name="has-allergies" task="clinic" required="required" />
-		  <yesno label="Allergies Contrast" name="has-allergies-contrast" task="clinic" required="required" />
-		  <yesno label="Blood Thinners" name="has-blood-thinners" task="clinic" required="required" />
-		  <yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" task="clinic" required="required" />
+		  <input type="text" label="Diagnosis" name="clinical-diagnosis1" task="clinic">
+		    <validation-rule required="required" />
+		  </input>
+		  <yesno label="Diabetes" name="has-diabetes" task="clinic">
+		    <validation-rule required="required" />
+		  </yesno>
+		  <yesno label="Allergies" name="has-allergies" task="clinic">
+		    <validation-rule required="required" />
+		  </yesno>
+		  <yesno label="Allergies Contrast" name="has-allergies-contrast" task="clinic">
+		    <validation-rule required="required" />
+		  </yesno>
+		  <yesno label="Blood Thinners" name="has-blood-thinners" task="clinic">
+		    <validation-rule required="required" />
+		  </yesno>
+		  <yesno label="Avastin/Zaltrap" name="has-avastin-zaltrap" task="clinic">
+		    <validation-rule required="required" />
+		  </yesno>
 		</column>
 		<column>
 		  <header>Labs</header>
@@ -88,11 +104,12 @@
 	    <section label="Procedure/CPT" name="proc-cpt">
 	      <row>
 		<column>
-		  <textbox label="Procedure/CPT" name="procedure-cpt" task="reception" />
-		  <radio-group label="Test Radio" name="test-radio" task="reception">
-		    <radio label="First item" value="first-item" />
-		    <radio label="Second" value="second" />
-		  </radio-group>
+		  <input type="text" label="Procedure/CPT" name="procedure-cpt" task="reception" />
+		  <radio label="Test Radio" name="test-radio" task="reception">
+		    <option label="First item" value="first-item" />
+		    <option label="Second" value="second" />
+		  </radio>
+
 		  <select label="Test Select" name="test-select" task="reception">
 		    <option-group label="Special Group">
 		      <option label="First item" value="first-item" />
@@ -110,46 +127,46 @@
 	    <section label="Additional Information" name="additional-information">
 	      <row>
 		<column>
-		  <textarea label="Scheduling Details" name="scheduling-details" task="reception" />
+		  <input type="textarea" label="Scheduling Details" name="scheduling-details" task="reception" />
 		</column>
 		<column>
 		  <header>Reason For Delay</header>
-		  <checkbox label="They're Dumb" name="rfd-dumbness" required="required" />
-		  <checkbox label="Cancelled" name="rfd-cancelled" />
-		  <checkbox label="1st Available Slot" name="rfd-1st-avail-slot" />
-		  <checkbox label="Medical Clearance" name="rfd-med-clearance" />
-		  <checkbox label="Req Date" name="rfd-req-date" />
-		  <checkbox label="Scheduling " name="rfd-sched" />
-		  <checkbox label="Within 5-7 Days" name="rfd-wi-57-days" />
-		  <checkbox label="Insurance" name="rfd-ins" />
-		  <checkbox label="Outside Films" name="rfd-outside-films" />
-		  <checkbox label="Contacting Patient" name="rfd-contacting-pat" />
+		  <input type="checkbox" label="They're Dumb" name="rfd-dumbness" />
+		  <input type="checkbox" label="Cancelled" name="rfd-cancelled" />
+		  <input type="checkbox" label="1st Available Slot" name="rfd-1st-avail-slot" />
+		  <input type="checkbox" label="Medical Clearance" name="rfd-med-clearance" />
+		  <input type="checkbox" label="Req Date" name="rfd-req-date" />
+		  <input type="checkbox" label="Scheduling " name="rfd-sched" />
+		  <input type="checkbox" label="Within 5-7 Days" name="rfd-wi-57-days" />
+		  <input type="checkbox" label="Insurance" name="rfd-ins" />
+		  <input type="checkbox" label="Outside Films" name="rfd-outside-films" />
+		  <input type="checkbox" label="Contacting Patient" name="rfd-contacting-pat" />
 		</column>
 		<column>
 		  <header>Same Day</header>
-		  <checkbox label="Consult/Order" name="sameday-cons-order" />
-		  <checkbox label="Anesthesia" name="sameday-anesthesia" />
-		  <checkbox label="PreOp" name="sameday-preop" />
-		  <checkbox label="Vent" name="sameday-vent" />
-		  <checkbox label="Consent" name="sameday-consent" />
-		  <checkbox label="NPO" name="sameday-npo" />
-		  <checkbox label="RN" name="sameday-rn" />
-		  <checkbox label="Care Manager" name="sameday-care-mgr" />
-		  <checkbox label="OutPt Registration" name="sameday-op-reg" />
-		  <checkbox label="IR Core" name="sameday-ir-core" />
+		  <input type="checkbox" label="Consult/Order" name="sameday-cons-order" />
+		  <input type="checkbox" label="Anesthesia" name="sameday-anesthesia" />
+		  <input type="checkbox" label="PreOp" name="sameday-preop" />
+		  <input type="checkbox" label="Vent" name="sameday-vent" />
+		  <input type="checkbox" label="Consent" name="sameday-consent" />
+		  <input type="checkbox" label="NPO" name="sameday-npo" />
+		  <input type="checkbox" label="RN" name="sameday-rn" />
+		  <input type="checkbox" label="Care Manager" name="sameday-care-mgr" />
+		  <input type="checkbox" label="OutPt Registration" name="sameday-op-reg" />
+		  <input type="checkbox" label="IR Core" name="sameday-ir-core" />
 		</column>
 		<column>
 		  <header>Scheduled</header>
-		  <checkbox label="Patient" name="scheduled-pat" />
-		  <checkbox label="Office" name="scheduled-office" />
-		  <checkbox label="OR" name="scheduled-or" />
-		  <checkbox label="Access" name="scheduled-access" />
-		  <checkbox label="Orders/Labs" name="scheduled-orders-labs" />
-		  <checkbox label="Schedule" name="scheduled-schedule" />
-		  <checkbox label="H&amp;P/Notes" name="scheduled-hp-notes" />
-		  <checkbox label="Specimen Test" name="scheduled-specimen-test" />
-		  <checkbox label="Pathology x4583" name="scheduled-path" />
-		  <checkbox label="Histology x4572" name="scheduled-hist" />
+		  <input type="checkbox" label="Patient" name="scheduled-pat" />
+		  <input type="checkbox" label="Office" name="scheduled-office" />
+		  <input type="checkbox" label="OR" name="scheduled-or" />
+		  <input type="checkbox" label="Access" name="scheduled-access" />
+		  <input type="checkbox" label="Orders/Labs" name="scheduled-orders-labs" />
+		  <input type="checkbox" label="Schedule" name="scheduled-schedule" />
+		  <input type="checkbox" label="H&amp;P/Notes" name="scheduled-hp-notes" />
+		  <input type="checkbox" label="Specimen Test" name="scheduled-specimen-test" />
+		  <input type="checkbox" label="Pathology x4583" name="scheduled-path" />
+		  <input type="checkbox" label="Histology x4572" name="scheduled-hist" />
 		</column>
 	      </row>
 	    </section>

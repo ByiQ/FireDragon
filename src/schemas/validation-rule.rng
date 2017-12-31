@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<grammar
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+  <define name="validation-common">
+    <optional>
+      <attribute name="required">
+	<value>required</value>
+      </attribute>
+    </optional>
+  </define>
+
+  <define name="validation-rule-numeric">
+    <optional>
+      <element name="validation-rule">
+	<optional>
+	  <attribute name="min"><text /></attribute>
+	</optional>
+
+	<optional>
+	  <attribute name="max"><text /></attribute>
+	</optional>
+
+	<optional>
+	  <attribute name="step"><text /></attribute>
+	</optional>
+
+	<ref name="validation-common" />
+      </element>
+    </optional>
+  </define>
+
+  <define name="validation-rule-text">
+    <optional>
+      <element name="validation-rule">
+	<optional>
+	  <attribute name="pattern"><text /></attribute>
+	</optional>
+
+	<optional>
+	  <attribute name="minlength"><text /></attribute>
+	</optional>
+	
+	<optional>
+	  <attribute name="maxlength"><text /></attribute>
+	</optional>
+
+	<ref name="validation-common" />
+      </element>
+    </optional>
+  </define>
+
+  <define name="validation-rule-choice">
+    <optional>
+      <element name="validation-rule">
+	<ref name="validation-common" />
+      </element>
+    </optional>
+  </define>
+
+</grammar>

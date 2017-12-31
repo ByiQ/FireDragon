@@ -26,6 +26,9 @@
 <grammar
     xmlns="http://relaxng.org/ns/structure/1.0"
     datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+  <include href="input.rng" />
+
   <start>
     <element name="workflow">
       <attribute name="label"><text /></attribute>
@@ -152,139 +155,16 @@
       </optional>
 
       <oneOrMore>
-	<ref name="element" />
+	<choice>
+      	  <ref name="input" />
+      	  <ref name="element" />
+	</choice>
       </oneOrMore>
     </element><!-- col -->
   </define>
 
-  <define name="element-common">
-    <attribute name="label"><text /></attribute>
-    <attribute name="name"><text /></attribute>
-
-    <!-- Temporary optionalness -->
-    <optional>
-      <attribute name="task"><text /></attribute>
-    </optional>
-    
-    <optional>
-      <attribute name="validation"><text /></attribute>
-    </optional>
-
-    <optional>
-      <attribute name="required">
-	<value>required</value>
-      </attribute>
-    </optional>    
-  </define>
+  <!-- FORMS -->
   
-  <define name="element" combine="choice">
-    <element name="header">
-      <text />
-    </element>
-  </define>
-  
-  <define name="element" combine="choice">
-    <element name="textbox">
-      <ref name="element-common" />
-    </element>
-  </define>
-
-  <define name="element" combine="choice">
-    <element name="textarea">
-      <ref name="element-common" />
-    </element>
-  </define>
-
-  <define name="element" combine="choice">
-    <element name="date">
-      <ref name="element-common" />
-    </element>
-  </define>
-
-  <define name="element" combine="choice">
-    <element name="datetime">
-      <ref name="element-common" />
-    </element>
-  </define>
-
-  <define name="element" combine="choice">
-    <element name="range">
-      <ref name="element-common" />
-      
-      <attribute name="min"><text /></attribute>
-      <attribute name="max"><text /></attribute>
-      <attribute name="step"><text /></attribute>
-    </element>
-  </define>
-
-  <define name="range-option">
-    <element name="option">
-      <optional>
-	<attribute name="label"><text /></attribute>
-      </optional>
-      <attribute name="value"><text /></attribute>
-    </element>
-  </define>
-
-  <define name="element" combine="choice">
-    <element name="yesno">
-      <ref name="element-common" />
-    </element>
-  </define>
-
-  <define name="element" combine="choice">
-    <element name="checkbox">
-      <ref name="element-common" />
-    </element>
-  </define>
-
-  <define name="element" combine="choice">
-    <element name="radio-group">
-      <ref name="element-common" />
-
-      <oneOrMore>
-	<ref name="radio" />
-      </oneOrMore>
-    </element>
-  </define>
-
-  <define name="element" combine="choice">
-    <element name="select">
-      <ref name="element-common" />
-
-      <oneOrMore>
-	<choice>
-	  <ref name="option-group" />
-	  <ref name="option" />
-	</choice>
-      </oneOrMore>
-    </element>
-  </define>
-
-  <define name="option-group">
-    <element name="option-group">
-      <attribute name="label"><text /></attribute>
-
-      <oneOrMore>
-	<ref name="option" />
-      </oneOrMore>
-    </element>
-  </define>
-  
-  <define name="option">
-    <element name="option">
-      <attribute name="label"><text /></attribute>
-      <attribute name="value"><text /></attribute>
-    </element>
-  </define>
-
-  <define name="radio">
-    <element name="radio">
-      <attribute name="label"><text /></attribute>
-      <attribute name="value"><text /></attribute>
-    </element>
-  </define>
-
   <define name="form-list">
     <element name="form-list">
       <oneOrMore>
@@ -306,6 +186,8 @@
     </element><!--form-->
   </define>
 
+  <!-- PAGES -->
+  
   <define name="page-list">
     <element name="page-list">
       <oneOrMore>
@@ -323,6 +205,8 @@
     </element><!--page-->    
   </define>
   
+  <!-- PROPERTIES -->
+
   <define name="property-list">
     <element name="property-list">
       <oneOrMore>
@@ -337,6 +221,8 @@
       <text />
     </element><!--property-->
   </define>
+
+  <!-- SECTIONS -->
 
   <define name="section-list">
     <element name="section-list">
@@ -356,6 +242,8 @@
       </oneOrMore>
     </element><!--section-->
   </define>
+
+  <!-- TASKS -->
   
   <define name="task-list">
     <element name="task-list">
@@ -371,4 +259,13 @@
       <attribute name="name"><text /></attribute>
     </element><!--task-->
   </define>
+
+  <!-- ELEMENTS -->
+
+  <define name="element">
+    <element name="header">
+      <text />
+    </element>
+  </define>
+
 </grammar>

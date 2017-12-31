@@ -80,98 +80,91 @@ var build = function(parent, node) {
 	parent.append(header);
 	
 	break;
-    case "textbox":
-        var group = $(
-            `<div class="form-group">
+
+    /* BEGIN INPUT */
+	
+    case "input":
+	var type = node.attr("type");
+
+	switch(type) {
+	case "text":
+            var group = $(`
+                <div class="form-group">
+                    <label class="form-label" for="${node.attr("name")}">${node.attr("label")}</label>
+                </div>
+            `);
+
+            var input = $(`<input type="text" name="${node.attr("name")}" id="${node.attr("name")}" class="form-control">`);
+        
+            group.append(input);
+            
+            parent.append(group);
+        
+            break;
+	case "textarea":
+            var group = $(`
+                <div class="form-group">
+                    <label class="form-label" for="${node.attr("name")}">${node.attr("label")}</label>
+                 </div>
+            `);
+
+            var input = $(`<textarea name="${node.attr("name")}" id="${node.attr(name)}" class="form-control">`);
+        
+            group.append(input);
+            
+            parent.append(group);
+        
+            break;
+	case "date":
+	case "datetime":
+            var group = $(`<div class="form-group"></div>`);
+            var label = $(`
                 <label class="form-label" for="${node.attr("name")}">
-                   ${node.attr("label")}
+                    ${node.attr("label")}
                 </label>
-             </div>`
-        );
+            `);
 
-        var input = $(`<input type="text" name="${node.attr("name")}" id="${node.attr("name")}" class="form-control">`);
-        
-        if(node.attr("required") == "required") {
-            input.attr("required", "required");
-        }
-        
-        group.append(input);
-        
-        // parent.append(formGroup, $("<br />"));
-        parent.append(group);
-        
-        break;
-    case "textarea":
-        var group = $(
-            `<div class="form-group">
-                <label class="form-label" for="${node.attr("name")}">
-                   ${node.attr("label")}
-                </label>
-             </div>`
-        );
+            var type = nodeName == "date" ? "date" : "datetime-local";
+            
+            var input = $(
+		`<input type="${type}" name="${node.attr("name")}" id="${node.attr("name")}" class="form-control" />`
+            );
 
-        var input = $(`<textarea name="${node.attr("name")}" id="${node.attr(name)}" class="form-control">`);
-        
-        if(node.attr("required") == "required") {
-            input.attr("required", "required");
-        }
-        
-        group.append(input);
-        
-        // parent.append(formGroup, $("<br />"));
-        parent.append(group);
-        
-        break;
-    case "date":
-    case "datetime":
-        var group = $(`<div class="form-group"></div>`);
-        var label = $(
-            `<label class="form-label" for="${node.attr("name")}">
-                 ${node.attr("label")}
-             </label>`
-        );
+            label.append(input);
 
-        var type = nodeName == "date" ? "date" : "datetime-local";
+            group.append(label);
+            
+            parent.append(group);
+            
+            break;
+	case "checkbox":
+            var group = $(`
+                <div class="form-group">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="${node.attr("name")}" id="${node.attr("name")}">${node.attr("label")}
+                        </label>
+                    </div>
+                </div>
+            `);
         
-        var input = $(
-            `<input type="${type}" name="${node.attr("name")}" id="${node.attr("name")}" class="form-control" />`
-        );
+            parent.append(group);
+            
+            break;
+	default:
+	    alert(`Eek! Found a ${nodeName}.`);
+	    
+	    break;
+	}
 
-        if(node.attr("required") == "required") {
-            input.attr("required", "required");
-        }
-        
-        label.append(input);
-
-        group.append(label);
-        
-        parent.append(group);
-        
-        break;
-    case "checkbox":
-        var group = $(
-           `<div class="form-group">
-               <div class="form-check">
-                  <label class="form-check-label">
-                     <input class="form-check-input" type="checkbox" name="${node.attr("name")}" id="${node.attr("name")}">${node.attr("label")}
-                  </label>
-               </div>
-            </div>`
-	);
-        
-        if(node.attr("required") == "required") {
-	    group.find("input").attr("required", "required");
-        }
-        
-        parent.append(group);
-        
-        break;
+	break;
+    /* END INPUT */
     case "yesno":
-        var label = $(
-           `<div class="form-group">
-               <label>${node.attr("label")}</label>
-            </div>`
-	);
+        var label = $(`
+            <div class="form-group">
+                <label>${node.attr("label")}</label>
+            </div>
+        `);
 
         var buttons = $(
             `<div class="btn-group form-group mx-sm-3" role="group" data-toggle="buttons">
@@ -217,7 +210,6 @@ var build = function(parent, node) {
         });
 
         break;
-
     case "radio":
         var radio = $(
             `<div class="form-check">
