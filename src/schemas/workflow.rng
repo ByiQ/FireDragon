@@ -208,6 +208,25 @@
   </define>
 
   <define name="element" combine="choice">
+    <element name="range">
+      <ref name="element-common" />
+      
+      <attribute name="min"><text /></attribute>
+      <attribute name="max"><text /></attribute>
+      <attribute name="step"><text /></attribute>
+    </element>
+  </define>
+
+  <define name="range-option">
+    <element name="option">
+      <optional>
+	<attribute name="label"><text /></attribute>
+      </optional>
+      <attribute name="value"><text /></attribute>
+    </element>
+  </define>
+
+  <define name="element" combine="choice">
     <element name="yesno">
       <ref name="element-common" />
     </element>
