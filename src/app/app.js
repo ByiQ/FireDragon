@@ -112,9 +112,9 @@ var loadForm = function(id) {
 	}
     }
     else {
-	$("#view-task").css("display", "block");
-	$("#comp-bottom-save").css("display", "block");
-	$("#comp-bottom-submit").css("display", "block");
+	$("#view-task").show();
+	$("#comp-bottom-save").show();
+	$("#comp-bottom-complete").show();
     }
 
     StateStore.dbInstance.findOne({
@@ -152,19 +152,20 @@ var App = (function ($) {
        it's probably not their first time using the app. */
     if (localStorage.getItem("file:last-workflow-name")) {
         comps.startIntroLastWorkflowName.text(localStorage.getItem("file:last-workflow-name"));
-        comps.startIntroLastWorkflowName.css("display", "inline");
-        comps.startIntroFirsttime.css("display", "none");
-        comps.startIntroContinue.css("display", "inline-block");
+        comps.startIntroLastWorkflowName.show();
+        comps.startIntroFirsttime.hide();
+        comps.startIntroContinue.show();
     }
     else {
-        comps.startIntroNotFirsttime.css("display", "none");
-        comps.startIntroFirsttime.css("display", "block");
-        comps.startIntroContinue.css("display", "none");
+        comps.startIntroNotFirsttime.hide();
+        comps.startIntroFirsttime.show();
+        comps.startIntroContinue.hide();
     }
 
     var gui = require('nw.gui');
 
     gui.Window.get().on('close', function() {
+	// Perhaps use a Bootstrap modal instead.
         if (confirm("Unsaved work will not be saved for you. Are you sure?")) {
             // Supposedly unnecessary to close the database.
             // Yet,
@@ -241,8 +242,8 @@ var App = (function ($) {
             // Set the workflow name in the top bar.
             comps.topWorkflowName.text(StateStore.workflow);
 
-            views.startIntro.css("display", "none");
-            views.startTasks.css("display", "block");
+            views.startIntro.hide();
+            views.startTasks.show();
 
             var tasks = StateStore.xml.find("task");
 
@@ -282,7 +283,7 @@ var App = (function ($) {
     WorkflowDispatcher.register(function(payload) {
         if (payload.actionType === 'select-task') {
             if (payload.collect) {
-                views.collect.css("display", "block");
+                views.collect.show();
             }
             else {
                 // Store selected task.
@@ -292,14 +293,16 @@ var App = (function ($) {
                     id: payload.id
                 };
 
-		$("#comp-top-newform").css("display", "inline-block");
+		$("#comp-top-newform").show();
+		$("#comp-bottom-save").hide();
+		$("#comp-bottom-complete").hide();
 
                 // Get waiting forms.
                 // These are started, but incomplete forms, and those completed in a previous task.
                 // If this is the first task then we will skip this since there are no
                 // previous tasks to create waiting stuff. We should hide the control then.
                 if (TaskStore.current.id == 0) {
-                    comps.bottomWaiting.css("display", "none");
+                    $("#comp-bottom-waiting").hide();
                 }
                 else {
                     StateStore.dbInstance.find({
@@ -391,10 +394,10 @@ var App = (function ($) {
                  </li>`));
 		});
 
-                views.navBottom.css("display", "block");
+                views.navBottom.show();
             }
 
-            views.startTasks.css("display", "none");
+            views.startTasks.hide();
         }
     });
     
@@ -426,10 +429,12 @@ var App = (function ($) {
 
 		FormStore.current = null;
 
-		$("#view-task").css("display", "none");
+		$("#view-task").hide();
 
-		$("#comp-bottom-save").css("display", "none");
-		$("#comp-bottom-submit").css("display", "none");
+		$("#comp-bottom-save").hide();
+		$("#comp-bottom-complete").hide();
+		$("#comp-top-print").hide();
+		$("#comp-top-newform").show();
             });
         }
         else {
@@ -443,10 +448,12 @@ var App = (function ($) {
 
 		FormStore.current = null;
 
-		$("#view-task").css("display", "none");
+		$("#view-task").hide();
 
-		$("#comp-bottom-save").css("display", "none");
-		$("#comp-bottom-submit").css("display", "none");
+		$("#comp-bottom-save").hide();
+		$("#comp-bottom-complete").hide();
+		$("#comp-top-print").hide();
+		$("#comp-top-newform").show();
 
                 WorkflowDispatcher.dispatch({
                     actionType: 'new-saved-form', 
@@ -457,14 +464,17 @@ var App = (function ($) {
         }
     });
 
-    $("#comp-top-newform").css("display", "none");
+    $("#comp-top-newform").hide();
+    $("#comp-top-print").hide();
 
     $("#comp-top-newform").click(function(e) {
 	FormStore.current = null;
 
-	$("#view-task").css("display", "block");
-	$("#comp-bottom-save").css("display", "block");
-	$("#comp-bottom-submit").css("display", "block");
+	$("#view-task").show();
+	$("#comp-bottom-save").show();
+	$("#comp-bottom-complete").show();
+	$("#comp-top-newform").hide();
+	$("#comp-top-print").show();
 
 	WorkflowDispatcher.dispatch({
 	    actionType: "new-form",
@@ -499,11 +509,13 @@ var App = (function ($) {
                 
 		FormStore.current = null;
 
-		$("#view-task").css("display", "none");
+		$("#view-task").hide();
 
-		$("#comp-bottom-save").css("display", "none");
-		$("#comp-bottom-submit").css("display", "none");
-
+		$("#comp-bottom-save").hide();
+		$("#comp-bottom-complete").hide();
+		$("#comp-top-print").hide();
+		$("#comp-top-newform").show();
+		
                 WorkflowDispatcher.dispatch({
                     actionType: 'new-completed-form', 
                     label: newDoc["patient-name"],
@@ -521,11 +533,13 @@ var App = (function ($) {
 
 		FormStore.current = null;
 
-		$("#view-task").css("display", "none");
+		$("#view-task").hide();
 
-		$("#comp-bottom-save").css("display", "none");
-		$("#comp-bottom-submit").css("display", "none");
-
+		$("#comp-bottom-save").hide();
+		$("#comp-bottom-complete").hide();
+		$("#comp-top-print").hide();
+		$("#comp-top-newform").show();
+		
                 WorkflowDispatcher.dispatch({
                     actionType: 'new-completed-form', 
                     label: newDoc["patient-name"],
