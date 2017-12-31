@@ -56,7 +56,6 @@ var comps = {
     startTasksLastTaskName: $("#comp-start-tasks-last-task-name"),
     startTasksTaskList: $("#comp-start-tasks-task-list"),
     startTasksTaskCollectButton: $("#comp-start-tasks-task-collect-button"),
-    bottomPages: $("#comp-bottom-pages"),
     collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
     collectIntroNotFirstTime: $("#comp-collect-intro-not-firsttime"),
     collectIntroLastCollectionDate: $("#comp-collect-intro-last-collection-date"),
@@ -65,12 +64,7 @@ var comps = {
     collectRangeEndDate: $("#comp-collect-range-end-date"),
     collectRangeButton: $("#comp-collect-range-button"),
     collectIntroFirstTime: $("#comp-collect-intro-firsttime"),
-    collectAllButton: $("#comp-collect-all-button"),
-    bottomSave: $("#comp-bottom-save"),
-    bottomSubmit: $("#comp-bottom-submit"),
-    bottomWaiting: $("#comp-bottom-waiting"),
-    bottomInProgress: $("#comp-bottom-inprogress"),
-    bottomCompleted: $("#comp-bottom-completed"),
+    collectAllButton: $("#comp-collect-all-button")
 };
  
 /**
@@ -388,7 +382,7 @@ var App = (function ($) {
 		// Build page list in bottom nav.
 		// Move somewhere else.
 		form.find("page").each(function(index, page) {
-		    comps.bottomPages.append($(
+		    $("#comp-top-pages").append($(
 			`<li class="nav-item">
                      <a class="nav-link" href="#${$(page).attr("name")}">${$(page).attr("label")}</a>
                  </li>`));
@@ -402,7 +396,7 @@ var App = (function ($) {
     });
     
     // Save form for later without sending to next task.
-    comps.bottomSave.click(function(e) {
+    $("#comp-bottom-save").click(function(e) {
         var form = document.getElementsByTagName("form");
 
         var newDoc = {};
@@ -483,7 +477,7 @@ var App = (function ($) {
     });
 
     // Save form for later without sending to next task.
-    comps.bottomSubmit.click(function(e) {
+    $("#comp-bottom-complete").click(function(e) {
         var form = document.getElementsByTagName("form");
 
         var newDoc = {};
