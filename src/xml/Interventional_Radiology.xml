@@ -18,7 +18,8 @@
 
 <workflow label="Interventional Radiology" name="interventional-radiology">
   <property-list>
-    <property name="form-desc-field">patient-name</property>
+    <property name="card-display-title">patient-name mrn</property>
+    <property name="card-display-details">date address-nurse</property>
     <property name="storage-dir">Test</property>
     <property name="database-path">src/data/test.db</property>
   </property-list>
@@ -55,7 +56,7 @@
 		  <textbox label="Name" name="patient-name" validation="first-last-name" task="reception" required="required" />
 		  <date label="DOB" name="date-of-birth" validation="date-iso8601-yyyymmdd" task="reception" required="required" />
 		  <textbox label="MRN" name="med-rec-num" validation="mrn" task="reception" required="required" />
-		  <textbox label="Address/Nurse" name="address-nurs" validation="address" task="reception" required="required" />
+		  <textbox label="Address/Nurse" name="address-nurse" validation="address" task="reception" required="required" />
 		  <textbox label="Phone" name="patient-phone" validation="phone" task="reception" required="required" />
 		  <textbox label="Cell" name="patient-cell" validation="phone" task="reception" required="required" />
 		</column>
