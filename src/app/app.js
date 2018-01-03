@@ -137,6 +137,27 @@ var createMenuItem = function(label, id) {
     return menuitem;
 }
 
+var createCard = function(label, id) {
+    var card = $(`
+<div class="card" style="col col-12 col-md-3">
+  <img class="card-img-top" src="..." alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Cras justo odio</li>
+    <li class="list-group-item">Dapibus ac facilisis in</li>
+    <li class="list-group-item">Vestibulum at eros</li>
+  </ul>
+  <div class="card-body">
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+  </div>
+</div>`
+    );
+}
+
 var App = (function ($) {
     // After research these performance-oriented shortcuts aren't that useful.
     // jQuery claims that its select, especially for IDs is very fast
@@ -158,8 +179,9 @@ var App = (function ($) {
 
     var gui = require('nw.gui');
 
-    gui.Window.get().on('close', function() {
+    gui.Window.get().on('close', function(e) {
 	// Perhaps use a Bootstrap modal instead.
+	// Why does rendering freeze when we do this?
         if (confirm("Unsaved work will not be saved for you. Are you sure?")) {
             // Supposedly unnecessary to close the database.
             // Yet,
@@ -168,7 +190,7 @@ var App = (function ($) {
             // The datastore will fire a compaction.done event once compaction is finished.
 
             this.close(true); // Don't forget.
-        }
+	}
     });
 
     // Would be useful with a callback, then moved to another file.

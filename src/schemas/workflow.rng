@@ -21,6 +21,16 @@
 * Grid breakpoints are based on minimum width media queries, meaning they apply to that one breakpoint and all those above it.
 * Setting one column width: col-#
 * Allow adding own classes for column layout.
+
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+- autofocus
+- inputmode
+- list
+- minlength
+- placeholder
+- readonly
+- spellcheck
+- tabindex
 -->
 
 <grammar
